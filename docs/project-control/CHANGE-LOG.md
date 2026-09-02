@@ -356,3 +356,23 @@ exists yet); once Phase P commits land, this log should be read alongside
 - `docs/evidence/P0-T001/CLAUDE_HANDOVER.md` / `.json`.
 - Kimi independent review outcome.
 - Architecture Disposition / Closure / Integration.
+
+## 2026-09-02 - P0-T002 Architecture Gate
+
+- Recorded final P0-T001 state as ACCEPTED + CLOSED + INTEGRATED.
+- Recorded final P0-T001 integration-record commit
+  `8c1c38990f75d5b0122e90d85bb8757e83a553a1`.
+- Created the isolated P0-T002 branch/worktree from that accepted main
+  baseline.
+- Issued and approved `BIM-AG-P0-T002 v1.0` for the OCCT Geometry Spike.
+- Accepted `ADR-0002 - Phase 0 Task Sequence Reconciliation`.
+- Defined P0-T002 geometry-kernel scope and prohibitions.
+- Defined tolerance and coordinate experiments.
+- Defined Boolean success/failure corpus requirements.
+- Defined OCCT history experiments.
+- Defined verification and evidence requirements.
+- Defined AC-001 through AC-023.
+- Implementation remains NOT RELEASED pending the Architecture Authority
+  Claude Implementation Brief.
+- No production source, CMake, dependency or test implementation was modified
+  by this architecture-record commit.

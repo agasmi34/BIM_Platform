@@ -75,3 +75,31 @@ which has not been supplied to this repository (`docs/constitution/README.md`,
 `README.md`). Claude's evidentiary basis for the conflict this ADR resolves
 is Architecture Authority's chat instruction, not independent verification
 against the Constitution's literal `D-028` text.
+
+P0-T002 architecture decisions
+ADR-0002 — Phase 0 Task Sequence Reconciliation
+
+Status: ACCEPTED
+Date: 2026-09-02
+Authority: Architecture Authority / Product Authority approval
+
+The operative Phase 0 sequence now defines P0-T002 as the OCCT Geometry Spike.
+
+The former standalone Dependency & License Baseline task is treated as
+materially absorbed by P0-T001.
+
+This decision changes task sequencing only. It does not change dependency
+versions, the vcpkg baseline, P0-T001 evidence or the Master Engineering
+Constitution itself.
+
+Authoritative record:
+
+docs/architecture/adr/ADR-0002-phase0-task-sequence-reconciliation.md
+
+BIM-AG-P0-T002 v1.0
+
+Product Authority approved the P0-T002 OCCT Geometry Spike Architecture Gate
+on 2026-09-02.
+
+Implementation remains explicitly blocked until Architecture Authority releases
+the P0-T002 Claude Implementation Brief.

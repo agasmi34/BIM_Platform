@@ -76,3 +76,36 @@ repository; none has been invented.
 - `docs/evidence/P0-T001/CLAUDE_HANDOVER.md` / `.json` produced by Claude.
 - Kimi independent review.
 - Architecture Disposition and, if applicable, Architecture Closure.
+
+P0-T001 final completion
+
+The historical P0-T001 task subsequently completed the events that older
+snapshots in this ledger previously listed as pending.
+
+Final authoritative lineage:
+
+EventResult
+Phase P implementation commit37b9ab44adb6edf72e172dd6d3382464d7357a61
+Kimi independent reviewPASS — zero unresolved BLOCKER/MAJOR
+AC-013PASS
+AC-014PASS
+Architecture Authority closure8c84152c82a4c76e5c5c1d01c4cbd97f94784942
+AC-001 through AC-015PASS
+Controlled fast-forward integrationPASS
+Integration record commit8c1c38990f75d5b0122e90d85bb8757e83a553a1
+Final task stateACCEPTED + CLOSED + INTEGRATED
+
+The original historical rows above remain preserved rather than rewritten;
+this section records the later completed outcome.
+
+P0-T002 — OCCT Geometry Spike
+SeqEventAuthority / sourceState
+1P0-T002 architecture preflight against integrated mainArchitecture Authority + Windows Execution OperatorPASS
+2Approved base fixed at 8c1c38990f75d5b0122e90d85bb8757e83a553a1Architecture AuthorityLOCKED
+3ADR-0002 Phase 0 Task Sequence ReconciliationArchitecture AuthorityACCEPTED
+4BIM-AG-P0-T002 v1.0Product AuthorityAPPROVED
+5Branch task/P0-T002-occt-geometry-spike createdWindows Execution OperatorPASS
+6Worktree D:\Projects\BIM-Platform-WT-P0-T002 createdWindows Execution OperatorPASS
+7P0-T002 implementationArchitecture AuthorityNOT RELEASED
+
+No production-code implementation has occurred at this point.
