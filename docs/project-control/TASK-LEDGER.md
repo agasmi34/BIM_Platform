@@ -109,3 +109,21 @@ SeqEventAuthority / sourceState
 7P0-T002 implementationArchitecture AuthorityNOT RELEASED
 
 No production-code implementation has occurred at this point.
+
+## P0-T002 implementation release
+
+| Event | Result |
+|---|---|
+| Architecture materialization commit | `ee0f47ceb5d29f995635594cbb33ee3dd82f6e96` |
+| Architecture tree | `8ba4c7dfe4d626ced52821b753fe3d4af285af2a` |
+| Canonical Gate SHA256 | `6F3157A3A19115D54FAAA93B13AAE22D13FA87299538A698D99DB2A1FEE66949` |
+| ADR-0002 SHA256 | `1E23045B1A855AAD34F8D124629836CA050E71EBCD0C40BE29DF3F080BA91694` |
+| Claude Implementation Brief | `BIM-TASK-P0-T002-CLAUDE v1.0` |
+| Implementation Brief SHA256 | `7958C0BE210E4EBFFD137EA102069B6332CE4BD26BA1D825FE8310CFB9DE0D64` |
+| Implementation state | RELEASED FOR IMPLEMENTATION |
+
+Architecture Authority has released implementation only within the locked
+P0-T002 OCCT Geometry Spike scope.
+
+This release does not assert implementation completion, verification PASS,
+independent-review PASS, acceptance, closure or integration.

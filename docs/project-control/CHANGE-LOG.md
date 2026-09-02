@@ -376,3 +376,15 @@ exists yet); once Phase P commits land, this log should be read alongside
   Claude Implementation Brief.
 - No production source, CMake, dependency or test implementation was modified
   by this architecture-record commit.
+
+## 2026-09-02 - P0-T002 Implementation Brief Release
+
+- Released `BIM-TASK-P0-T002-CLAUDE v1.0`.
+- Locked the project-owned geometry contract for the OCCT Geometry Spike.
+- Locked the primitive, opening, join and failure corpus.
+- Locked the tolerance and coordinate experiment matrices.
+- Locked repeatability and OCCT history evidence requirements.
+- Locked evidence-executable and verification-script requirements.
+- Locked the implementation footprint and ACR stop conditions.
+- P0-T002 implementation is RELEASED FOR IMPLEMENTATION.
+- No production implementation is part of this documentation-only release.
