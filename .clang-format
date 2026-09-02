@@ -1,0 +1,42 @@
+# ==============================================================================
+# BIM Platform - repository-authoritative clang-format policy.
+# Applies to first-party code only (src/, tests/, tools/). Third-party and
+# generated sources are excluded by the format CI script, not by this file.
+# ==============================================================================
+BasedOnStyle: LLVM
+Language: Cpp
+Standard: c++20
+
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 100
+
+AccessModifierOffset: -4
+NamespaceIndentation: None
+IndentCaseLabels: true
+ContinuationIndentWidth: 4
+
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterReturnType: None
+
+PointerAlignment: Left
+ReferenceAlignment: Left
+DerivePointerAlignment: false
+
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignTrailingComments: true
+
+SortIncludes: CaseSensitive
+IncludeBlocks: Preserve
+
+SpaceBeforeParens: ControlStatements
+SpacesInAngles: false
+Cpp11BracedListStyle: true
+
+FixNamespaceComments: true

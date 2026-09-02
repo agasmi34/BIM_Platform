@@ -1,0 +1,54 @@
+# ==============================================================================
+# BIM Platform - repository-authoritative clang-tidy baseline.
+#
+# Curated, low-noise starting set (Implementation Brief Phase K / Architecture
+# Gate section 13): bugprone/performance/portability checks are enabled
+# broadly; modernize/readability/cppcoreguidelines are enabled selectively to
+# avoid routine-ignore fatigue. No blanket NOLINT/warning-disable strategy is
+# used anywhere in first-party code; any suppression must carry an inline
+# reason.
+#
+# HeaderFilterRegex restricts analysis to first-party headers under src/ and
+# tests/; vcpkg-installed and other third-party/generated headers are excluded.
+#
+# WarningsAsErrors: '*' (Architecture Authority disposition, P0-T001
+# Architecture Review "Verification Runbook B v1.3" finding BLOCKER 2 -
+# see docs/project-control/DECISION-LEDGER.md and CHANGE-LOG.md). Enabled
+# findings from the curated Checks list above are CI-gating: clang-tidy
+# exits non-zero if any enabled check fires on a checked first-party
+# translation unit. The Checks list itself is unchanged by this
+# disposition - only whether a finding is allowed to coexist with a zero
+# exit code changed, not which checks are enabled.
+# ==============================================================================
+Checks: >
+  -*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  performance-*,
+  portability-*,
+  modernize-use-nullptr,
+  modernize-use-override,
+  modernize-use-equals-default,
+  modernize-use-equals-delete,
+  readability-braces-around-statements,
+  readability-else-after-return,
+  readability-redundant-*,
+  readability-simplify-boolean-expr,
+  cppcoreguidelines-slicing,
+  cppcoreguidelines-special-member-functions
+
+WarningsAsErrors: '*'
+HeaderFilterRegex: '(^|/)(src|tests|tools)/.*\.(h|hpp|hh|hxx)$'
+FormatStyle: file
+
+CheckOptions:
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: CamelCase
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: _

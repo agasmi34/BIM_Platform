@@ -1,0 +1,87 @@
+{
+  "task_id": "P0-T001",
+  "gate_version": "1.0",
+  "brief_version": "1.0",
+  "outcome": "PASS_FOR_REVIEW",
+  "branch": "task/P0-T001-repo-toolchain-scaffold",
+  "worktree": "D:\\Projects\\BIM-Platform-WT-P0-T001",
+  "main_repository": "D:\\Projects\\BIM-Platform",
+  "start_head": "4b339248dd8b050e7b603ef0b5707440e582c315",
+  "final_head": "4b339248dd8b050e7b603ef0b5707440e582c315",
+  "final_head_note": "This is the current pre-commit HEAD, NOT the Phase P implementation commit. No Phase P implementation commit exists yet. Per this round's explicit Architecture Authority process clarification, Independent Review for P0-T001 occurs BEFORE the implementation commit; the review target is the verified baseline plus authorized handover delta identified in review_range/handover_delta/candidate_freeze below, not a Phase P commit SHA. This is not a Claude-authored architecture change.",
+  "vcpkg_baseline": "f89a4a1da4e3176a8d1a14c1825b9b2f98e48843",
+  "vcpkg_registry_kind": "builtin",
+  "dependencies": {
+    "opencascade": "8.0.1",
+    "sqlite3": "3.53.4",
+    "catch2": "3.15.3",
+    "fmt": "12.2.0#1",
+    "spdlog": "1.17.0#1"
+  },
+  "verification": {
+    "configure": "PASS",
+    "build": "PASS",
+    "ctest": "PASS",
+    "ctest_count": "6/6",
+    "format": "PASS",
+    "static_analysis": "PASS",
+    "architecture": "PASS",
+    "license_inventory": "PASS",
+    "compiler_verification_status": "PASS",
+    "verification_gate_and_invariant_violations": 0,
+    "runbook_final_message": "VERIFICATION RUNBOOK B COMPLETE - ALL FIVE JOBS PASSED AND ALL VERIFICATION GATES HELD."
+  },
+  "acceptance_criteria": {
+    "AC-001": { "status": "PASS", "evidence": "configure-build-test job PASS, exit 0; cmake --preset ci-win-msvc" },
+    "AC-002": { "status": "PASS", "evidence": "cmake --build --preset ci-win-msvc PASS, exit 0, BIM_WARNINGS_AS_ERRORS=ON in the ci-win-msvc preset" },
+    "AC-003": { "status": "PASS", "evidence": "ctest --preset ci-win-msvc: 6/6 CTest tests passed" },
+    "AC-004": { "status": "PASS", "evidence": "architecture job PASS via arch_repository_boundaries CTest test (tools/architecture_checker.cmake)" },
+    "AC-005": { "status": "PASS", "evidence": "OCCT resolved to 8.0.1; integration_geometry_occt_probe test passed; geometry_occt adapter boundary unchanged since authoring" },
+    "AC-006": { "status": "PASS", "evidence": "integration_persistence_sqlite_memory test passed (in-memory SQLite probe only, no project DB schema)" },
+    "AC-007": { "status": "PASS", "evidence": "vcpkg.json and vcpkg-configuration.json are present in the verified r3 implementation candidate; frozen baseline f89a4a1da4e3176a8d1a14c1825b9b2f98e48843" },
+    "AC-008": { "status": "PASS", "evidence": "cmake --preset ci-win-msvc and cmake --build --preset ci-win-msvc both succeeded this round" },
+    "AC-009": { "status": "PASS", "evidence": "format job PASS (clang-format --dry-run --Werror against every first-party file)" },
+    "AC-010": { "status": "PASS", "evidence": "architecture job PASS (arch_repository_boundaries + arch_checker_detects_violation both registered and passing)" },
+    "AC-011": { "status": "PASS", "evidence": "license-inventory job PASS for all five direct dependencies (opencascade, sqlite3, catch2, fmt, spdlog)" },
+    "AC-012": { "status": "PASS", "evidence": "Claude self-check scope audit, section 8 below; not an independent verification" },
+    "AC-013": { "status": "PENDING", "evidence": "main confirmed clean/untouched this round; staged=0; Phase P implementation commit not yet created - see final_head_note. Windows Execution Operator will capture literal git status --short / git diff --stat / git worktree list after transfer, before Kimi review, as review evidence only, not a PASS trigger. AC-013 remains PENDING through Kimi review; PASS requires: (1) Kimi review complete with no unresolved BLOCKER/MAJOR, (2) Phase P implementation commit created, (3) task worktree then confirmed clean, (4) main remains untouched/clean." },
+    "AC-014": { "status": "PENDING REVIEW", "evidence": "reserved for Kimi (Independent Reviewer); not claimable by Claude" },
+    "AC-015": { "status": "PENDING ARCHITECTURE AUTHORITY", "evidence": "reserved for Architecture Authority; not claimable by Claude" }
+  },
+  "acrs": [
+    {
+      "id": "ACR-P0T001-001",
+      "subject": "Claude has no command-execution channel to the Windows target",
+      "resolution": "Option B: controlled Windows Execution Operator execution; repository/worktree paths set to D:\\Projects\\BIM-Platform / D:\\Projects\\BIM-Platform-WT-P0-T001",
+      "status": "RESOLVED"
+    }
+  ],
+  "review_target_type": "verified_freeze_plus_authorized_handover_delta",
+  "review_range": "PRE_COMMIT_VERIFIED_BASELINE:Verification-RunbookB-v1.7-r3@SHA256:3E9C054C0D83E92F4889CEAFB5ED11E02BCD29E78044BA98B2810AD75BD21EEC",
+  "handover_delta": {
+    "status": "PENDING_WINDOWS_READBACK",
+    "modified_verified_baseline_files": [
+      "docs/tasks/P0-T001/07-IMPLEMENTATION-HANDOVER.md"
+    ],
+    "added_post_verification_files": [
+      "docs/evidence/P0-T001/CLAUDE_HANDOVER.md",
+      "docs/evidence/P0-T001/CLAUDE_HANDOVER.json"
+    ],
+    "resulting_review_target_path_count": 87
+  },
+  "candidate_freeze": {
+    "candidate": "Verification-RunbookB-v1.7-r3",
+    "frozen_file_count": 85,
+    "manifest_path_repo_relative": "docs/evidence/P0-T001/candidate-freeze-v1.7-r3-sha256.txt",
+    "manifest_path_windows_absolute": "D:\\Projects\\BIM-Platform-WT-P0-T001\\docs\\evidence\\P0-T001\\candidate-freeze-v1.7-r3-sha256.txt",
+    "manifest_sha256": "3E9C054C0D83E92F4889CEAFB5ED11E02BCD29E78044BA98B2810AD75BD21EEC",
+    "post_run_integrity_audit": "PASS",
+    "frozen_candidate_unchanged": "85/85"
+  },
+  "authoritative_transcript": {
+    "path_repo_relative": "docs/evidence/P0-T001/verification-runbook-b-transcript-20260831-122639.txt",
+    "path_windows_absolute": "D:\\Projects\\BIM-Platform-WT-P0-T001\\docs\\evidence\\P0-T001\\verification-runbook-b-transcript-20260831-122639.txt",
+    "sha256": "861B709208860327189AAD7AAB81740716B1E561EECA3BC652A2C56EF4BC21BA"
+  },
+  "evidentiary_provenance_note": "Every PASS result, hash, and figure above marked as reported this round is reported by Architecture Authority following Windows execution, not independently reproduced or re-verified by Claude. Claude has no command-execution channel to the Windows target (ACR-P0T001-001, standing) and no tool to read file contents or compute hashes on that machine."
+}

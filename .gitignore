@@ -1,0 +1,44 @@
+# ==============================================================================
+# BIM Platform - ignore policy.
+# Evidence documents under docs/evidence/ are intentionally NOT ignored.
+# ==============================================================================
+
+# Out-of-source build output --------------------------------------------------
+/build/
+/build-*/
+/out/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Testing/
+
+# vcpkg local caches/installed trees created under the repo -------------------
+/vcpkg_installed/
+/build/**/vcpkg_installed/
+.cache/
+
+# Visual Studio / MSVC user state ----------------------------------------------
+.vs/
+*.user
+*.suo
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.VC.opendb
+
+# IDE temporary files -----------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local environment / secrets ----------------------------------------------------
+.env
+.env.*
+*.local
+
+# Generated test/log output -----------------------------------------------------
+*.log
+/test-results/
+/artifacts/

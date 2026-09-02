@@ -1,0 +1,36 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260831121855
+Username: PRODESIGNERS\abdallah
+RunAs User: PRODESIGNERS\abdallah
+Configuration Name: 
+Machine: GASMI (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File D:\Projects\BIM-Platform-WT-P0-T001\Verification-RunbookB-v1.7.ps1
+Process ID: 23812
+PSVersion: 5.1.26100.9168
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9168
+BuildVersion: 10.0.26100.9168
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Worktree     : D:\Projects\BIM-Platform-WT-P0-T001
+Transcript   : D:\Projects\BIM-Platform-WT-P0-T001\docs\evidence\P0-T001\verification-runbook-b-transcript-20260831-121855.txt
+Timestamp    : 20260831-121855 (local); 2026-08-31 09:18:55Z (UTC)
+
+Preflight evidence (captured read-only before this transcript started; re-printed here for the record):
+  task_branch (preflight) = task/P0-T001-repo-toolchain-scaffold
+  task_head (preflight)   = 4b339248dd8b050e7b603ef0b5707440e582c315
+  main_branch (preflight) = main
+  main_head (preflight)   = 4b339248dd8b050e7b603ef0b5707440e582c315
+  main_status (preflight) = (clean)
+
+=== Step 2 - Preconditions: required tools and approved x64 / VS 17.14 developer environment ===
+
+RUNBOOK B ABORTED: VCPKG_ROOT is not set. Set it to your local vcpkg checkout, e.g.: $env:VCPKG_ROOT = "C:\tools\vcpkg"
+**********************
+Windows PowerShell transcript end
+End time: 20260831121855
+**********************

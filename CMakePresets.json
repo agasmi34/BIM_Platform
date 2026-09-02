@@ -1,0 +1,93 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+
+  "configurePresets": [
+    {
+      "name": "conf-common",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "${sourceDir}/build/${presetName}/install",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_TARGET_TRIPLET": "x64-windows",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_C_COMPILER": "cl",
+        "CMAKE_CXX_COMPILER": "cl"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "win-msvc-debug",
+      "displayName": "Windows x64 MSVC Debug",
+      "inherits": "conf-common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "win-msvc-relwithdebinfo",
+      "displayName": "Windows x64 MSVC RelWithDebInfo",
+      "inherits": "conf-common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "win-msvc-release",
+      "displayName": "Windows x64 MSVC Release",
+      "inherits": "conf-common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "ci-win-msvc",
+      "displayName": "CI - Windows x64 MSVC RelWithDebInfo, warnings as errors",
+      "inherits": "conf-common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "BIM_WARNINGS_AS_ERRORS": "ON"
+      }
+    }
+  ],
+
+  "buildPresets": [
+    { "name": "win-msvc-debug", "configurePreset": "win-msvc-debug" },
+    { "name": "win-msvc-relwithdebinfo", "configurePreset": "win-msvc-relwithdebinfo" },
+    { "name": "win-msvc-release", "configurePreset": "win-msvc-release" },
+    { "name": "ci-win-msvc", "configurePreset": "ci-win-msvc" }
+  ],
+
+  "testPresets": [
+    {
+      "name": "win-msvc-debug",
+      "configurePreset": "win-msvc-debug",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error", "stopOnFailure": false }
+    },
+    {
+      "name": "win-msvc-relwithdebinfo",
+      "configurePreset": "win-msvc-relwithdebinfo",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error", "stopOnFailure": false }
+    },
+    {
+      "name": "win-msvc-release",
+      "configurePreset": "win-msvc-release",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error", "stopOnFailure": false }
+    },
+    {
+      "name": "ci-win-msvc",
+      "configurePreset": "ci-win-msvc",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error", "stopOnFailure": false }
+    }
+  ]
+}

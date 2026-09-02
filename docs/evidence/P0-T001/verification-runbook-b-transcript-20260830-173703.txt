@@ -1,0 +1,89 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260830173703
+Username: PRODESIGNERS\abdallah
+RunAs User: PRODESIGNERS\abdallah
+Configuration Name: 
+Machine: GASMI (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Verification-RunbookB-v1.6.ps1
+Process ID: 46644
+PSVersion: 5.1.26100.9168
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9168
+BuildVersion: 10.0.26100.9168
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Worktree     : D:\Projects\BIM-Platform-WT-P0-T001
+Transcript   : D:\Projects\BIM-Platform-WT-P0-T001\docs\evidence\P0-T001\verification-runbook-b-transcript-20260830-173703.txt
+Timestamp    : 20260830-173703 (local); 2026-08-30 14:37:03Z (UTC)
+
+Preflight evidence (captured read-only before this transcript started; re-printed here for the record):
+  task_branch (preflight) = task/P0-T001-repo-toolchain-scaffold
+  task_head (preflight)   = 4b339248dd8b050e7b603ef0b5707440e582c315
+  main_branch (preflight) = main
+  main_head (preflight)   = 4b339248dd8b050e7b603ef0b5707440e582c315
+  main_status (preflight) = (clean)
+
+=== Step 2 - Preconditions: required tools and approved x64 / VS 17.14 developer environment ===
+VCPKG_ROOT   : C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\vcpkg
+VSCMD_ARG_TGT_ARCH : x64
+VSCMD_VER          : 17.14.39
+cl.exe path        : C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\cl.exe
+VCToolsVersion             : 14.44.35207
+usage: cl [ option... ] filename... [ /link linkoption... ]
+Microsoft (R) C/C++ Optimizing Compiler Version 19.44.35228 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+System.Management.Automation.RemoteException
+cl.exe banner (evidence) : Microsoft (R) C/C++ Optimizing Compiler Version 19.44.35228 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+System.Management.Automation.RemoteException
+vcpkg package management program version 2025-11-19-da1f056dc0775ac651bea7e3fbbf4066146a55f3
+
+See LICENSE.txt for license information.
+cmake version 4.4.2
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+expected_cmake_version     = 4.4.2
+verified_effective_cmake_version = 4.4.2
+1.12.1
+ctest version 4.4.2
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+git version 2.47.1.windows.2
+clang-format version 19.1.5
+
+=== Step 3 - Verify actual vcpkg-configuration.json registry kind and baseline (MAJOR + BLOCKER carryover) ===
+expected_vcpkg_registry_kind           = builtin
+verified_effective_vcpkg_registry_kind = builtin (parsed from vcpkg-configuration.json 'default-registry.kind')
+expected_vcpkg_baseline                = f89a4a1da4e3176a8d1a14c1825b9b2f98e48843
+verified_effective_vcpkg_baseline      = f89a4a1da4e3176a8d1a14c1825b9b2f98e48843 (parsed from vcpkg-configuration.json 'default-registry.baseline')
+
+=== Step 4 - Run all five CI-equivalent jobs, each isolated in its own child PowerShell process ===
+
+=== Job: format (scripts\ci\format.ps1) - isolated child process ===
+
+=== format: locate clang-format ===
+clang-format version 19.1.5
+
+=== format: collect first-party files ===
+Found 16 first-party file(s) to check.
+
+=== format: clang-format --dry-run --Werror ===
+
+FORMAT CHECK PASSED
+
+Job 'format' PASSED (child process exit 0).
+
+=== Job: configure-build-test (scripts\ci\configure-build-test.ps1) - isolated child process ===
+PS>TerminatingError(): "The pipeline has been stopped."
+>> TerminatingError(): "The pipeline has been stopped."
+>> TerminatingError(): "The pipeline has been stopped."
+>> $global:?
+True
+**********************
+Windows PowerShell transcript end
+End time: 20260830174117
+**********************

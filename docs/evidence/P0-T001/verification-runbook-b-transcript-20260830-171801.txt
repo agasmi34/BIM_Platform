@@ -1,0 +1,320 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260830171801
+Username: PRODESIGNERS\abdallah
+RunAs User: PRODESIGNERS\abdallah
+Configuration Name: 
+Machine: GASMI (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Verification-RunbookB-v1.6.ps1
+Process ID: 45948
+PSVersion: 5.1.26100.9168
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9168
+BuildVersion: 10.0.26100.9168
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Worktree     : D:\Projects\BIM-Platform-WT-P0-T001
+Transcript   : D:\Projects\BIM-Platform-WT-P0-T001\docs\evidence\P0-T001\verification-runbook-b-transcript-20260830-171801.txt
+Timestamp    : 20260830-171801 (local); 2026-08-30 14:18:01Z (UTC)
+
+Preflight evidence (captured read-only before this transcript started; re-printed here for the record):
+  task_branch (preflight) = task/P0-T001-repo-toolchain-scaffold
+  task_head (preflight)   = 4b339248dd8b050e7b603ef0b5707440e582c315
+  main_branch (preflight) = main
+  main_head (preflight)   = 4b339248dd8b050e7b603ef0b5707440e582c315
+  main_status (preflight) = (clean)
+
+=== Step 2 - Preconditions: required tools and approved x64 / VS 17.14 developer environment ===
+VCPKG_ROOT   : C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\vcpkg
+VSCMD_ARG_TGT_ARCH : x64
+VSCMD_VER          : 17.14.39
+cl.exe path        : C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\cl.exe
+VCToolsVersion             : 14.44.35207
+usage: cl [ option... ] filename... [ /link linkoption... ]
+Microsoft (R) C/C++ Optimizing Compiler Version 19.44.35228 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+System.Management.Automation.RemoteException
+cl.exe banner (evidence) : Microsoft (R) C/C++ Optimizing Compiler Version 19.44.35228 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+System.Management.Automation.RemoteException
+vcpkg package management program version 2025-11-19-da1f056dc0775ac651bea7e3fbbf4066146a55f3
+
+See LICENSE.txt for license information.
+cmake version 4.4.2
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+expected_cmake_version     = 4.4.2
+verified_effective_cmake_version = 4.4.2
+1.12.1
+ctest version 4.4.2
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+git version 2.47.1.windows.2
+clang-format version 19.1.5
+
+=== Step 3 - Verify actual vcpkg-configuration.json registry kind and baseline (MAJOR + BLOCKER carryover) ===
+expected_vcpkg_registry_kind           = builtin
+verified_effective_vcpkg_registry_kind = builtin (parsed from vcpkg-configuration.json 'default-registry.kind')
+expected_vcpkg_baseline                = f89a4a1da4e3176a8d1a14c1825b9b2f98e48843
+verified_effective_vcpkg_baseline      = f89a4a1da4e3176a8d1a14c1825b9b2f98e48843 (parsed from vcpkg-configuration.json 'default-registry.baseline')
+
+=== Step 4 - Run all five CI-equivalent jobs, each isolated in its own child PowerShell process ===
+
+=== Job: format (scripts\ci\format.ps1) - isolated child process ===
+
+=== format: locate clang-format ===
+clang-format version 19.1.5
+
+=== format: collect first-party files ===
+Found 16 first-party file(s) to check.
+
+=== format: clang-format --dry-run --Werror ===
+D:\Projects\BIM-Platform-WT-P0-T001\src\geometry\occt\src\geometry_occt_probe.cpp:31:44: error: code should be clang-formatted [-Wclang-format-violations]
+            bim::foundation::Status::Error(
+                                           ^
+D:\Projects\BIM-Platform-WT-P0-T001\src\geometry\occt\src\geometry_occt_probe.cpp:32:57: error: code should be clang-formatted [-Wclang-format-violations]
+                std::string("OCCT Standard_Failure: ") + (what != nullptr ? what : "<no message>")),
+                                                        ^
+D:\Projects\BIM-Platform-WT-P0-T001\src\persistence\src\persistence_probe.cpp:62:47: error: code should be clang-formatted [-Wclang-format-violations]
+        return bim::foundation::Status::Error(
+                                              ^
+D:\Projects\BIM-Platform-WT-P0-T001\src\persistence\src\persistence_probe.cpp:63:66: error: code should be clang-formatted [-Wclang-format-violations]
+            "sqlite in-memory probe returned unexpected value " + std::to_string(value));
+                                                                 ^
+D:\Projects\BIM-Platform-WT-P0-T001\tests\integration\integration_persistence_sqlite_memory.cpp:1:1: error: code should be clang-formatted [-Wclang-format-violations]
+#include "bim/persistence/probe.hpp"
+^
+
+FORMAT CHECK FAILED: 3 file(s) not conforming to .clang-format:
+  - D:\Projects\BIM-Platform-WT-P0-T001\src\geometry\occt\src\geometry_occt_probe.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\src\persistence\src\persistence_probe.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\tests\integration\integration_persistence_sqlite_memory.cpp
+
+Job 'format' FAILED (child process exit 1). Continuing to the next job for maximum evidence - this parent process was not affected.
+
+=== Job: configure-build-test (scripts\ci\configure-build-test.ps1) - isolated child process ===
+
+=== configure-build-test: preconditions ===
+cmake version 4.4.2
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+
+=== configure-build-test: fresh build directory (D:\Projects\BIM-Platform-WT-P0-T001\build\ci-win-msvc) ===
+
+=== configure-build-test: cmake --preset ci-win-msvc ===
+-- Running vcpkg install
+Fetching registry information from https://github.com/microsoft/vcpkg (HEAD)...
+error: no version database entry for catch2 at 3.0.0.
+Available versions:
+  3.16.0
+  3.15.3
+  3.15.2#1
+  3.15.2
+  3.15.1
+  3.15.0
+  3.14.0
+  3.13.0#2
+  3.13.0#1
+  3.13.0
+  3.12.0
+  3.11.0
+  3.10.0
+  3.9.1
+  3.9.0
+  3.8.1
+  3.8.0
+  3.7.1
+  3.7.0
+  3.6.0
+  3.5.4
+  3.5.3
+  3.5.2
+  3.5.1
+  3.5.0
+  3.4.0
+  3.3.2#1
+  3.3.2
+  3.3.1
+  3.3.0
+  3.2.1
+  3.2.0
+  3.1.1#2
+  3.1.1#1
+  3.1.1
+  3.1.0#1
+  3.1.0
+  3.0.1#2
+  3.0.1#1
+  3.0.1
+  2.13.9#1
+  2.13.9
+  2.13.8#1
+  2.13.8
+  2.13.7#2
+  2.13.7#1
+  2.13.7
+  2.13.6#2
+  2.13.6#1
+  2.13.6
+  2.13.1#1
+  2.13.1
+  2.12.1
+  2.11.3
+  2.11.1
+  2.11.0
+  2.10.1-1
+  2.9.2
+  2.9.1-1
+  2.7.2-2
+  2.7.2
+  2.7.1
+  2.7.0
+  2.6.0
+  2.5.0
+  2.4.2
+  2.4.1
+  2.4.0
+  2.3.0
+  2.2.3
+  2.2.2
+  2.2.1-1
+  2.2.1
+  2.2.0
+  2.1.2
+  2.1.1
+  2.1.0
+See `vcpkg help versioning` or https://learn.microsoft.com/vcpkg/users/versioning?WT.mc_id=vcpkg_inproduct_cli for more information.
+See https://learn.microsoft.com/vcpkg/users/versioning-troubleshooting?WT.mc_id=vcpkg_inproduct_cli for more information.
+note: while loading catch2@3.0.0
+
+-- Running vcpkg install - failed
+-- Configuring incomplete, errors occurred!
+CMake Error at C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/vcpkg/scripts/buildsystems/vcpkg.cmake:953 (message):
+  vcpkg install failed.  See logs for more information:
+  D:\Projects\BIM-Platform-WT-P0-T001\build\ci-win-msvc\vcpkg-manifest-install.log
+Call Stack (most recent call first):
+  C:/Program Files/CMake/share/cmake-4.4/Modules/CMakeDetermineSystem.cmake:152 (include)
+  CMakeLists.txt:16 (project)
+System.Management.Automation.RemoteException
+System.Management.Automation.RemoteException
+CMake Error: CMake was unable to find a build program corresponding to "Ninja".  CMAKE_MAKE_PROGRAM is not set.  You probably need to select a different build tool.
+CMake Error: CMAKE_CXX_COMPILER not set, after EnableLanguage
+
+configure-build-test.ps1 ABORTED: Command failed (exit 1): C:\Program Files\CMake\bin\cmake.exe --preset ci-win-msvc
+
+Job 'configure-build-test' FAILED (child process exit 1). Continuing to the next job for maximum evidence - this parent process was not affected.
+
+=== Job: static-analysis (scripts\ci\static-analysis.ps1) - isolated child process ===
+
+=== static-analysis: locate clang-tidy ===
+LLVM (http://llvm.org/):
+  LLVM version 19.1.5
+  Optimized build.
+
+=== static-analysis: locate repository .clang-tidy ===
+Using repository .clang-tidy: D:\Projects\BIM-Platform-WT-P0-T001\.clang-tidy
+
+=== static-analysis: locate compile database (D:\Projects\BIM-Platform-WT-P0-T001\build\ci-win-msvc) ===
+
+static-analysis.ps1 ABORTED: compile_commands.json not found at 'D:\Projects\BIM-Platform-WT-P0-T001\build\ci-win-msvc\compile_commands.json'. Run scripts\ci\configure-build-test.ps1 first (it verifies CMAKE_EXPORT_COMPILE_COMMANDS=ON produced this file), or pass -BuildDir.
+
+Job 'static-analysis' FAILED (child process exit 1). Continuing to the next job for maximum evidence - this parent process was not affected.
+
+=== Job: architecture (scripts\ci\architecture.ps1) - isolated child process ===
+
+=== architecture: locate build directory (D:\Projects\BIM-Platform-WT-P0-T001\build\ci-win-msvc) ===
+
+=== architecture: ctest -R "^arch_repository_boundaries$" --output-on-failure --no-tests=error ===
+Test project D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc
+No tests were found!!!
+Errors while running CTest
+
+architecture.ps1 ABORTED: Command failed (exit 8): C:\Program Files\CMake\bin\ctest.exe -R ^arch_repository_boundaries$ --output-on-failure --no-tests=error
+
+Job 'architecture' FAILED (child process exit 1). Continuing to the next job for maximum evidence - this parent process was not affected.
+
+=== Job: license-inventory (scripts\ci\license-inventory.ps1) - isolated child process ===
+
+=== license-inventory: locate vcpkg installed tree ===
+
+license-inventory.ps1 ABORTED: vcpkg installed tree not found at 'D:\Projects\BIM-Platform-WT-P0-T001\build\ci-win-msvc\vcpkg_installed\x64-windows'. Run scripts\ci\configure-build-test.ps1 first, or pass -BuildDir/-Triplet.
+
+Job 'license-inventory' FAILED (child process exit 1). Continuing to the next job for maximum evidence - this parent process was not affected.
+
+=== Step 5 - Verify effective CMake configuration - ENFORCED GATE (BLOCKER) ===
+cmake_cache_exists                 = True
+expected_vcpkg_triplet             = x64-windows
+verified_effective_vcpkg_triplet   = x64-windows
+expected_cmake_generator           = Ninja
+verified_effective_cmake_generator = Ninja
+configure-build-test did not succeed (exit 1) - effective configuration reported above for evidence only; this gate applies only to a job that reported success.
+
+=== Step 6 - Resolved dependency versions (vcpkg list) - AUTHORITATIVE EVIDENCE GATE (MAJOR) ===
+configure-build-test did not succeed (exit 1) - vcpkg list evidence is not applicable this run; this gate applies only when configure-build-test succeeds.
+
+=== Step 7 - Final Git invariants ===
+Task branch (final) : task/P0-T001-repo-toolchain-scaffold
+Task HEAD (final)   : 4b339248dd8b050e7b603ef0b5707440e582c315
+Task worktree status (final) - informational only, NOT required to be clean (evidence/build/license outputs are expected to leave it dirty):
+
+
+git worktree list (from worktree):
+
+
+Main path       : D:\Projects\BIM-Platform
+Main branch     : main
+Main HEAD       : 4b339248dd8b050e7b603ef0b5707440e582c315
+Main status     : (must be blank - proves main was untouched by this run)
+
+
+All Git invariants and evidence gates held so far: task branch/HEAD unchanged; main branch/HEAD/clean-status unchanged; CMake config gate; vcpkg-list evidence gate.
+
+=== Step 8 - EVIDENCE SUMMARY ===
+preset                                = ci-win-msvc
+expected_vcpkg_triplet                = x64-windows
+verified_effective_vcpkg_triplet      = x64-windows
+expected_cmake_generator              = Ninja
+verified_effective_cmake_generator    = Ninja
+expected_vcpkg_registry_kind          = builtin
+verified_effective_vcpkg_registry_kind= builtin
+expected_vcpkg_baseline               = f89a4a1da4e3176a8d1a14c1825b9b2f98e48843
+verified_effective_vcpkg_baseline     = f89a4a1da4e3176a8d1a14c1825b9b2f98e48843
+expected_bootstrap_sha                = 4b339248dd8b050e7b603ef0b5707440e582c315
+task_branch (preflight -> final)      = task/P0-T001-repo-toolchain-scaffold -> task/P0-T001-repo-toolchain-scaffold
+task_head (preflight -> final)        = 4b339248dd8b050e7b603ef0b5707440e582c315 -> 4b339248dd8b050e7b603ef0b5707440e582c315
+expected_vs_line                      = 17.14
+vscmd_ver (verified)                  = 17.14.39
+vscmd_arg_tgt_arch (verified)         = x64
+expected_vctools_family_pattern       = ^14\.[34]\d*\. (v143/VS2022)
+vctools_version (verified)            = 14.44.35207
+cl_exe_path                           = C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\cl.exe
+cl_exe_banner                         = Microsoft (R) C/C++ Optimizing Compiler Version 19.44.35228 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+System.Management.Automation.RemoteException
+expected_cmake_version                = 4.4.2
+verified_effective_cmake_version      = 4.4.2
+
+Resolved direct dependency versions (authoritative, from vcpkg list):
+  expected_opencascade_version        = 8.0.1
+  resolved_opencascade                =
+  expected_catch2_major                = 3
+  resolved_catch2                      =
+  resolved_sqlite3 (no exact version required, presence only) =
+  resolved_fmt (no exact version required, presence only)     =
+  resolved_spdlog (no exact version required, presence only)  =
+
+job_format                = exit 1
+job_configure-build-test  = exit 1
+job_static-analysis       = exit 1
+job_architecture          = exit 1
+job_license-inventory     = exit 1
+verification_gate_and_invariant_violations = 0
+
+VERIFICATION RUNBOOK B COMPLETE - ONE OR MORE JOBS OR VERIFICATION GATES FAILED. See EVIDENCE SUMMARY / violations above.
+**********************
+Windows PowerShell transcript end
+End time: 20260830171812
+**********************

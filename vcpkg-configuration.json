@@ -1,0 +1,8 @@
+{
+  "$comment": "Frozen vcpkg registry baseline for P0-T001 (Architecture Gate BIM-AG-P0-T001 section 5.1; Implementation Brief IC-002). Commit f89a4a1da4e3176a8d1a14c1825b9b2f98e48843 is the microsoft/vcpkg commit '[opencascade] update git-tree for 8.0.1 (#53125)', authored 2026-07-31, which sets versions/baseline.json's opencascade entry to {\"baseline\": \"8.0.1\", \"port-version\": 0} and versions/o-/opencascade.json's newest entry to version 8.0.1 port-version 0. Verified via the GitHub commit API and the commit's own diff (versions/baseline.json and versions/o-/opencascade.json hunks) on 2026-08-27. Do not advance this baseline without an ACR (Implementation Brief section 2.2 / Architecture Gate section 5.1).",
+  "default-registry": {
+    "kind": "builtin",
+    "baseline": "f89a4a1da4e3176a8d1a14c1825b9b2f98e48843"
+  },
+  "registries": []
+}

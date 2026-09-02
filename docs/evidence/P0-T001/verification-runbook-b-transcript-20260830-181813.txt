@@ -1,0 +1,577 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260830181813
+Username: PRODESIGNERS\abdallah
+RunAs User: PRODESIGNERS\abdallah
+Configuration Name: 
+Machine: GASMI (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File D:\Projects\BIM-Platform-WT-P0-T001\Verification-RunbookB-v1.6.ps1
+Process ID: 46852
+PSVersion: 5.1.26100.9168
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9168
+BuildVersion: 10.0.26100.9168
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Worktree     : D:\Projects\BIM-Platform-WT-P0-T001
+Transcript   : D:\Projects\BIM-Platform-WT-P0-T001\docs\evidence\P0-T001\verification-runbook-b-transcript-20260830-181813.txt
+Timestamp    : 20260830-181813 (local); 2026-08-30 15:18:13Z (UTC)
+
+Preflight evidence (captured read-only before this transcript started; re-printed here for the record):
+  task_branch (preflight) = task/P0-T001-repo-toolchain-scaffold
+  task_head (preflight)   = 4b339248dd8b050e7b603ef0b5707440e582c315
+  main_branch (preflight) = main
+  main_head (preflight)   = 4b339248dd8b050e7b603ef0b5707440e582c315
+  main_status (preflight) = (clean)
+
+=== Step 2 - Preconditions: required tools and approved x64 / VS 17.14 developer environment ===
+VCPKG_ROOT   : C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\vcpkg
+VSCMD_ARG_TGT_ARCH : x64
+VSCMD_VER          : 17.14.39
+cl.exe path        : C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\cl.exe
+VCToolsVersion             : 14.44.35207
+usage: cl [ option... ] filename... [ /link linkoption... ]
+Microsoft (R) C/C++ Optimizing Compiler Version 19.44.35228 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+System.Management.Automation.RemoteException
+cl.exe banner (evidence) : Microsoft (R) C/C++ Optimizing Compiler Version 19.44.35228 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+System.Management.Automation.RemoteException
+vcpkg package management program version 2025-11-19-da1f056dc0775ac651bea7e3fbbf4066146a55f3
+
+See LICENSE.txt for license information.
+cmake version 4.4.2
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+expected_cmake_version     = 4.4.2
+verified_effective_cmake_version = 4.4.2
+1.12.1
+ctest version 4.4.2
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+git version 2.47.1.windows.2
+clang-format version 19.1.5
+
+=== Step 3 - Verify actual vcpkg-configuration.json registry kind and baseline (MAJOR + BLOCKER carryover) ===
+expected_vcpkg_registry_kind           = builtin
+verified_effective_vcpkg_registry_kind = builtin (parsed from vcpkg-configuration.json 'default-registry.kind')
+expected_vcpkg_baseline                = f89a4a1da4e3176a8d1a14c1825b9b2f98e48843
+verified_effective_vcpkg_baseline      = f89a4a1da4e3176a8d1a14c1825b9b2f98e48843 (parsed from vcpkg-configuration.json 'default-registry.baseline')
+
+=== Step 4 - Run all five CI-equivalent jobs, each isolated in its own child PowerShell process ===
+
+=== Job: format (scripts\ci\format.ps1) - isolated child process ===
+
+=== format: locate clang-format ===
+clang-format version 19.1.5
+
+=== format: collect first-party files ===
+Found 16 first-party file(s) to check.
+
+=== format: clang-format --dry-run --Werror ===
+
+FORMAT CHECK PASSED
+
+Job 'format' PASSED (child process exit 0).
+
+=== Job: configure-build-test (scripts\ci\configure-build-test.ps1) - isolated child process ===
+
+=== configure-build-test: preconditions ===
+cmake version 4.4.2
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+
+=== configure-build-test: fresh build directory (D:\Projects\BIM-Platform-WT-P0-T001\build\ci-win-msvc) ===
+
+=== configure-build-test: cmake --preset ci-win-msvc ===
+-- Running vcpkg install
+Fetching registry information from https://github.com/microsoft/vcpkg (HEAD)...
+Detecting compiler hash for triplet x64-windows...
+Compiler found: C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe
+The following packages will be built and installed:
+    catch2:x64-windows@3.15.3 -- git+https://github.com/microsoft/vcpkg@8d9c00d2204875428610d9078d77082004ac0e52
+  * egl-registry:x64-windows@2025-05-27 -- git+https://github.com/microsoft/vcpkg@980ed62fded868a1cb66460b32704aca030af013
+    fmt:x64-windows@12.2.0#1 -- git+https://github.com/microsoft/vcpkg@7ca0b8c0026883daf28a0db75f6b4964bae2979a
+    opencascade:x64-windows@8.0.1 -- git+https://github.com/microsoft/vcpkg@03ee9b71f9ce479ebafeab28f92182d13c779553
+  * opengl:x64-windows@2022-12-04#3 -- git+https://github.com/microsoft/vcpkg@c3ae71738f88449ebcd781cef60d9a253fa091d4
+  * opengl-registry:x64-windows@2026-01-26 -- git+https://github.com/microsoft/vcpkg@0cd17c3b57221250d5ba174580f0a2993853ce34
+    spdlog[core,fmt,tz-offset]:x64-windows@1.17.0#1 -- git+https://github.com/microsoft/vcpkg@c42bb1e74ab55b299d7fe52e68d0ab7b5dee165c
+    sqlite3[core,json1]:x64-windows@3.53.4 -- git+https://github.com/microsoft/vcpkg@0cc3b4ec0f841b02a3bf3c82387b1d3c2f9adb6a
+  * vcpkg-cmake:x64-windows@2024-04-23 -- git+https://github.com/microsoft/vcpkg@e74aa1e8f93278a8e71372f1fa08c3df420eb840
+  * vcpkg-cmake-config:x64-windows@2026-07-21 -- git+https://github.com/microsoft/vcpkg@51befcb03097f8d19c1c59f9ec3625e69d85322a
+Additional packages (*) will be modified to complete this operation.
+Restored 7 package(s) from C:\Users\abdallah\AppData\Local\vcpkg\archives in 1.5 s. Use --debug to see more details.
+Installing 1/10 vcpkg-cmake-config:x64-windows@2026-07-21...
+Elapsed time to handle vcpkg-cmake-config:x64-windows: 5.95 ms
+vcpkg-cmake-config:x64-windows package ABI: 2c390e6947ebfdc8e475371153115364aaafa9548d35901ce8f27fe8ae7c95ee
+Installing 2/10 vcpkg-cmake:x64-windows@2024-04-23...
+Elapsed time to handle vcpkg-cmake:x64-windows: 10.1 ms
+vcpkg-cmake:x64-windows package ABI: 8854eb5137975fe5151a0235b2bc6cb4c216025ec3a37ddd05884fee4918fde0
+Installing 3/10 catch2:x64-windows@3.15.3...
+Elapsed time to handle catch2:x64-windows: 477 ms
+catch2:x64-windows package ABI: 4a7cfa8692309bd69a928290a61a305d8d4a0e4e86fd29d30ac6948745f80f35
+Installing 4/10 fmt:x64-windows@12.2.0#1...
+Elapsed time to handle fmt:x64-windows: 29.2 ms
+fmt:x64-windows package ABI: 50b546d3a124919be7eb043cc4da95716f75c8bd527493ca00dacf6b2cbd9d70
+Installing 5/10 egl-registry:x64-windows@2025-05-27...
+Elapsed time to handle egl-registry:x64-windows: 20.9 ms
+egl-registry:x64-windows package ABI: b7f1566fb277165d0556974aab60ee2b2e5e6c1ffc1ce169bc5584cdf3f4dd56
+Installing 6/10 opengl-registry:x64-windows@2026-01-26...
+Elapsed time to handle opengl-registry:x64-windows: 31.3 ms
+opengl-registry:x64-windows package ABI: cb4629004bd805b6c9e80e46618d82528aeda02deaa4fd9173986bdc913488b7
+Installing 7/10 opengl:x64-windows@2022-12-04#3...
+Elapsed time to handle opengl:x64-windows: 21.7 ms
+opengl:x64-windows package ABI: 1c4653c7a6ec0fb8b29a9a3812f38cd7ff341eaa2b44b0d4094d2d1cbd008a02
+Installing 8/10 opencascade:x64-windows@8.0.1...
+Building opencascade:x64-windows@8.0.1...
+C:\Users\abdallah\AppData\Local\vcpkg\registries\git-trees\03ee9b71f9ce479ebafeab28f92182d13c779553: info: installing from git registry git+https://github.com/microsoft/vcpkg@03ee9b71f9ce479ebafeab28f92182d13c779553
+-- Using cached Open-Cascade-SAS-OCCT-V8_0_1.tar.gz
+-- Extracting source C:/Users/abdallah/AppData/Local/vcpkg/downloads/Open-Cascade-SAS-OCCT-V8_0_1.tar.gz
+-- Applying patch 0001-cmake-keep-build-use-vcpkg-explicit.patch
+-- Applying patch 0002-cmake-load-exported-package-dependencies.patch
+-- Applying patch 0003-image-remove-freeimage-msvc-autolink.patch
+-- Applying patch 0004-cmake-add-additional-path-extraction-for-OpenCASCADE.patch
+-- Applying patch 0005-drop-bin-letter.patch
+-- Using source at D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/vcpkg/blds/opencascade/src/V8_0_1-2f604eca2a.clean
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Performing post-build validation
+Starting submission of opencascade:x64-windows@8.0.1 to 1 binary cache(s) in the background
+Elapsed time to handle opencascade:x64-windows: 1.3 h
+opencascade:x64-windows package ABI: 15231d03ebcf30bfa1b2be76c189f8fd8b385ab5204c4576be047afd5415a9e3
+Installing 9/10 spdlog[core,fmt,tz-offset]:x64-windows@1.17.0#1...
+Building spdlog[core,fmt,tz-offset]:x64-windows@1.17.0#1...
+C:\Users\abdallah\AppData\Local\vcpkg\registries\git-trees\c42bb1e74ab55b299d7fe52e68d0ab7b5dee165c: info: installing from git registry git+https://github.com/microsoft/vcpkg@c42bb1e74ab55b299d7fe52e68d0ab7b5dee165c
+Downloading https://github.com/gabime/spdlog/commit/1685e694c5cd8328280c48f8b94b1281c17c6fee.patch?full_index=1 -> spdlog-backport-3541.patch
+Successfully downloaded spdlog-backport-3541.patch
+Downloading https://github.com/gabime/spdlog/commit/d5af52d903ed69f96c7350155e94aeff248b31eb.patch?full_index=1 -> spdlog-backport-3543.patch
+Successfully downloaded spdlog-backport-3543.patch
+Downloading https://github.com/gabime/spdlog/archive/v1.17.0.tar.gz -> gabime-spdlog-v1.17.0.tar.gz
+Successfully downloaded gabime-spdlog-v1.17.0.tar.gz
+-- Extracting source C:/Users/abdallah/AppData/Local/vcpkg/downloads/gabime-spdlog-v1.17.0.tar.gz
+-- Applying patch C:/Users/abdallah/AppData/Local/vcpkg/downloads/spdlog-backport-3541.patch
+-- Applying patch C:/Users/abdallah/AppData/Local/vcpkg/downloads/spdlog-backport-3543.patch
+-- Using source at D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/vcpkg/blds/spdlog/src/v1.17.0-8a1a388e84.clean
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Fixing pkgconfig file: D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/vcpkg/pkgs/spdlog_x64-windows/lib/pkgconfig/spdlog.pc
+-- Using cached msys2-mingw-w64-x86_64-pkgconf-1~2.4.3-1-any.pkg.tar.zst
+-- Using cached msys2-msys2-runtime-3.6.2-2-x86_64.pkg.tar.zst
+-- Using msys root at C:/Users/abdallah/AppData/Local/vcpkg/downloads/tools/msys2/9272adbcaf19caef
+-- Fixing pkgconfig file: D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/vcpkg/pkgs/spdlog_x64-windows/debug/lib/pkgconfig/spdlog.pc
+-- Installing: D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/vcpkg/pkgs/spdlog_x64-windows/share/spdlog/usage
+-- Installing: D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/vcpkg/pkgs/spdlog_x64-windows/share/spdlog/copyright
+-- Performing post-build validation
+Starting submission of spdlog[core,fmt,tz-offset]:x64-windows@1.17.0#1 to 1 binary cache(s) in the background
+Elapsed time to handle spdlog:x64-windows: 1.1 min
+spdlog:x64-windows package ABI: d29e9205da16722ab7f687460057be41ae2bb517170382f5c6c3f4d4d9e0b288
+Installing 10/10 sqlite3[core,json1]:x64-windows@3.53.4...
+Building sqlite3[core,json1]:x64-windows@3.53.4...
+C:\Users\abdallah\AppData\Local\vcpkg\registries\git-trees\0cc3b4ec0f841b02a3bf3c82387b1d3c2f9adb6a: info: installing from git registry git+https://github.com/microsoft/vcpkg@0cc3b4ec0f841b02a3bf3c82387b1d3c2f9adb6a
+Downloading https://sqlite.org/2026/sqlite-autoconf-3530400.tar.gz -> sqlite-autoconf-3530400.tar.gz
+Successfully downloaded sqlite-autoconf-3530400.tar.gz
+-- Extracting source C:/Users/abdallah/AppData/Local/vcpkg/downloads/sqlite-autoconf-3530400.tar.gz
+-- Applying patch fix-arm-uwp.patch
+-- Applying patch add-config-include.patch
+-- Using source at D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/vcpkg/blds/sqlite3/src/nf-3530400-891c4575fa.clean
+-- Configuring x64-windows
+-- Building x64-windows-dbg
+-- Building x64-windows-rel
+-- Fixing pkgconfig file: D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/vcpkg/pkgs/sqlite3_x64-windows/lib/pkgconfig/sqlite3.pc
+-- Using cached msys2-mingw-w64-x86_64-pkgconf-1~2.4.3-1-any.pkg.tar.zst
+-- Using cached msys2-msys2-runtime-3.6.2-2-x86_64.pkg.tar.zst
+-- Using msys root at C:/Users/abdallah/AppData/Local/vcpkg/downloads/tools/msys2/9272adbcaf19caef
+-- Fixing pkgconfig file: D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/vcpkg/pkgs/sqlite3_x64-windows/debug/lib/pkgconfig/sqlite3.pc
+-- Installing: D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/vcpkg/pkgs/sqlite3_x64-windows/share/sqlite3/usage
+-- Performing post-build validation
+Starting submission of sqlite3[core,json1]:x64-windows@3.53.4 to 1 binary cache(s) in the background
+Elapsed time to handle sqlite3:x64-windows: 46 s
+sqlite3:x64-windows package ABI: bc8a5a6f34e414ccf33ed42ed9b7a8eabeaef9ee0af8c280ef58a48cd3721545
+Installed contents are licensed to you by owners. Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Some packages did not declare an SPDX license. Check the `copyright` file for each package for more information about their licensing.
+Packages installed in this vcpkg installation declare the following licenses:
+Apache-2.0
+BSL-1.0
+LGPL-2.1-only
+MIT
+blessing
+catch2 provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(Catch2 CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Catch2::Catch2 Catch2::Catch2WithMain)
+
+catch2 provides pkg-config modules:
+
+  # A modern, C++-native test framework for C++14 and above (links in default main)
+  catch2-with-main
+
+  # A modern, C++-native, test framework for C++14 and above
+  catch2
+
+The package fmt provides CMake targets:
+
+    find_package(fmt CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE fmt::fmt)
+
+    # Or use the header-only version
+    find_package(fmt CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE fmt::fmt-header-only)
+
+opencascade provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(OpenCASCADE CONFIG REQUIRED)
+  # note: 46 additional targets are not displayed.
+  target_link_libraries(main PRIVATE TKBO TKDE TKBin TKCAF)
+
+The package spdlog provides CMake targets:
+
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog)
+
+    # Or use the header-only version
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog_header_only)
+
+sqlite3 provides pkgconfig bindings.
+sqlite3 provides CMake targets:
+
+    find_package(unofficial-sqlite3 CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE unofficial::sqlite3::sqlite3)
+
+Waiting for 3 remaining binary cache submissions...
+Completed submission of opencascade:x64-windows@8.0.1 to 1 binary cache(s) in 2 min (1/3)
+Completed submission of spdlog[core,fmt,tz-offset]:x64-windows@1.17.0#1 to 1 binary cache(s) in 1.3 s (2/3)
+Completed submission of sqlite3[core,json1]:x64-windows@3.53.4 to 1 binary cache(s) in 585 ms (3/3)
+All requested installations completed successfully in: 1.3 h
+-- Running vcpkg install - done
+-- The CXX compiler identification is Clang 19.1.5 with GNU-like command-line
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/Llvm/x64/bin/clang++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (4887.7s)
+-- Generating done (0.7s)
+-- Build files have been written to: D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc
+CMake Warning (author) at src/persistence/CMakeLists.txt:39 (target_link_libraries):
+  The library that is being linked to, SQLite::SQLite3, is marked as being
+  deprecated by the owner.  The message provided by the developer is:
+System.Management.Automation.RemoteException
+  The target name SQLite::SQLite3 is deprecated.  Please use SQLite3::SQLite3
+  instead.
+System.Management.Automation.RemoteException
+This warning is for project developers.  Use -Wno-author to suppress it.
+System.Management.Automation.RemoteException
+CMake Warning (author) at src/persistence/CMakeLists.txt:39 (target_link_libraries):
+  The library that is being linked to, SQLite::SQLite3, is marked as being
+  deprecated by the owner.  The message provided by the developer is:
+System.Management.Automation.RemoteException
+  The target name SQLite::SQLite3 is deprecated.  Please use SQLite3::SQLite3
+  instead.
+System.Management.Automation.RemoteException
+This warning is for project developers.  Use -Wno-author to suppress it.
+System.Management.Automation.RemoteException
+CMake Warning (author) at src/persistence/CMakeLists.txt:39 (target_link_libraries):
+  The library that is being linked to, SQLite::SQLite3, is marked as being
+  deprecated by the owner.  The message provided by the developer is:
+System.Management.Automation.RemoteException
+  The target name SQLite::SQLite3 is deprecated.  Please use SQLite3::SQLite3
+  instead.
+System.Management.Automation.RemoteException
+This warning is for project developers.  Use -Wno-author to suppress it.
+System.Management.Automation.RemoteException
+CMake Warning (author) at src/persistence/CMakeLists.txt:39 (target_link_libraries):
+  The library that is being linked to, SQLite::SQLite3, is marked as being
+  deprecated by the owner.  The message provided by the developer is:
+System.Management.Automation.RemoteException
+  The target name SQLite::SQLite3 is deprecated.  Please use SQLite3::SQLite3
+  instead.
+System.Management.Automation.RemoteException
+This warning is for project developers.  Use -Wno-author to suppress it.
+System.Management.Automation.RemoteException
+CMake Warning (author) at src/persistence/CMakeLists.txt:39 (target_link_libraries):
+  The library that is being linked to, SQLite::SQLite3, is marked as being
+  deprecated by the owner.  The message provided by the developer is:
+System.Management.Automation.RemoteException
+  The target name SQLite::SQLite3 is deprecated.  Please use SQLite3::SQLite3
+  instead.
+System.Management.Automation.RemoteException
+This warning is for project developers.  Use -Wno-author to suppress it.
+System.Management.Automation.RemoteException
+CMake Warning (author) at src/persistence/CMakeLists.txt:39 (target_link_libraries):
+  The library that is being linked to, SQLite::SQLite3, is marked as being
+  deprecated by the owner.  The message provided by the developer is:
+System.Management.Automation.RemoteException
+  The target name SQLite::SQLite3 is deprecated.  Please use SQLite3::SQLite3
+  instead.
+System.Management.Automation.RemoteException
+This warning is for project developers.  Use -Wno-author to suppress it.
+System.Management.Automation.RemoteException
+CMake Warning (author) at src/persistence/CMakeLists.txt:39 (target_link_libraries):
+  The library that is being linked to, SQLite::SQLite3, is marked as being
+  deprecated by the owner.  The message provided by the developer is:
+System.Management.Automation.RemoteException
+  The target name SQLite::SQLite3 is deprecated.  Please use SQLite3::SQLite3
+  instead.
+System.Management.Automation.RemoteException
+This warning is for project developers.  Use -Wno-author to suppress it.
+System.Management.Automation.RemoteException
+CMake Warning (author) at src/persistence/CMakeLists.txt:39 (target_link_libraries):
+  The library that is being linked to, SQLite::SQLite3, is marked as being
+  deprecated by the owner.  The message provided by the developer is:
+System.Management.Automation.RemoteException
+  The target name SQLite::SQLite3 is deprecated.  Please use SQLite3::SQLite3
+  instead.
+System.Management.Automation.RemoteException
+This warning is for project developers.  Use -Wno-author to suppress it.
+System.Management.Automation.RemoteException
+CMake Warning (author) at src/persistence/CMakeLists.txt:39 (target_link_libraries):
+  The library that is being linked to, SQLite::SQLite3, is marked as being
+  deprecated by the owner.  The message provided by the developer is:
+System.Management.Automation.RemoteException
+  The target name SQLite::SQLite3 is deprecated.  Please use SQLite3::SQLite3
+  instead.
+System.Management.Automation.RemoteException
+This warning is for project developers.  Use -Wno-author to suppress it.
+System.Management.Automation.RemoteException
+
+
+=== configure-build-test: verify compile_commands.json was generated ===
+compile_commands.json present at 'D:\Projects\BIM-Platform-WT-P0-T001\build\ci-win-msvc\compile_commands.json'.
+
+=== configure-build-test: cmake --build --preset ci-win-msvc ===
+[1/24] Building CXX object src/transactions/CMakeFiles/bim_transactions.dir/src/transactions_anchor.cpp.obj
+[2/24] Building CXX object src/query/CMakeFiles/bim_query.dir/src/query_anchor.cpp.obj
+[3/24] Building CXX object src/commands/CMakeFiles/bim_commands.dir/src/commands_anchor.cpp.obj
+[4/24] Building CXX object src/dependency_graph/CMakeFiles/bim_dependency_graph.dir/src/dependency_graph_anchor.cpp.obj
+[5/24] Building CXX object src/model/CMakeFiles/bim_model.dir/src/model_anchor.cpp.obj
+[6/24] Building CXX object src/foundation/CMakeFiles/bim_foundation.dir/src/status.cpp.obj
+[7/24] Building CXX object src/persistence/CMakeFiles/bim_persistence.dir/src/persistence_probe.cpp.obj
+[8/24] Linking CXX static library src\foundation\bim_foundation.lib
+[9/24] Linking CXX static library src\dependency_graph\bim_dependency_graph.lib
+[10/24] Linking CXX static library src\model\bim_model.lib
+[11/24] Linking CXX static library src\query\bim_query.lib
+[12/24] Linking CXX static library src\transactions\bim_transactions.lib
+[13/24] Linking CXX static library src\persistence\bim_persistence.lib
+[14/24] Linking CXX static library src\commands\bim_commands.lib
+[15/24] Building CXX object src/geometry/occt/CMakeFiles/bim_geometry_occt.dir/src/geometry_occt_probe.cpp.obj
+FAILED: src/geometry/occt/CMakeFiles/bim_geometry_occt.dir/src/geometry_occt_probe.cpp.obj 
+"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\Llvm\x64\bin\clang++.exe"  -ID:/Projects/BIM-Platform-WT-P0-T001/src/geometry/api/include -ID:/Projects/BIM-Platform-WT-P0-T001/src/foundation/include -isystem D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/x64-windows/include/opencascade -O2 -DNDEBUG -g -Xclang -gcodeview -std=c++20 -D_DLL -D_MT -Xclang --dependent-lib=msvcrt -Wall -Wextra -Wpedantic -Werror -MD -MT src/geometry/occt/CMakeFiles/bim_geometry_occt.dir/src/geometry_occt_probe.cpp.obj -MF src\geometry\occt\CMakeFiles\bim_geometry_occt.dir\src\geometry_occt_probe.cpp.obj.d -o src/geometry/occt/CMakeFiles/bim_geometry_occt.dir/src/geometry_occt_probe.cpp.obj -c D:/Projects/BIM-Platform-WT-P0-T001/src/geometry/occt/src/geometry_occt_probe.cpp
+D:/Projects/BIM-Platform-WT-P0-T001/src/geometry/occt/src/geometry_occt_probe.cpp:29:36: error: 'GetMessageString' is deprecated: Use what() instead [-Werror,-Wdeprecated-declarations]
+   29 |         const char* what = failure.GetMessageString();
+      |                                    ^
+D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/x64-windows/include/opencascade\Standard_Failure.hxx:59:3: note: 'GetMessageString' has been explicitly marked deprecated here
+   59 |   Standard_DEPRECATED("Use what() instead")
+      |   ^
+D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/x64-windows/include/opencascade\Standard_Macro.hxx:133:52: note: expanded from macro 'Standard_DEPRECATED'
+
+  133 |     #define Standard_DEPRECATED(theMsg) __declspec(deprecated(theMsg))
+
+      |                                                    ^
+
+1 error generated.
+
+[16/24] Building CXX object tests/unit/CMakeFiles/unit_model_links_foundation.dir/unit_model_links_foundation.cpp.obj
+[17/24] Building CXX object tests/integration/CMakeFiles/integration_persistence_sqlite_memory.dir/integration_persistence_sqlite_memory.cpp.obj
+[18/24] Building CXX object tests/integration/CMakeFiles/integration_geometry_occt_probe.dir/integration_geometry_occt_probe.cpp.obj
+[19/24] Building CXX object tests/unit/CMakeFiles/unit_foundation_smoke.dir/unit_foundation_smoke.cpp.obj
+ninja: build stopped: subcommand failed.
+
+configure-build-test.ps1 ABORTED: Command failed (exit 1): C:\Program Files\CMake\bin\cmake.exe --build --preset ci-win-msvc
+
+Job 'configure-build-test' FAILED (child process exit 1). Continuing to the next job for maximum evidence - this parent process was not affected.
+
+=== Job: static-analysis (scripts\ci\static-analysis.ps1) - isolated child process ===
+
+=== static-analysis: locate clang-tidy ===
+LLVM (http://llvm.org/):
+  LLVM version 19.1.5
+  Optimized build.
+
+=== static-analysis: locate repository .clang-tidy ===
+Using repository .clang-tidy: D:\Projects\BIM-Platform-WT-P0-T001\.clang-tidy
+
+=== static-analysis: locate compile database (D:\Projects\BIM-Platform-WT-P0-T001\build\ci-win-msvc) ===
+
+=== static-analysis: select first-party translation units from the compile database ===
+Found 12 first-party translation unit(s) in the compile database to check.
+  - D:\Projects\BIM-Platform-WT-P0-T001\src\foundation\src\status.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\src\dependency_graph\src\dependency_graph_anchor.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\src\model\src\model_anchor.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\src\transactions\src\transactions_anchor.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\src\query\src\query_anchor.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\src\commands\src\commands_anchor.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\src\geometry\occt\src\geometry_occt_probe.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\src\persistence\src\persistence_probe.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\tests\unit\unit_foundation_smoke.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\tests\unit\unit_model_links_foundation.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\tests\integration\integration_geometry_occt_probe.cpp
+  - D:\Projects\BIM-Platform-WT-P0-T001\tests\integration\integration_persistence_sqlite_memory.cpp
+
+=== static-analysis: clang-tidy (report-only, no -fix) ===
+Header filter: ^D:\\Projects\\BIM-Platform-WT-P0-T001\\(src|tests)\\.*
+33582 warnings generated.
+Suppressed 33582 warnings (33582 in non-user code).
+Use -header-filter=.* to display errors from all non-system headers. Use -system-headers to display errors from system headers as well.
+D:\Projects\BIM-Platform-WT-P0-T001\src\geometry\occt\src\geometry_occt_probe.cpp:29:36: error: 'GetMessageString' is deprecated: Use what() instead [clang-diagnostic-deprecated-declarations]
+   29 |         const char* what = failure.GetMessageString();
+      |                                    ^
+D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/x64-windows/include/opencascade\Standard_Failure.hxx:59:3: note: 'GetMessageString' has been explicitly marked deprecated here
+   59 |   Standard_DEPRECATED("Use what() instead")
+      |   ^
+D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc/vcpkg_installed/x64-windows/include/opencascade\Standard_Macro.hxx:133:52: note: expanded from macro 'Standard_DEPRECATED'
+  133 |     #define Standard_DEPRECATED(theMsg) __declspec(deprecated(theMsg))
+      |                                                    ^
+50888 warnings and 1 error generated.
+Error while processing D:\Projects\BIM-Platform-WT-P0-T001\src\geometry\occt\src\geometry_occt_probe.cpp.
+Suppressed 50888 warnings (50888 in non-user code).
+Use -header-filter=.* to display errors from all non-system headers. Use -system-headers to display errors from system headers as well.
+Found compiler error(s).
+33595 warnings generated.
+Suppressed 33595 warnings (33595 in non-user code).
+Use -header-filter=.* to display errors from all non-system headers. Use -system-headers to display errors from system headers as well.
+47447 warnings generated.
+Suppressed 47448 warnings (47447 in non-user code, 1 NOLINT).
+Use -header-filter=.* to display errors from all non-system headers. Use -system-headers to display errors from system headers as well.
+47447 warnings generated.
+Suppressed 47447 warnings (47447 in non-user code).
+Use -header-filter=.* to display errors from all non-system headers. Use -system-headers to display errors from system headers as well.
+47447 warnings generated.
+Suppressed 47448 warnings (47447 in non-user code, 1 NOLINT).
+Use -header-filter=.* to display errors from all non-system headers. Use -system-headers to display errors from system headers as well.
+47447 warnings generated.
+Suppressed 47447 warnings (47447 in non-user code).
+Use -header-filter=.* to display errors from all non-system headers. Use -system-headers to display errors from system headers as well.
+
+STATIC ANALYSIS FAILED: 1 translation unit(s) where clang-tidy's own invocation did not exit 0:
+  - D:\Projects\BIM-Platform-WT-P0-T001\src\geometry\occt\src\geometry_occt_probe.cpp
+
+Job 'static-analysis' FAILED (child process exit 1). Continuing to the next job for maximum evidence - this parent process was not affected.
+
+=== Job: architecture (scripts\ci\architecture.ps1) - isolated child process ===
+
+=== architecture: locate build directory (D:\Projects\BIM-Platform-WT-P0-T001\build\ci-win-msvc) ===
+
+=== architecture: ctest -R "^arch_repository_boundaries$" --output-on-failure --no-tests=error ===
+Test project D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc
+    Start 5: arch_repository_boundaries
+1/1 Test #5: arch_repository_boundaries .......   Passed    0.09 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.22 sec
+
+
+=== architecture: ctest -R "^arch_checker_detects_violation$" --output-on-failure --no-tests=error ===
+Test project D:/Projects/BIM-Platform-WT-P0-T001/build/ci-win-msvc
+    Start 6: arch_checker_detects_violation
+1/1 Test #6: arch_checker_detects_violation ...   Passed    0.17 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.19 sec
+
+ARCHITECTURE CHECK JOB PASSED - both required tests (arch_repository_boundaries, arch_checker_detects_violation) were found registered and passed.
+
+Job 'architecture' PASSED (child process exit 0).
+
+=== Job: license-inventory (scripts\ci\license-inventory.ps1) - isolated child process ===
+
+=== license-inventory: locate vcpkg installed tree ===
+
+=== license-inventory: remove previously generated outputs for direct dependencies ===
+
+=== license-inventory: copy copyright/usage files from the CURRENT vcpkg_installed tree ===
+Copied copyright for 'opencascade'.
+Copied copyright for 'sqlite3'.
+Copied copyright for 'catch2'.
+Copied copyright for 'fmt'.
+Copied copyright for 'spdlog'.
+
+=== license-inventory: verify completeness (from the current run only - stale outputs were removed above) ===
+
+LICENSE INVENTORY PASSED
+
+Job 'license-inventory' PASSED (child process exit 0).
+
+=== Step 5 - Verify effective CMake configuration - ENFORCED GATE (BLOCKER) ===
+cmake_cache_exists                 = True
+expected_vcpkg_triplet             = x64-windows
+verified_effective_vcpkg_triplet   = x64-windows
+expected_cmake_generator           = Ninja
+verified_effective_cmake_generator = Ninja
+configure-build-test did not succeed (exit 1) - effective configuration reported above for evidence only; this gate applies only to a job that reported success.
+
+=== Step 6 - Resolved dependency versions (vcpkg list) - AUTHORITATIVE EVIDENCE GATE (MAJOR) ===
+configure-build-test did not succeed (exit 1) - vcpkg list evidence is not applicable this run; this gate applies only when configure-build-test succeeds.
+
+=== Step 7 - Final Git invariants ===
+Task branch (final) : task/P0-T001-repo-toolchain-scaffold
+Task HEAD (final)   : 4b339248dd8b050e7b603ef0b5707440e582c315
+Task worktree status (final) - informational only, NOT required to be clean (evidence/build/license outputs are expected to leave it dirty):
+
+
+git worktree list (from worktree):
+
+
+Main path       : D:\Projects\BIM-Platform
+Main branch     : main
+Main HEAD       : 4b339248dd8b050e7b603ef0b5707440e582c315
+Main status     : (must be blank - proves main was untouched by this run)
+
+
+All Git invariants and evidence gates held so far: task branch/HEAD unchanged; main branch/HEAD/clean-status unchanged; CMake config gate; vcpkg-list evidence gate.
+
+=== Step 8 - EVIDENCE SUMMARY ===
+preset                                = ci-win-msvc
+expected_vcpkg_triplet                = x64-windows
+verified_effective_vcpkg_triplet      = x64-windows
+expected_cmake_generator              = Ninja
+verified_effective_cmake_generator    = Ninja
+expected_vcpkg_registry_kind          = builtin
+verified_effective_vcpkg_registry_kind= builtin
+expected_vcpkg_baseline               = f89a4a1da4e3176a8d1a14c1825b9b2f98e48843
+verified_effective_vcpkg_baseline     = f89a4a1da4e3176a8d1a14c1825b9b2f98e48843
+expected_bootstrap_sha                = 4b339248dd8b050e7b603ef0b5707440e582c315
+task_branch (preflight -> final)      = task/P0-T001-repo-toolchain-scaffold -> task/P0-T001-repo-toolchain-scaffold
+task_head (preflight -> final)        = 4b339248dd8b050e7b603ef0b5707440e582c315 -> 4b339248dd8b050e7b603ef0b5707440e582c315
+expected_vs_line                      = 17.14
+vscmd_ver (verified)                  = 17.14.39
+vscmd_arg_tgt_arch (verified)         = x64
+expected_vctools_family_pattern       = ^14\.[34]\d*\. (v143/VS2022)
+vctools_version (verified)            = 14.44.35207
+cl_exe_path                           = C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\cl.exe
+cl_exe_banner                         = Microsoft (R) C/C++ Optimizing Compiler Version 19.44.35228 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+System.Management.Automation.RemoteException
+expected_cmake_version                = 4.4.2
+verified_effective_cmake_version      = 4.4.2
+
+Resolved direct dependency versions (authoritative, from vcpkg list):
+  expected_opencascade_version        = 8.0.1
+  resolved_opencascade                =
+  expected_catch2_major                = 3
+  resolved_catch2                      =
+  resolved_sqlite3 (no exact version required, presence only) =
+  resolved_fmt (no exact version required, presence only)     =
+  resolved_spdlog (no exact version required, presence only)  =
+
+job_format                = exit 0
+job_configure-build-test  = exit 1
+job_static-analysis       = exit 1
+job_architecture          = exit 0
+job_license-inventory     = exit 0
+verification_gate_and_invariant_violations = 0
+
+VERIFICATION RUNBOOK B COMPLETE - ONE OR MORE JOBS OR VERIFICATION GATES FAILED. See EVIDENCE SUMMARY / violations above.
+**********************
+Windows PowerShell transcript end
+End time: 20260830194132
+**********************
