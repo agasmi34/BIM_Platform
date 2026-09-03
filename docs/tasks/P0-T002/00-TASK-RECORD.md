@@ -2,29 +2,29 @@
 
 **Task:** P0-T002 - OCCT Geometry Spike
 
-**State:** RELEASED FOR IMPLEMENTATION
-
 **Architecture Gate:** BIM-AG-P0-T002 v1.0
 
-**Architecture commit:** `ee0f47ceb5d29f995635594cbb33ee3dd82f6e96`
+**Architecture state:** LOCKED
 
-**Architecture tree:** `8ba4c7dfe4d626ced52821b753fe3d4af285af2a`
-
-**Implementation Brief:** `BIM-TASK-P0-T002-CLAUDE v1.0`
+**Implementation Brief:** BIM-TASK-P0-T002-CLAUDE v1.0
 
 **Implementation Brief SHA256:** `7958C0BE210E4EBFFD137EA102069B6332CE4BD26BA1D825FE8310CFB9DE0D64`
 
-**Architecture Authority:** Product Owner + ChatGPT
+**Implementation Brief Amendment:** BIM-TASK-P0-T002-CLAUDE-A01 v1.0
 
-**Implementation Engineer:** Claude
+**Amendment 01 SHA256:** `544EFB2664FAE9B37F4F94F3EB0536F38DC2B4FBA141F55A3DF8F3C07CE53CDE`
 
-**Independent Reviewer:** Kimi
+**Phase A + B:** ACCEPTED
+
+**ACR required:** NO
+
+**Phase C-M:** NOT YET AUTHORIZED
 
 ## Repository identity
 
-Main baseline:
+Parent release commit:
 
-`8c1c38990f75d5b0122e90d85bb8757e83a553a1`
+`751c5832eb8ed759d13b035d011999e8e5c7becc`
 
 Task branch:
 
@@ -34,28 +34,20 @@ Task worktree:
 
 `D:\Projects\BIM-Platform-WT-P0-T002`
 
-## Scope
+Main baseline:
 
-P0-T002 is the OCCT Geometry Spike.
+`8c1c38990f75d5b0122e90d85bb8757e83a553a1`
 
-The released implementation scope is defined exclusively by:
+## Authority
 
-`docs/tasks/P0-T002/02-IMPLEMENTATION-BRIEF.md`
+Product Owner + ChatGPT are Architecture Authority.
 
-No BIM-domain feature expansion is authorized.
+Claude is Implementation Engineer.
 
-Architecture changes require an Architecture Clarification Request.
+Kimi is Independent Reviewer.
 
-## Authority state
+The parent Implementation Brief remains effective except where Amendment 01
+explicitly supersedes or clarifies it.
 
-Architecture Gate:
-
-**APPROVED + COMMITTED**
-
-Implementation Brief:
-
-**RELEASED**
-
-Implementation:
-
-**RELEASED FOR IMPLEMENTATION**
+Implementation work must not begin until Architecture Authority separately
+authorizes Phase C-M.

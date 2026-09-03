@@ -103,3 +103,38 @@ on 2026-09-02.
 
 Implementation remains explicitly blocked until Architecture Authority releases
 the P0-T002 Claude Implementation Brief.
+
+## 2026-09-03 - P0-T002 Implementation Brief Amendment 01
+
+Architecture Authority accepted the read-only Phase A + B Contract Design
+Check with no ACR required.
+
+Decisions:
+
+- AA-C01 explicitly authorizes `tools/architecture_checker.cmake` and
+  `scripts/ci/architecture.ps1`.
+- AA-C02 locks rectangular profile axes to orthogonality within caller
+  angular tolerance.
+- AA-C03 separates Cut volumetric-intersection qualification from Fuse
+  proximity qualification.
+- AA-C04 prohibits positive common-volume qualification as a Fuse
+  prerequisite because J04 is a valid face-contact union case.
+- AA-C05 accepts `SolidResult`, `MetricsResult` and the opaque
+  `SolidHandle` design.
+- AA-C06 adds the callable neutral history-diagnostics contract.
+- AA-C07 requires an explicit JSON path for the evidence CTest.
+- AA-C08 keeps the geometry API contract unit test independent of the OCCT
+  adapter.
+- AA-C09 defines rule-selectable architecture enforcement.
+- AA-C10 requires the architecture CI job to execute all four architecture
+  tests.
+
+Amendment document:
+
+`docs/tasks/P0-T002/03-IMPLEMENTATION-BRIEF-AMENDMENT-01.md`
+
+Amendment SHA256:
+
+`544EFB2664FAE9B37F4F94F3EB0536F38DC2B4FBA141F55A3DF8F3C07CE53CDE`
+
+Phase C-M remains NOT YET AUTHORIZED.

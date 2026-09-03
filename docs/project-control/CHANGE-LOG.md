@@ -388,3 +388,19 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Locked the implementation footprint and ACR stop conditions.
 - P0-T002 implementation is RELEASED FOR IMPLEMENTATION.
 - No production implementation is part of this documentation-only release.
+
+## 2026-09-03 - P0-T002 Implementation Brief Amendment 01
+
+- Accepted the read-only P0-T002 Phase A + B Contract Design Check.
+- Added Amendment 01 without modifying the byte-stable parent Brief.
+- Corrected RectangleProfile3 orthogonality semantics.
+- Separated Cut volumetric-intersection semantics from Fuse proximity
+  semantics.
+- Explicitly protected J04 face-contact Fuse from premature
+  NoIntersection classification.
+- Completed the P0-only history-diagnostics callable contract.
+- Locked the exact 24-path implementation manifest.
+- Explicitly authorized architecture-checker and architecture-CI edits.
+- Phase C-M remains NOT YET AUTHORIZED.
+- No production source, tests, CMake implementation or dependency files were
+  changed by this documentation-only amendment commit.

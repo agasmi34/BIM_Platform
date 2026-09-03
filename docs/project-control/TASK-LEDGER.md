@@ -127,3 +127,20 @@ P0-T002 OCCT Geometry Spike scope.
 
 This release does not assert implementation completion, verification PASS,
 independent-review PASS, acceptance, closure or integration.
+
+## P0-T002 Phase A+B acceptance and Amendment 01
+
+| Event | Result |
+|---|---|
+| Parent release commit | `751c5832eb8ed759d13b035d011999e8e5c7becc` |
+| Parent Implementation Brief | `BIM-TASK-P0-T002-CLAUDE v1.0` |
+| Parent Brief SHA256 | `7958C0BE210E4EBFFD137EA102069B6332CE4BD26BA1D825FE8310CFB9DE0D64` |
+| Phase A + B | ACCEPTED |
+| ACR | NOT REQUIRED |
+| Amendment | `BIM-TASK-P0-T002-CLAUDE-A01 v1.0` |
+| Amendment SHA256 | `544EFB2664FAE9B37F4F94F3EB0536F38DC2B4FBA141F55A3DF8F3C07CE53CDE` |
+| Phase C-M | NOT YET AUTHORIZED |
+
+The exact authorized implementation manifest is contained in Amendment 01.
+
+No production implementation is part of this record.
