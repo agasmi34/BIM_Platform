@@ -2,52 +2,57 @@
 
 **Task:** P0-T002 - OCCT Geometry Spike
 
-**Architecture Gate:** BIM-AG-P0-T002 v1.0
+**Architecture:** LOCKED
 
-**Architecture state:** LOCKED
+**Architecture Gate:** BIM-AG-P0-T002 v1.0
 
 **Implementation Brief:** BIM-TASK-P0-T002-CLAUDE v1.0
 
-**Implementation Brief SHA256:** `7958C0BE210E4EBFFD137EA102069B6332CE4BD26BA1D825FE8310CFB9DE0D64`
-
 **Implementation Brief Amendment:** BIM-TASK-P0-T002-CLAUDE-A01 v1.0
-
-**Amendment 01 SHA256:** `544EFB2664FAE9B37F4F94F3EB0536F38DC2B4FBA141F55A3DF8F3C07CE53CDE`
 
 **Phase A + B:** ACCEPTED
 
-**ACR required:** NO
+**OCCT 8.0.1 API verification:** ACCEPTED
 
-**Phase C-M:** NOT YET AUTHORIZED
+**ACR:** NONE
 
-## Repository identity
+**Phase C-M:** AUTHORIZED
 
-Parent release commit:
+**Implementation Authorization:** BIM-TASK-P0-T002-IMPLEMENTATION-AUTH v1.0
 
-`751c5832eb8ed759d13b035d011999e8e5c7becc`
+**Implementation Authorization SHA256:** 2D987978D21B9343B90A61B6BF8B94678773FF6CBD63626FAC3C9BC3596C001E
+
+## Baseline
 
 Task branch:
 
-`task/P0-T002-occt-geometry-spike`
+task/P0-T002-occt-geometry-spike
 
-Task worktree:
+Authorization parent:
 
-`D:\Projects\BIM-Platform-WT-P0-T002`
+6081a30e03fb11d35d4920c3f7d35c253595270c
+
+Amendment tree:
+
+70a1ed80b0e1b9de0d319be8a688e5dd29c63b0e
 
 Main baseline:
 
-`8c1c38990f75d5b0122e90d85bb8757e83a553a1`
+8c1c38990f75d5b0122e90d85bb8757e83a553a1
 
-## Authority
+## Implementation transport
 
-Product Owner + ChatGPT are Architecture Authority.
+Claude implementation workspace:
 
-Claude is Implementation Engineer.
+C:\Users\abdallah\source\P0-T002-IMPLEMENTATION-6081a30\work
 
-Kimi is Independent Reviewer.
+This is not a Git worktree.
 
-The parent Implementation Brief remains effective except where Amendment 01
-explicitly supersedes or clarifies it.
+Live Git remains operator-controlled.
 
-Implementation work must not begin until Architecture Authority separately
-authorizes Phase C-M.
+## Current state
+
+P0-T002 PHASE C-M IMPLEMENTATION = AUTHORIZED
+
+No implementation has yet been imported into live Git by this authorization
+record.

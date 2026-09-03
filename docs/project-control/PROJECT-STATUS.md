@@ -8,63 +8,61 @@
 
 ## P0-T001
 
-**ACCEPTED + CLOSED + INTEGRATED**
+ACCEPTED + CLOSED + INTEGRATED
 
 Main baseline:
 
-`8c1c38990f75d5b0122e90d85bb8757e83a553a1`
+8c1c38990f75d5b0122e90d85bb8757e83a553a1
 
-## P0-T002 architecture
+## P0-T002
 
 Architecture Gate:
 
-**APPROVED + COMMITTED + LOCKED**
-
-Architecture commit:
-
-`ee0f47ceb5d29f995635594cbb33ee3dd82f6e96`
-
-Canonical Gate SHA256:
-
-`6F3157A3A19115D54FAAA93B13AAE22D13FA87299538A698D99DB2A1FEE66949`
-
-## P0-T002 implementation authority
-
-Parent Implementation Brief:
-
-`BIM-TASK-P0-T002-CLAUDE v1.0`
-
-Parent Brief SHA256:
-
-`7958C0BE210E4EBFFD137EA102069B6332CE4BD26BA1D825FE8310CFB9DE0D64`
-
-Implementation Brief Amendment:
-
-`BIM-TASK-P0-T002-CLAUDE-A01 v1.0`
-
-Amendment 01 SHA256:
-
-`544EFB2664FAE9B37F4F94F3EB0536F38DC2B4FBA141F55A3DF8F3C07CE53CDE`
+APPROVED + COMMITTED + LOCKED
 
 Phase A + B:
 
-**ACCEPTED**
+ACCEPTED
 
-Current ACR state:
+Implementation Brief Amendment 01:
 
-**NONE**
+APPROVED + COMMITTED
 
-Phase C-M implementation:
+OCCT 8.0.1 API verification:
 
-**NOT YET AUTHORIZED**
+ACCEPTED
 
-## Next gate
+Current ACR:
 
-Before production implementation begins:
+NONE
 
-1. Amendment 01 must be committed.
-2. OCCT 8.0.1 API verification access must be confirmed.
-3. Claude implementation transport/write channel must be explicitly selected.
-4. Architecture Authority must issue Phase C-M implementation authorization.
+Phase C-M:
 
-Main remains untouched.
+AUTHORIZED
+
+Implementation Authorization:
+
+BIM-TASK-P0-T002-IMPLEMENTATION-AUTH v1.0
+
+Authorization SHA256:
+
+2D987978D21B9343B90A61B6BF8B94678773FF6CBD63626FAC3C9BC3596C001E
+
+## Implementation channel
+
+Claude writes only to:
+
+C:\Users\abdallah\source\P0-T002-IMPLEMENTATION-6081a30\work
+
+Live task Git worktree remains protected and operator-controlled.
+
+No implementation import, verification, review, acceptance, closure or
+integration has occurred yet.
+
+## Next state transition
+
+Claude implements Phases C-M inside the file-transfer snapshot and produces
+the required handover.
+
+Architecture Authority then performs an operator-controlled candidate import
+into the live P0-T002 worktree for authoritative Windows verification.

@@ -404,3 +404,15 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Phase C-M remains NOT YET AUTHORIZED.
 - No production source, tests, CMake implementation or dependency files were
   changed by this documentation-only amendment commit.
+
+## 2026-09-03 - P0-T002 Phase C-M Implementation Authorization
+
+- Accepted the OCCT 8.0.1 API verification.
+- Authorized Implementation Brief Phases C through M.
+- Locked implementation to the controlled file-transfer snapshot.
+- Preserved the live P0-T002 Git worktree and main as operator-controlled.
+- Locked Boolean error handling to verified HasErrors() semantics.
+- Retained AA-C02, AA-C03 and AA-C04 from Amendment 01.
+- Explicitly authorized the two required Claude handover evidence files.
+- No production implementation is contained in this docs-only authorization
+  commit.

@@ -138,3 +138,39 @@ Amendment SHA256:
 `544EFB2664FAE9B37F4F94F3EB0536F38DC2B4FBA141F55A3DF8F3C07CE53CDE`
 
 Phase C-M remains NOT YET AUTHORIZED.
+
+## 2026-09-03 - P0-T002 Phase C-M Implementation Authorization
+
+Architecture Authority accepted the OCCT 8.0.1 read-only API verification.
+
+Disposition:
+
+- Phase A+B: ACCEPTED
+- Amendment 01: EFFECTIVE
+- OCCT API verification: ACCEPTED
+- ACR: NONE
+- Phase C-M: AUTHORIZED
+
+Implementation Authorization:
+
+BIM-TASK-P0-T002-IMPLEMENTATION-AUTH v1.0
+
+Authorization SHA256:
+
+2D987978D21B9343B90A61B6BF8B94678773FF6CBD63626FAC3C9BC3596C001E
+
+Implementation occurs only in the controlled file-transfer snapshot:
+
+C:\Users\abdallah\source\P0-T002-IMPLEMENTATION-6081a30\work
+
+The live Git task worktree and main remain protected.
+
+Boolean-family implementation uses verified HasErrors() failure reporting and
+must not depend on an unverified Boolean IsDone() member.
+
+New first-party code must avoid the OCCT-8-deprecated TopTools list/indexed-map
+aliases.
+
+The Standard_Version.hxx creation-date observation is recorded as a
+non-blocking provenance note; OCCT 8.0.1 version identity was independently
+confirmed from version macros and package config evidence.

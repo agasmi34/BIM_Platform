@@ -144,3 +144,21 @@ independent-review PASS, acceptance, closure or integration.
 The exact authorized implementation manifest is contained in Amendment 01.
 
 No production implementation is part of this record.
+
+## P0-T002 Phase C-M implementation authorization
+
+| Event | Result |
+|---|---|
+| Amendment parent | 6081a30e03fb11d35d4920c3f7d35c253595270c |
+| Phase A+B | ACCEPTED |
+| OCCT 8.0.1 API verification | ACCEPTED |
+| ACR | NONE |
+| Implementation Authorization | BIM-TASK-P0-T002-IMPLEMENTATION-AUTH v1.0 |
+| Authorization SHA256 | 2D987978D21B9343B90A61B6BF8B94678773FF6CBD63626FAC3C9BC3596C001E |
+| Phase C-M | AUTHORIZED |
+
+Claude implementation is limited to the controlled writable transport
+snapshot.
+
+No live-Git implementation, Windows verification, independent review,
+acceptance or integration is asserted by this authorization.
