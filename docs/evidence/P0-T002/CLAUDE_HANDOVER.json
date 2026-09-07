@@ -1,0 +1,1525 @@
+{
+  "task": "P0-T002",
+  "phase": "C-M",
+  "role": "Claude, the Implementation Engineer",
+  "disposition": "IMPLEMENTED / CANDIDATE READY FOR OPERATOR IMPORT",
+  "mandatory_statements": {
+    "WINDOWS_AUTHORITATIVE_VERIFICATION": "PENDING",
+    "LIVE_TASK_GIT_MODIFIED_BY_CLAUDE": "NO",
+    "MAIN_MODIFIED_BY_CLAUDE": "NO",
+    "CLAUDE_COMMIT_CREATED": "NO"
+  },
+  "authorization_provenance": {
+    "implementation_brief": {
+      "path": "docs/tasks/P0-T002/02-IMPLEMENTATION-BRIEF.md",
+      "sha256": "7958c0be210e4ebffd137ea102069b6332ce4bd26ba1d825fe8310cfb9de0d64"
+    },
+    "implementation_brief_amendment_01": {
+      "path": "docs/tasks/P0-T002/03-IMPLEMENTATION-BRIEF-AMENDMENT-01.md",
+      "sha256": "544efb2664fae9b37f4f94f3eb0536f38dc2b4fba141f55a3df8f3c07ce53cde"
+    },
+    "architecture_gate_package": {
+      "path": "docs/gates/P0-T002_Architecture_Gate_Package_v1.0.md",
+      "sha256": "6f3157a3a19115d54faaa93b13aae22d13fa87299538a698d99db2a1fee66949"
+    },
+    "implementation_authorization_document": {
+      "path": "04-IMPLEMENTATION-AUTHORIZATION.md",
+      "sha256": "2d987978d21b9343b90a61b6bf8b94678773ff6cbd63626fac3c9bc3596c001e"
+    },
+    "transport_rules": {
+      "path": "TRANSPORT-RULES-v2.txt",
+      "sha256": "7d0a5bf20aec59c638fa2cffbf6c4469eb1ffdbdd5a9d97e0c95b3a57e4895de"
+    },
+    "authorization_commit": "1c2e2d2b8912619b5ffb82c4178f7c2d191e2b7e",
+    "authorization_tree": "99564bb807bb2905e7552b4330ce5a10ae0fa0b2",
+    "main_baseline_commit": "8c1c38990f75d5b0122e90d85bb8757e83a553a1",
+    "writable_snapshot_baseline_commit": "6081a30e03fb11d35d4920c3f7d35c253595270c",
+    "occt_version_verified": "8.0.1"
+  },
+  "candidate_manifest": {
+    "add": [
+      {
+        "path": "src/geometry/api/include/bim/geometry_api/geometry.hpp",
+        "sha256": "a8ccf6b7addca9ef8f3445c207ef48cf63dc7060953bb252613b1e06323cb0b8",
+        "bytes": 6775,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 6661,
+          "sha256_before": "be86054ffc71739775b86b66916db01617eceaeedf3a3329badb5430720d0c73",
+          "bytes_after": 6600,
+          "sha256_after": null,
+          "sha256_after_independently_verified_by_claude": false,
+          "verification_note": "geometry_api/geometry_api and geometry_occt include-dir depth exceeds this session's device-bridge staging depth limit (8 folders below the connected root; 7 supported) - the same limitation noted in section 3 since round 1. The new byte size (from a fresh device_list_dir listing of the live Windows snapshot) is independently confirmed; the new SHA256 could not be independently recomputed by Claude this round and is not fabricated here."
+        },
+        "round_8_correction": {
+          "static_analysis_ids": [
+            "SA-R8-01"
+          ],
+          "fix_applied": "Narrow `// NOLINT(performance-enum-size)` on the enum declaration line plus an explanatory source comment. No enumerator value or underlying type changed.",
+          "base_content_used": "pre_round_7_reformat",
+          "base_bytes": 6661,
+          "base_sha256": "be86054ffc71739775b86b66916db01617eceaeedf3a3329badb5430720d0c73",
+          "new_bytes": 7324,
+          "new_sha256": "de91727f126f521212aeb520b4a94a2899834a8ddbd9bfa60e753119c56e1c42",
+          "round_7_reformat_preserved_byte_for_byte": false,
+          "content_provenance_gap_note": "Round 8 content-provenance gap (disclosed, not fabricated): this file's current live post-round-7 content (bytes_after / sha256_after under round_7_reformat below) could not be independently retrieved this round either - the device-bridge staging depth limit that blocked it in round 7 (8 folders below the connected root; 7 supported) is structural and was re-confirmed this round via a fresh device_stage_files attempt. Claude's only available base for this round's edit was its own last-verified PRE-round-7-reformat content (round_7_reformat.bytes_before / sha256_before below), to which only the exact SA-R8 NOLINT insertion specified by Architecture Authority was applied - nothing else was reformatted or otherwise changed. Consequently the bytes/sha256 delivered this round for this file are NOT guaranteed to preserve round 7's clang-format-19.1.5 correction byte-for-byte outside the inserted lines; that specific preservation requirement cannot be honestly claimed for this one file. The Windows Execution Operator should diff this delivered file against the current live snapshot before import; if the diff shows more than the intended NOLINT insertion, the safer action is to apply the identical one-line NOLINT + comment insertion directly to the live post-round-7 file instead of importing Claude's version."
+        },
+        "round_8b_correction": {
+          "summary": "Supersedes round_8_correction below. The Architecture Authority's disposition for SA-R8-01/02/03 (narrow NOLINT(performance-enum-size), no enum value/underlying-type change) is unchanged and was re-validated on authoritative Windows clang-tidy 19.1.5 with zero remaining performance-enum-size diagnostics for this file's enum(s). The bytes/SHA256 below are the authoritative Windows post-clang-format-19.1.5 identity as reported by Architecture Authority, applied by the Operator directly to the accepted live post-format Windows baseline (not built on Claude's stale pre-round-7 content, unlike round 8's delivered version of this file).",
+          "superseded_round_8_delivered_bytes": 7324,
+          "superseded_round_8_delivered_sha256": "de91727f126f521212aeb520b4a94a2899834a8ddbd9bfa60e753119c56e1c42",
+          "new_bytes": 6775,
+          "new_sha256": "a8ccf6b7addca9ef8f3445c207ef48cf63dc7060953bb252613b1e06323cb0b8",
+          "independent_verification_by_claude": {
+            "bytes": "Independently confirmed via device_list_dir against the connected transport snapshot: exact match.",
+            "sha256": "NOT independently computed by Claude - the same structural device-bridge staging depth limit disclosed since round 1 (8 folders below the connected root; 7 supported) still applies regardless of the live-to-transport sync, and a fresh device_stage_files attempt this cycle failed with the same error. The SHA256 above is recorded as reported by Architecture Authority (authoritative Windows clang-tidy/clang-format 19.1.5 run), not independently recomputed by Claude."
+          },
+          "content_provenance_gap_status": "CLOSED for byte identity (independently confirmed); SHA256 remains reported-not-independently-verified due to the structural staging depth limit - disclosed, not a contradiction.",
+          "discrepancy_investigation_and_resolution": "A prior reconciliation attempt this correction cycle was halted (STOP / ACR REQUIRED classification, later corrected to no-ACR) when Claude independently inspected the connected transport snapshot (read-only device_list_dir, no files modified) and found this file's bytes/mtime still matched Claude's own round-8 delivered content, not the authoritative Windows Round-8B identity being reported - because the Round-8B enum fix had been applied and validated in the live task worktree (D:\\Projects\\BIM-Platform-WT-P0-T002) but not yet synchronized back to the connected external transport snapshot (C:\\Users\\...\\source\\P0-T002-IMPLEMENTATION-6081a30\\work) Claude reads through. The Operator then performed a controlled live-worktree -> transport-snapshot synchronization of exactly these 3 files (after locking the authoritative candidate tree). Claude re-verified before writing anything: this file's byte size now matches exactly, with a fresh mtime confirming a real sync occurred (not a stale re-report)."
+        }
+      },
+      {
+        "path": "src/geometry/occt/src/solid_impl.hpp",
+        "sha256": "cdb9362d48fb19d3ee119c7a2ef2cb386cd2453f971649054cf53d7163129d36",
+        "bytes": 1408
+      },
+      {
+        "path": "src/geometry/occt/include/bim/geometry_occt/spike_diagnostics.hpp",
+        "sha256": "b65c3e9227a71e77c6176227817cbd6a52592f4130eb9298d1914ab25f8f7299",
+        "bytes": 2958,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 2607,
+          "sha256_before": "69971713c5b7b15ae6a9b90d977e37db4759bb9e7b5af78647d9ad419d174c0b",
+          "bytes_after": 2754,
+          "sha256_after": null,
+          "sha256_after_independently_verified_by_claude": false,
+          "verification_note": "geometry_api/geometry_api and geometry_occt include-dir depth exceeds this session's device-bridge staging depth limit (8 folders below the connected root; 7 supported) - the same limitation noted in section 3 since round 1. The new byte size (from a fresh device_list_dir listing of the live Windows snapshot) is independently confirmed; the new SHA256 could not be independently recomputed by Claude this round and is not fabricated here."
+        },
+        "round_8_correction": {
+          "static_analysis_ids": [
+            "SA-R8-02",
+            "SA-R8-03"
+          ],
+          "fix_applied": "Narrow `// NOLINT(performance-enum-size)` on the enum declaration line plus an explanatory source comment. No enumerator value or underlying type changed.",
+          "base_content_used": "pre_round_7_reformat",
+          "base_bytes": 2607,
+          "base_sha256": "69971713c5b7b15ae6a9b90d977e37db4759bb9e7b5af78647d9ad419d174c0b",
+          "new_bytes": 3364,
+          "new_sha256": "537fa54b4283eb02e6baf58a2cf80757050ddd883ef53fe2667af42ee6571a9f",
+          "round_7_reformat_preserved_byte_for_byte": false,
+          "content_provenance_gap_note": "Round 8 content-provenance gap (disclosed, not fabricated): this file's current live post-round-7 content (bytes_after / sha256_after under round_7_reformat below) could not be independently retrieved this round either - the device-bridge staging depth limit that blocked it in round 7 (8 folders below the connected root; 7 supported) is structural and was re-confirmed this round via a fresh device_stage_files attempt. Claude's only available base for this round's edit was its own last-verified PRE-round-7-reformat content (round_7_reformat.bytes_before / sha256_before below), to which only the exact SA-R8 NOLINT insertion specified by Architecture Authority was applied - nothing else was reformatted or otherwise changed. Consequently the bytes/sha256 delivered this round for this file are NOT guaranteed to preserve round 7's clang-format-19.1.5 correction byte-for-byte outside the inserted lines; that specific preservation requirement cannot be honestly claimed for this one file. The Windows Execution Operator should diff this delivered file against the current live snapshot before import; if the diff shows more than the intended NOLINT insertion, the safer action is to apply the identical one-line NOLINT + comment insertion directly to the live post-round-7 file instead of importing Claude's version."
+        },
+        "round_8b_correction": {
+          "summary": "Supersedes round_8_correction below. The Architecture Authority's disposition for SA-R8-01/02/03 (narrow NOLINT(performance-enum-size), no enum value/underlying-type change) is unchanged and was re-validated on authoritative Windows clang-tidy 19.1.5 with zero remaining performance-enum-size diagnostics for this file's enum(s). The bytes/SHA256 below are the authoritative Windows post-clang-format-19.1.5 identity as reported by Architecture Authority, applied by the Operator directly to the accepted live post-format Windows baseline (not built on Claude's stale pre-round-7 content, unlike round 8's delivered version of this file).",
+          "superseded_round_8_delivered_bytes": 3364,
+          "superseded_round_8_delivered_sha256": "537fa54b4283eb02e6baf58a2cf80757050ddd883ef53fe2667af42ee6571a9f",
+          "new_bytes": 2958,
+          "new_sha256": "b65c3e9227a71e77c6176227817cbd6a52592f4130eb9298d1914ab25f8f7299",
+          "independent_verification_by_claude": {
+            "bytes": "Independently confirmed via device_list_dir against the connected transport snapshot: exact match.",
+            "sha256": "NOT independently computed by Claude - the same structural device-bridge staging depth limit disclosed since round 1 (8 folders below the connected root; 7 supported) still applies regardless of the live-to-transport sync, and a fresh device_stage_files attempt this cycle failed with the same error. The SHA256 above is recorded as reported by Architecture Authority (authoritative Windows clang-tidy/clang-format 19.1.5 run), not independently recomputed by Claude."
+          },
+          "content_provenance_gap_status": "CLOSED for byte identity (independently confirmed); SHA256 remains reported-not-independently-verified due to the structural staging depth limit - disclosed, not a contradiction.",
+          "discrepancy_investigation_and_resolution": "A prior reconciliation attempt this correction cycle was halted (STOP / ACR REQUIRED classification, later corrected to no-ACR) when Claude independently inspected the connected transport snapshot (read-only device_list_dir, no files modified) and found this file's bytes/mtime still matched Claude's own round-8 delivered content, not the authoritative Windows Round-8B identity being reported - because the Round-8B enum fix had been applied and validated in the live task worktree (D:\\Projects\\BIM-Platform-WT-P0-T002) but not yet synchronized back to the connected external transport snapshot (C:\\Users\\...\\source\\P0-T002-IMPLEMENTATION-6081a30\\work) Claude reads through. The Operator then performed a controlled live-worktree -> transport-snapshot synchronization of exactly these 3 files (after locking the authoritative candidate tree). Claude re-verified before writing anything: this file's byte size now matches exactly, with a fresh mtime confirming a real sync occurred (not a stale re-report)."
+        }
+      },
+      {
+        "path": "src/geometry/occt/src/geometry_occt_adapter.cpp",
+        "sha256": "d456a32b1b41b538bcae47727e80c49b88ecdcc7792d5ac105155a8162aa4577",
+        "bytes": 20112,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 19879,
+          "sha256_before": "ebe258ad694bf6ae35eea2a1beb32713cbe886a0eb81a40b3af5785c90364a41",
+          "bytes_after": 20112,
+          "sha256_after": "d456a32b1b41b538bcae47727e80c49b88ecdcc7792d5ac105155a8162aa4577",
+          "sha256_after_independently_verified_by_claude": true
+        }
+      },
+      {
+        "path": "src/geometry/occt/src/spike_diagnostics.cpp",
+        "sha256": "d5896884774ac573cb474f1c041aeb35cd3ac29830bed90f3edb1d50be2bab12",
+        "bytes": 5680,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 5668,
+          "sha256_before": "b697da2509d64fd039c68a25bb8e08563e285430e747f93309a175926eb19155",
+          "bytes_after": 5680,
+          "sha256_after": "d5896884774ac573cb474f1c041aeb35cd3ac29830bed90f3edb1d50be2bab12",
+          "sha256_after_independently_verified_by_claude": true
+        }
+      },
+      {
+        "path": "tests/integration/geometry_occt_test_constants.hpp",
+        "sha256": "407425faf0c29dae3b7bc3e66db874139ad63872c0f33479cf11b528f742248d",
+        "bytes": 9886,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 10142,
+          "sha256_before": "afbe6faf8f4c57c96e6599058728a3a1600101aa0b7ff319a7140fad5e8f8655",
+          "bytes_after": 9886,
+          "sha256_after": "407425faf0c29dae3b7bc3e66db874139ad63872c0f33479cf11b528f742248d",
+          "sha256_after_independently_verified_by_claude": true
+        }
+      },
+      {
+        "path": "tests/unit/unit_geometry_api_contract.cpp",
+        "sha256": "3a09f0c46145781130b38e019ddc7a2b051cbba9a18078b55a950048b436add9",
+        "bytes": 4636,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 4601,
+          "sha256_before": "befb27a79d430b08097eab4bd80d62cf766dd0f3c9364a8306254ddfadabfb81",
+          "bytes_after": 4636,
+          "sha256_after": "3a09f0c46145781130b38e019ddc7a2b051cbba9a18078b55a950048b436add9",
+          "sha256_after_independently_verified_by_claude": true
+        }
+      },
+      {
+        "path": "tests/integration/integration_geometry_occt_primitive.cpp",
+        "sha256": "22b85f30404b71e70cc55e010af81bb979c6697fb73f696dd8043f249631348f",
+        "bytes": 1628
+      },
+      {
+        "path": "tests/integration/integration_geometry_occt_opening_cut.cpp",
+        "sha256": "146371a678dfd9e4f6c7f868fc72fda8a8f2658be6799c4c4313e99d096321a8",
+        "bytes": 2764
+      },
+      {
+        "path": "tests/integration/integration_geometry_occt_join.cpp",
+        "sha256": "ff508840a2f5087813db180386838b59ee75451bc01a838cbd0cee4faf543eba",
+        "bytes": 5870,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 5850,
+          "sha256_before": "b172228c0c57c207782039b796d54f4a5004945c583f20d826bd993a071e950d",
+          "bytes_after": 5870,
+          "sha256_after": "ff508840a2f5087813db180386838b59ee75451bc01a838cbd0cee4faf543eba",
+          "sha256_after_independently_verified_by_claude": true
+        }
+      },
+      {
+        "path": "tests/integration/integration_geometry_occt_failure_corpus.cpp",
+        "sha256": "1ee0459f2e48586d70fdfe7edb4151e4cad5542c80dbfe7c1ba4c62daabcc845",
+        "bytes": 3139,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 3119,
+          "sha256_before": "f89888ac74991159ecd453a0d9a9e2734b16ff6d4264b4f083234cd7a2722524",
+          "bytes_after": 3139,
+          "sha256_after": "1ee0459f2e48586d70fdfe7edb4151e4cad5542c80dbfe7c1ba4c62daabcc845",
+          "sha256_after_independently_verified_by_claude": true
+        }
+      },
+      {
+        "path": "tests/integration/integration_geometry_occt_tolerance_matrix.cpp",
+        "sha256": "f63e0033d7fb85f14cbe0b40f7ca5d4a8984d47f1e2d354b75cb02f6e448ecd2",
+        "bytes": 3136,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 3119,
+          "sha256_before": "86d7edee277cc6eac2ca5b25e081a1e80e12283b61abf902c422c23caca70c68",
+          "bytes_after": 3136,
+          "sha256_after": "f63e0033d7fb85f14cbe0b40f7ca5d4a8984d47f1e2d354b75cb02f6e448ecd2",
+          "sha256_after_independently_verified_by_claude": true
+        }
+      },
+      {
+        "path": "tests/integration/integration_geometry_occt_coordinate_matrix.cpp",
+        "sha256": "44fd01bcc537afbc949349843537bc4171929530879c23baaab29f28437e5f6f",
+        "bytes": 2784,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 2766,
+          "sha256_before": "3520cc84c5785314a655cf356b80b993d8888d6f452d5bb3367508f57e0eb9c8",
+          "bytes_after": 2784,
+          "sha256_after": "44fd01bcc537afbc949349843537bc4171929530879c23baaab29f28437e5f6f",
+          "sha256_after_independently_verified_by_claude": true
+        }
+      },
+      {
+        "path": "tests/integration/integration_geometry_occt_history.cpp",
+        "sha256": "d3f3b056cdd3fa4e66b3242cc46db484f179e9c951ad6a0bbfedf24a809bfc8e",
+        "bytes": 4397,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 4325,
+          "sha256_before": "4d7c82db80f357dbc585aac8d42458f032347f83ac1dc49b48995227585826ea",
+          "bytes_after": 4397,
+          "sha256_after": "d3f3b056cdd3fa4e66b3242cc46db484f179e9c951ad6a0bbfedf24a809bfc8e",
+          "sha256_after_independently_verified_by_claude": true
+        }
+      },
+      {
+        "path": "tests/integration/integration_geometry_occt_repeatability.cpp",
+        "sha256": "779eeaea3da532fe314895e3cf85cff5c4e576bd3b63c548699fdc617b6e4f76",
+        "bytes": 8369,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 8365,
+          "sha256_before": "3cade45bede96cb242324a77d1f108b27fb1afcd46d7fa8bbc07fc9e7ae32dd4",
+          "bytes_after": 8369,
+          "sha256_after": "779eeaea3da532fe314895e3cf85cff5c4e576bd3b63c548699fdc617b6e4f76",
+          "sha256_after_independently_verified_by_claude": true
+        }
+      },
+      {
+        "path": "tests/integration/p0_t002_geometry_evidence.cpp",
+        "sha256": "9949a790116547c6d62090b86f825bda5525a3b2779f842ebebc34120e57267d",
+        "bytes": 35783,
+        "round_7_reformat": {
+          "clang_format_version": "19.1.5",
+          "bytes_before": 32129,
+          "sha256_before": "fde81815df75d4e0327a4eb10734fb18d50ce2172aeac862b295239bdfb201b0",
+          "bytes_after": 33378,
+          "sha256_after": "73bac82271262df694cf831e7cf79058481ae1a412b44c3db9707fb899eaf569",
+          "sha256_after_independently_verified_by_claude": true
+        },
+        "round_8_correction": {
+          "static_analysis_ids": [
+            "SA-R8-04"
+          ],
+          "fix_applied": "main()'s original body (byte-for-byte, including its existing inner try/catch around the section 14-19 corpus/history experiment) was extracted unchanged into a new file-local `static int RunEvidenceMain(int argc, char** argv)`. main() itself now does nothing but `return RunEvidenceMain(argc, argv);` inside its own try/catch(const std::exception&)/catch(...), each path reporting a deterministic diagnostic to stderr and returning 1 (never 0). No evidence behavior, JSON schema, case corpus, overall_passed logic, --json handling, or normal-path exit semantics changed.",
+          "base_content_used": "round_7_reformat.bytes_after (independently verified, matches sha256_after)",
+          "base_bytes": 33378,
+          "base_sha256": "73bac82271262df694cf831e7cf79058481ae1a412b44c3db9707fb899eaf569",
+          "new_bytes": 35420,
+          "new_sha256": "93986f9a6adc9231b334b7fb839a4cbb01eebb0bf642558b4c5cc7bf000c0abc",
+          "round_7_reformat_preserved_outside_edit": true,
+          "self_verification": {
+            "brace_balance_check": "Passed: a Python scanner (string/char-literal and //, /* */ comment aware) confirmed the whole file's brace depth returns to exactly 0 and never goes negative.",
+            "isolated_clang_tidy_repro": {
+              "tool_version_used": "clang-tidy 18.1.3 (Ubuntu) - NOT the locked 19.1.5 reference; disclosed, not substituted silently",
+              "method": "A minimal two-file repro (before.cpp: original-shape main() with only an inner try/catch, matching the pre-round-8 structure; after.cpp: the RunEvidenceMain-extraction + outer try/catch pattern actually applied here) was run through `clang-tidy-18 --checks=-*,bugprone-exception-escape`.",
+              "result": "Both repro files completed with zero diagnostics under clang-tidy 18.1.3. This confirms the after-pattern is structurally sound (no exception can escape main() by construction: the catch(...) clause is exhaustive) but the repro did NOT reproduce the original SA-R8-04 diagnostic on the before-pattern - bugprone-exception-escape's throw-path analysis is heuristic/whole-TU-dependent and did not flag the simplified repro's non-try-wrapped tail statements the way it evidently did against the real file's full call graph at 19.1.5. This is disclosed as an inconclusive-by-repro result, not claimed as a reproduction of the original finding.",
+              "full_project_clang_tidy_run": "Not possible in this sandbox: the real translation unit includes tests/integration/geometry_occt_test_constants.hpp and links against OCCT/vcpkg dependencies not present here, so the actual file itself could not be run through clang-tidy end-to-end. Authoritative re-verification remains the Windows Runbook C Step 15 run at the locked toolchain version."
+            }
+          }
+        },
+        "round_8b_correction": {
+          "summary": "Authoritative clang-tidy 19.1.5 still reported bugprone-exception-escape on main() after round 8's RunEvidenceMain-extraction + try/catch fix - not because the call to RunEvidenceMain() was unguarded, but because the round-8 catch handlers' own bodies (std::cerr <<, ex.what()) are themselves potentially-throwing operations running directly in main()'s body. Round 8B reduced the outer boundary to the minimum: main() declared noexcept, both handlers perform a direct `return 1;` only - no stream output, no string construction, no ex.what(), no NOLINT suppression. RunEvidenceMain() and everything inside it (JSON schema, case corpus, overall_passed logic, --json handling, its own unchanged inner diagnostic try/catch) is untouched.",
+          "superseded_round_8_delivered_bytes": 35420,
+          "superseded_round_8_delivered_sha256": "93986f9a6adc9231b334b7fb839a4cbb01eebb0bf642558b4c5cc7bf000c0abc",
+          "new_bytes": 35783,
+          "new_sha256": "9949a790116547c6d62090b86f825bda5525a3b2779f842ebebc34120e57267d",
+          "independent_verification_by_claude": "Full independent verification: this file is shallow enough to stage (tests/integration/, not depth-limited). Freshly staged twice this correction cycle (once immediately after Claude's own round-8B edit, once again this reconciliation cycle after the reported live-to-transport sync) and re-hashed via sha256sum both times - matches the authoritative identity exactly, byte for byte.",
+          "authoritative_windows_gate_results": {
+            "format_job": "PASS (clang-format 19.1.5)",
+            "static_analysis": "PASS",
+            "evidence_rebuild": "PASS",
+            "targeted_evidence_ctest": "integration_geometry_occt_evidence PASS",
+            "bugprone_exception_escape_suppression": "NONE - fixed, not suppressed"
+          }
+        }
+      },
+      {
+        "path": "scripts/ci/geometry-spike.ps1",
+        "sha256": "6bfc10c5044022dd4a338174fc9b62d94e1eea5f4ae80539496db8e6164e71ba",
+        "bytes": 6395
+      },
+      {
+        "path": "Verification-RunbookC-v1.0.ps1",
+        "sha256": "1889c1337ecbe19c5bacf42eb9345ac58bbebdb65d68ab46d34efac853dc5978",
+        "bytes": 67371,
+        "step_21_correction": {
+          "summary": "Step 21c's authority-document invariant compared the three P0-T002 authority documents (Architecture Gate Package, Implementation Brief, Amendment 01) against ExpectedMainHead - the older main baseline - and failed, because those documents were correctly added at the P0-T002 authorization/task HEAD and never existed on the older main baseline at all. A read-only Git blob classification proved this was a Runbook authority-baseline invariant defect, not an implementation, geometry, or architecture defect, and not an ACR.",
+          "superseded_bytes": 67165,
+          "superseded_sha256": "a3aea2143f73631a586d9f711e01e191a0f78bf969a1b79bd5f8756a415d410d",
+          "new_bytes": 67286,
+          "new_sha256": "85a321a351c5d85a97f6a0ec6d43b6a2580785b9aacc824db74171fd0a5d2a14",
+          "read_only_authority_lineage_classification": {
+            "all_3_live_equals_authorization_head": true,
+            "all_3_live_equals_main_baseline": false,
+            "documents_differing_from_main": 3,
+            "all_3_exist_in_authorization_head": true,
+            "all_3_exist_in_main_baseline": false,
+            "exact_failed_gate_document": {
+              "path": "docs/gates/P0-T002_Architecture_Gate_Package_v1.0.md",
+              "live_equals_authorization_head": true,
+              "live_equals_main_baseline": false,
+              "exists_in_main_baseline": false
+            },
+            "additional_adr_evidence": {
+              "path": "docs/architecture/adr/ADR-0002-phase0-task-sequence-reconciliation.md",
+              "live_equals_authorization_head": true,
+              "live_equals_main_baseline": false,
+              "exists_in_main_baseline": false
+            },
+            "main_to_authorization_git_classification": "ADDED"
+          },
+          "classification": {
+            "step_21_failure_class": "RUNBOOK AUTHORITY-BASELINE INVARIANT DEFECT",
+            "correct_authority_reference": "AUTHORIZATION HEAD / ExpectedTaskHead",
+            "implementation_defect": false,
+            "geometry_defect": false,
+            "architecture_defect": false,
+            "acr": "NONE"
+          },
+          "correction_applied": {
+            "scope": "Runbook-only, minimum-delta. Exactly one file changed: Verification-RunbookC-v1.0.ps1. No other candidate file changed.",
+            "old_reference": "ExpectedMainHead",
+            "new_reference": "ExpectedTaskHead",
+            "corrected_semantic_rule": "The three P0-T002 authority documents must remain byte-for-byte identical to the immutable P0-T002 authorization/task HEAD, not the older main baseline.",
+            "mechanical_verification": {
+              "exact_old_block_remains": false,
+              "exact_new_block_count": 1,
+              "expected_task_head_authority_line_count": 1,
+              "expected_main_head_authority_line_count": 0,
+              "powershell_parser_errors": 0,
+              "other_candidate_files_unchanged": "25 / 25",
+              "authority_documents_still_match_authorization_head": true,
+              "main_unchanged_clean": true,
+              "real_staged_paths": 0
+            }
+          },
+          "applied_by": "Architecture Authority, directly on the authoritative live task worktree (D:\\Projects\\BIM-Platform-WT-P0-T002) - not by Claude. Claude did not modify, and is not authorized to modify, Verification-RunbookC-v1.0.ps1.",
+          "independent_verification_by_claude": "Full independent verification: freshly staged from the connected transport snapshot after the Operator's live-worktree-to-transport-snapshot synchronization, and re-hashed via sha256sum - matches the reported identity exactly, byte for byte, before any handover text was written.",
+          "prior_full_authoritative_run_before_this_correction": {
+            "candidate_tree": "1d3ef8e5a87ad42b127ad254ff9879d3c0a5e313",
+            "steps_01_through_20": "PASS",
+            "step_21": "FAIL",
+            "step_01_20_highlights": [
+              "exact task branch PASS",
+              "authorization HEAD PASS",
+              "candidate shape/tree PASS",
+              "main unchanged/clean PASS",
+              "VS 17.14.39 PASS",
+              "x64 PASS",
+              "MSVC 19.44.35228 PASS",
+              "VCTools 14.44.35207 PASS",
+              "compiler path PASS",
+              "CMake 4.4.2 PASS",
+              "Ninja 1.12.1 PASS",
+              "vcpkg baseline unchanged PASS",
+              "OCCT 8.0.1 pre-build PASS",
+              "format PASS",
+              "configure/build PASS",
+              "build 46/46 PASS",
+              "CTest 18/18 PASS",
+              "static analysis PASS",
+              "architecture PASS",
+              "license inventory PASS",
+              "geometry spike evidence PASS",
+              "all P0-T001 regression tests PASS",
+              "all P0-T002 tests PASS"
+            ],
+            "geometry_evidence_step_18": {
+              "case_count": 280,
+              "failed_case_count": 0,
+              "history_record_count": 360,
+              "overall_passed": true,
+              "category_counts": {
+                "primitive": 4,
+                "opening_cut": 4,
+                "join": 20,
+                "failure": 19,
+                "tolerance_matrix": 14,
+                "coordinate_matrix": 9,
+                "repeatability": 180,
+                "history": 30
+              }
+            },
+            "not_claimed": "This prior run is NOT represented as 21/21 PASS - Step 21 FAILed and required the correction above."
+          },
+          "runbook_only_pre_handover_candidate_tree": {
+            "value": "f25dc5e525ed38ae12951570c4d51b4de46f7522",
+            "note": "This is the RUNBOOK-ONLY / PRE-HANDOVER candidate tree, locked by the Operator after the one-file Runbook correction and before this handover reconciliation. It is NOT the final candidate tree - this reconciliation's own two handover edits will necessarily change the candidate tree. The true final candidate tree is NOT YET CALCULATED; the Operator will compute and lock it after importing these two reconciled handover files."
+          }
+        },
+        "step_21d_correction": {
+          "summary": "After the Step-21c ExpectedTaskHead correction (still valid, not undone), a further full authoritative Windows run (candidate tree 5de619003b11bfbecb307d0042fd6e258e37102e) reached Steps 01-20 PASS again before failing at Step 21d: a second, simplified lexical spot-check in the Runbook that duplicated the mechanical architecture checker's semantics with a simpler comment-insensitive raw regex scan (\\b(TopoDS_|gp_|BRep|Handle\\() over src/geometry/api headers), producing 4 raw hits that were all comment text explaining the OCCT-leak prohibition itself, not code-level leakage. A read-only classification mechanically confirmed 0 actual OCCT include leaks and that both authoritative architecture tests (arch_geometry_api_no_occt_leak, arch_geometry_occt_only_kernel_owner) already PASS. Classified as a Runbook duplicated lexical false positive - not an implementation, geometry, or architecture defect, and not an ACR. Architecture Authority replaced the raw lexical block with a direct re-run of the authoritative architecture CTest itself (`ctest -R '^arch_geometry_api_no_occt_leak$' --output-on-failure --no-tests=error`), applied directly on the live task worktree, mechanically re-verified, and synchronized to this session's connected transport snapshot.",
+          "superseded_bytes": 67286,
+          "superseded_sha256": "85a321a351c5d85a97f6a0ec6d43b6a2580785b9aacc824db74171fd0a5d2a14",
+          "new_bytes": 67106,
+          "new_sha256": "3fd1fcb6985e3d6aab80db6e5ece28f0a89306989d9607139a027e3e72d0e73f",
+          "step_21c_correction_status": "REMAINS VALID, NOT UNDONE OR SUPERSEDED. The ExpectedTaskHead authority reference from the prior correction is unchanged; this is a separate, independent Step-21d defect and fix.",
+          "prior_full_authoritative_run_before_this_correction": {
+            "candidate_tree": "5de619003b11bfbecb307d0042fd6e258e37102e",
+            "steps_01_through_20": "PASS",
+            "step_21": "FAIL",
+            "step_01_20_highlights": [
+              "task branch PASS",
+              "authorization HEAD PASS",
+              "locked candidate PASS",
+              "main unchanged/clean PASS",
+              "VS environment PASS",
+              "x64 PASS",
+              "exact MSVC PASS",
+              "compiler path PASS",
+              "CMake PASS",
+              "Ninja PASS",
+              "vcpkg baseline unchanged PASS",
+              "OCCT 8.0.1 PASS",
+              "format PASS",
+              "configure/build PASS",
+              "build 46/46 PASS",
+              "CTest 18/18 PASS",
+              "static analysis PASS",
+              "architecture PASS",
+              "license inventory PASS",
+              "geometry evidence PASS",
+              "P0-T001 regressions PASS",
+              "all P0-T002 tests PASS"
+            ],
+            "geometry_evidence": {
+              "case_count": 280,
+              "failed_case_count": 0,
+              "history_record_count": 360,
+              "overall_passed": true,
+              "category_counts": {
+                "primitive": 4,
+                "opening_cut": 4,
+                "join": 20,
+                "failure": 19,
+                "tolerance_matrix": 14,
+                "coordinate_matrix": 9,
+                "repeatability": 180,
+                "history": 30
+              }
+            },
+            "not_claimed": "This run is NOT represented as 21/21 PASS - Step 21 FAILed on Step-21d."
+          },
+          "step_21d_raw_lexical_hits": [
+            {
+              "path": "src/geometry/api/include/bim/geometry_api/geometry.hpp",
+              "line": 13,
+              "comment_text_referenced": "TopoDS_*, gp_*, BRep*, Handle(...)"
+            },
+            {
+              "path": "src/geometry/api/include/bim/geometry_api/geometry.hpp",
+              "line": 100,
+              "comment_text_referenced": "TopoDS_Shape"
+            },
+            {
+              "path": "src/geometry/api/include/bim/geometry_api/geometry.hpp",
+              "line": 102,
+              "comment_text_referenced": "TopoDS_Shape"
+            },
+            {
+              "path": "src/geometry/api/include/bim/geometry_api/probe.hpp",
+              "line": 14,
+              "comment_text_referenced": "TopoDS_*, gp_*, BRep*"
+            }
+          ],
+          "read_only_classification": {
+            "raw_step_21d_hits": 4,
+            "all_four_raw_hits_are_comments": true,
+            "actual_occt_include_leaks": 0,
+            "arch_geometry_api_no_occt_leak": "PASS",
+            "arch_geometry_occt_only_kernel_owner": "PASS",
+            "candidate_unchanged_during_classification": true,
+            "main_unchanged_clean": true,
+            "real_staged_paths": 0
+          },
+          "classification": {
+            "step_21d_failure_class": "RUNBOOK DUPLICATED LEXICAL FALSE POSITIVE",
+            "implementation_defect": false,
+            "geometry_defect": false,
+            "architecture_defect": false,
+            "source_change_required": false,
+            "test_change_required": false,
+            "architecture_checker_change_required": false,
+            "acr": "NONE"
+          },
+          "correction_applied": {
+            "scope": "Runbook-only, minimum-delta. Exactly one file changed: Verification-RunbookC-v1.0.ps1. No source, test, architecture-checker, CMake, other script, or handover file changed during that correction. No real Git staging occurred. Main remained unchanged and clean.",
+            "old_logic_removed": "Recursively searched geometry_api headers with raw Select-String, matching OCCT-looking tokens even inside comments.",
+            "new_logic": "ctest --test-dir $BuildDir -R '^arch_geometry_api_no_occt_leak$' --output-on-failure --no-tests=error",
+            "corrected_semantic_rule": "Step 21d must re-run the same authoritative architecture invariant already used in Step 16, rather than duplicating its semantics with a simpler comment-sensitive lexical scan.",
+            "mechanical_verification": {
+              "old_lexical_block_remains": false,
+              "new_authoritative_block_count": 1,
+              "raw_step_21d_token_scanner_retained": false,
+              "powershell_parser": "PASS",
+              "authoritative_ctest_command": "PASS",
+              "other_candidate_files_unchanged": "25 / 25",
+              "tracked_modifications": 6,
+              "untracked_additions": 20,
+              "real_staged_paths": 0,
+              "main_head_unchanged": true,
+              "main_clean": true
+            }
+          },
+          "applied_by": "Architecture Authority, directly on the authoritative live task worktree (D:\\Projects\\BIM-Platform-WT-P0-T002) - not by Claude. Claude did not modify, and is not authorized to modify, Verification-RunbookC-v1.0.ps1.",
+          "independent_verification_by_claude": "Full independent verification: freshly staged from the connected transport snapshot after the Operator's live-worktree-to-transport-snapshot synchronization, and re-hashed via sha256sum before any handover text was written - matches the reported identity exactly, byte for byte.",
+          "runbook_only_pre_handover_candidate_tree": {
+            "value": "f04a86da7d8271890d0e060c16539e64e19cfe2e",
+            "note": "This is the RUNBOOK-ONLY / PRE-HANDOVER candidate tree, locked by the Operator after the Step-21d Runbook-only correction and before this handover reconciliation. It is NOT the final candidate tree - this reconciliation's own two handover edits will necessarily change it further. The true final candidate tree is NOT YET CALCULATED; the Operator will compute and lock it after importing these two reconciled handover files."
+          }
+        },
+        "step_21e_correction": {
+          "summary": "After the Step-21d duplicated-lexical-false-positive correction (still valid, not undone), a further full authoritative Windows run (candidate tree e80e84d8eb19e365e36263cf9bfe52347ca62735) reached Steps 01-20 PASS again before failing at Step 21e: Step-21e's complete-Solid-definition scan relied on the local variable $apiDir, which had previously been assigned inside Step-21d itself. When Step-21d was replaced with a direct authoritative CTest re-invocation, that assignment ceased to exist, leaving Step-21e dependent on a stale/inherited scope value instead of resolving its own intended public-API root locally. The resulting false failure reported a complete 'struct Solid { ... }' definition as if it were under src/geometry/api, when the actual file was src/geometry/occt/src/solid_impl.hpp - adapter-private implementation state, not the public API surface. Architecture Authority directly inspected both roots: 0 complete Solid definitions under src/geometry/api (public, correctly opaque), 1 complete Solid definition under src/geometry/occt/src/solid_impl.hpp (private, correctly adapter-owned) - confirming the intended architecture and that no Solid-ownership violation exists. Classified as a Runbook stale-scope / implicit-variable-dependency defect - not an implementation, geometry, architecture, or Solid-ownership defect, and not an ACR. Architecture Authority replaced the implicit $apiDir dependency with a locally-resolved, existence-validated $publicGeometryApiDir (Join-Path $RepoRoot 'src\\geometry\\api'), making Step-21e self-contained, applied directly on the live task worktree, mechanically re-verified, and synchronized to this session's connected transport snapshot.",
+          "superseded_bytes": 67106,
+          "superseded_sha256": "3fd1fcb6985e3d6aab80db6e5ece28f0a89306989d9607139a027e3e72d0e73f",
+          "new_bytes": 67371,
+          "new_sha256": "1889c1337ecbe19c5bacf42eb9345ac58bbebdb65d68ab46d34efac853dc5978",
+          "step_21d_correction_status": "REMAINS VALID, NOT UNDONE OR SUPERSEDED. The direct arch_geometry_api_no_occt_leak CTest re-invocation from the Step-21d correction is unchanged; this is a separate, independent Step-21e defect and fix.",
+          "step_21_correction_status": "REMAINS VALID, NOT UNDONE OR SUPERSEDED. The ExpectedTaskHead authority reference from the Step-21c correction is unchanged.",
+          "prior_full_authoritative_run_before_this_correction": {
+            "candidate_tree": "e80e84d8eb19e365e36263cf9bfe52347ca62735",
+            "steps_01_through_20": "PASS",
+            "step_21": "FAIL",
+            "step_01_20_highlights": [
+              "task branch PASS",
+              "authorization HEAD PASS",
+              "candidate tree lock PASS",
+              "main unchanged/clean PASS",
+              "VS2022 developer environment PASS",
+              "x64 target PASS",
+              "MSVC 19.44.35228 PASS",
+              "VCTools 14.44.35207 PASS",
+              "VS product 17.14.39 PASS",
+              "CMake 4.4.2 PASS",
+              "Ninja 1.12.1 PASS",
+              "vcpkg baseline unchanged PASS",
+              "OCCT 8.0.1 PASS",
+              "clang-format PASS",
+              "configure/build PASS",
+              "build 46/46 PASS",
+              "CTest 18/18 PASS",
+              "static analysis PASS",
+              "architecture PASS",
+              "license inventory PASS",
+              "geometry evidence PASS",
+              "P0-T001 regressions PASS",
+              "all P0-T002 tests PASS"
+            ],
+            "geometry_evidence": {
+              "case_count": 280,
+              "failed_case_count": 0,
+              "history_record_count": 360,
+              "overall_passed": true,
+              "category_counts": {
+                "primitive": 4,
+                "opening_cut": 4,
+                "join": 20,
+                "failure": 19,
+                "tolerance_matrix": 14,
+                "coordinate_matrix": 9,
+                "repeatability": 180,
+                "history": 30
+              }
+            },
+            "not_claimed": "This run is NOT represented as 21/21 PASS - Step 21 FAILed on Step-21e."
+          },
+          "step_21e_root_cause": {
+            "mechanism": "RUNBOOK STALE-SCOPE / IMPLICIT VARIABLE DEPENDENCY",
+            "stale_variable": "$apiDir",
+            "explanation": "$apiDir was previously assigned inside Step-21d (Join-Path $RepoRoot 'src\\geometry\\api') and reused implicitly by Step-21e's complete-Solid-definition scan. When Step-21d was replaced with a direct authoritative CTest re-invocation, that assignment no longer existed at Step-21e's point of use, so Step-21e resolved a stale or inherited scope value instead of its own intended public-API root.",
+            "reported_false_finding_file": "src/geometry/occt/src/solid_impl.hpp",
+            "reported_false_finding_line_approx": 30,
+            "reported_false_finding_claimed_root": "src/geometry/api",
+            "actual_file_root": "src/geometry/occt/src",
+            "actual_file_status": "adapter-private implementation state, intentional"
+          },
+          "public_private_solid_ownership_proof": {
+            "public_api_root": "src/geometry/api",
+            "public_complete_solid_definitions": 0,
+            "private_adapter_file": "src/geometry/occt/src/solid_impl.hpp",
+            "private_complete_solid_definitions": 1,
+            "intended_architecture": "public API keeps Solid opaque/forward-declared; concrete Solid implementation remains private to the OCCT adapter",
+            "solid_ownership_defect": false
+          },
+          "classification": {
+            "step_21e_failure_class": "RUNBOOK STALE-SCOPE / IMPLICIT VARIABLE DEPENDENCY DEFECT",
+            "implementation_defect": false,
+            "geometry_defect": false,
+            "architecture_defect": false,
+            "solid_ownership_defect": false,
+            "source_change_required": false,
+            "test_change_required": false,
+            "architecture_checker_change_required": false,
+            "acr": "NONE"
+          },
+          "correction_applied": {
+            "scope": "Runbook-only, minimum-delta. Exactly one file changed: Verification-RunbookC-v1.0.ps1. No source, test, architecture-checker, CMake, other script, or handover file changed during that correction. No real Git staging occurred. Main remained unchanged and clean.",
+            "old_logic_removed": "Step-21e's complete-Solid-definition scan implicitly reused $apiDir, a variable previously assigned only inside Step-21d.",
+            "new_logic": "Step-21e now resolves its own search root locally and explicitly: $publicGeometryApiDir = Join-Path $RepoRoot 'src\\geometry\\api', validates that directory exists before scanning, and runs the complete-Solid-definition search only below it.",
+            "corrected_semantic_rule": "Step 21e must be self-contained and resolve its own intended public-API root explicitly, rather than implicitly depending on scope state left behind by a different, unrelated step.",
+            "mechanical_verification": {
+              "old_stale_scope_fragment_before": 1,
+              "corrected_fragment_before": 0,
+              "old_fragment_after": 0,
+              "corrected_fragment_after": 1,
+              "powershell_parser_errors": 0,
+              "powershell_syntax": "PASS",
+              "public_geometry_api_complete_solid_definitions": 0,
+              "private_solid_impl_solid_definitions": 1,
+              "unit_geometry_api_contract": "PASS",
+              "arch_geometry_api_no_occt_leak": "PASS",
+              "arch_geometry_occt_only_kernel_owner": "PASS",
+              "other_candidate_files_unchanged": "25 / 25",
+              "tracked_modifications": 6,
+              "untracked_additions": 20,
+              "real_staged_paths": 0,
+              "main_head_unchanged": true,
+              "main_clean": true
+            }
+          },
+          "applied_by": "Architecture Authority, directly on the authoritative live task worktree (D:\\Projects\\BIM-Platform-WT-P0-T002) - not by Claude. Claude did not modify, and is not authorized to modify, Verification-RunbookC-v1.0.ps1.",
+          "independent_verification_by_claude": "Full independent verification: freshly staged from the connected transport snapshot after the Operator's live-worktree-to-transport-snapshot synchronization, and re-hashed via sha256sum before any handover text was written - matches the reported identity exactly, byte for byte.",
+          "runbook_only_pre_handover_candidate_tree": {
+            "value": "229340ba610606b9355d1433198bd8cd69a6f201",
+            "note": "This is the RUNBOOK-ONLY / PRE-HANDOVER candidate tree, locked by the Operator after the Step-21e Runbook-only correction and before this handover reconciliation. It is NOT the final candidate tree - this reconciliation's own two handover edits will necessarily change it further. The true final candidate tree is NOT YET CALCULATED; the Operator will compute and lock it after importing these two reconciled handover files."
+          }
+        }
+      }
+    ],
+    "modify": [
+      {
+        "path": "src/geometry/occt/CMakeLists.txt",
+        "new_sha256": "afd295d3622bc48bdd778ad0c72771228590cbaa9acc13d98f25640a35397d2e",
+        "bytes": 2284
+      },
+      {
+        "path": "tests/unit/CMakeLists.txt",
+        "new_sha256": "c77eabd288c55ef87778bed2cdf7b93c00df1244f6e9f934ca507c8c48af58a4",
+        "bytes": 1518
+      },
+      {
+        "path": "tests/integration/CMakeLists.txt",
+        "new_sha256": "0c618014269107fa3ff0d0303b6e1a8198277b0f9ebd1bdc6a8c7ed56e5a6dd2",
+        "bytes": 6240
+      },
+      {
+        "path": "tests/architecture/CMakeLists.txt",
+        "new_sha256": "a674e3bae19ce81624a57ca4dd6996d23cc8a4914342ceb7239d91719a4675a6",
+        "bytes": 2438
+      },
+      {
+        "path": "tools/architecture_checker.cmake",
+        "new_sha256": "83ad2712cc05ffc037f4b8c1ca2d4aae199ad3fd989ae7ee7271d8307dae7e26",
+        "bytes": 23005
+      },
+      {
+        "path": "scripts/ci/architecture.ps1",
+        "new_sha256": "20089d2075fdb0204efe801b4e00a3146ef9617463b9f0d5e50625bc8581e07b",
+        "bytes": 4983
+      }
+    ],
+    "evidence": [
+      {
+        "path": "docs/evidence/P0-T002/CLAUDE_HANDOVER.md",
+        "sha256": "NOT_EMBEDDED_ANYWHERE_see_manifest_scheme - reported independently in Claude's chat completion response and independently re-verifiable with sha256sum"
+      },
+      {
+        "path": "docs/evidence/P0-T002/CLAUDE_HANDOVER.json",
+        "sha256": "THIS_FILE_cannot_contain_its_own_hash - final value reported in CLAUDE_HANDOVER.md and in Claude's chat completion response"
+      }
+    ],
+    "total_paths": 26,
+    "unauthorized_paths_written": []
+  },
+  "public_api_summary": {
+    "header": "src/geometry/api/include/bim/geometry_api/geometry.hpp",
+    "occt_free": true,
+    "types": [
+      "GeometryErrorCode",
+      "GeometryError",
+      "Point3",
+      "Vector3",
+      "GeometryTolerance",
+      "RectangleProfile3",
+      "LinearExtrusionSpec",
+      "Solid (incomplete)",
+      "SolidHandle",
+      "SolidMetrics",
+      "SolidResult",
+      "MetricsResult"
+    ],
+    "operations": [
+      "MakeLinearExtrusion",
+      "Cut",
+      "Fuse",
+      "Inspect"
+    ],
+    "solid_complete_definition_path": "src/geometry/occt/src/solid_impl.hpp"
+  },
+  "occt_api_usage_map": [
+    {
+      "symbol": "gp_Pnt / gp_Vec / gp_Dir (incl. gp_Dir::IsNormal)",
+      "used_in": "adapter",
+      "status": "VERIFIED"
+    },
+    {
+      "symbol": "BRepBuilderAPI_MakePolygon / MakeFace",
+      "used_in": "adapter",
+      "status": "VERIFIED"
+    },
+    {
+      "symbol": "BRepPrimAPI_MakePrism",
+      "used_in": "adapter",
+      "status": "VERIFIED"
+    },
+    {
+      "symbol": "BRepAlgoAPI_Common / Cut / Fuse, BOPAlgo_Options::HasErrors()",
+      "used_in": "adapter, diagnostics",
+      "status": "VERIFIED"
+    },
+    {
+      "symbol": "BRepCheck_Analyzer::IsValid()",
+      "used_in": "adapter",
+      "status": "VERIFIED"
+    },
+    {
+      "symbol": "BRepGProp::VolumeProperties + GProp_GProps::Mass()",
+      "used_in": "adapter",
+      "status": "VERIFIED"
+    },
+    {
+      "symbol": "Bnd_Box / BRepBndLib::Add / CornerMin/CornerMax/IsVoid",
+      "used_in": "adapter",
+      "status": "VERIFIED"
+    },
+    {
+      "symbol": "BRepExtrema_DistShapeShape::IsDone()/Value()",
+      "used_in": "adapter (Fuse qualification, AA-C04)",
+      "status": "VERIFIED"
+    },
+    {
+      "symbol": "TopExp_Explorer over TopAbs_SOLID/FACE/EDGE",
+      "used_in": "adapter, diagnostics",
+      "status": "VERIFIED"
+    },
+    {
+      "symbol": "BRepAlgoAPI_BuilderAlgo::Generated()/Modified()/IsDeleted()/History()",
+      "used_in": "diagnostics",
+      "status": "VERIFIED"
+    },
+    {
+      "symbol": "Standard_Failure",
+      "used_in": "adapter, diagnostics (catch chains)",
+      "status": "VERIFIED"
+    },
+    {
+      "symbol": "NCollection_List<TopoDS_Shape> (own header)",
+      "used_in": "diagnostics (CountShapes)",
+      "status": "PARTIALLY_VERIFIED_GAP_1"
+    },
+    {
+      "symbol": "BRepPrimAPI_MakeSweep.hxx (intermediate base)",
+      "used_in": "not directly used",
+      "status": "NOT_IN_READPACK_GAP_2"
+    }
+  ],
+  "known_verification_gaps": [
+    {
+      "id": 1,
+      "symbol": "NCollection_List<TopoDS_Shape>",
+      "description": "Own header (NCollection_List.hxx) not in the OCCT-8.0.1-READPACK, so begin()/end()/Extent() were never independently read. CountShapes() in spike_diagnostics.cpp uses range-based for (begin()/end() only) as the minimum-assumption choice rather than any specific named accessor.",
+      "resolved": false,
+      "resolution_path": "Windows/MSVC compilation"
+    },
+    {
+      "id": 2,
+      "symbol": "BRepPrimAPI_MakeSweep.hxx",
+      "description": "Intermediate base of BRepPrimAPI_MakePrism; not supplied in the readpack. No code in this candidate calls anything on that base class directly.",
+      "resolved": false,
+      "resolution_path": "Windows/MSVC compilation"
+    }
+  ],
+  "design_decisions": {
+    "cut_qualification_AA_C03": "BRepAlgoAPI_Common(host, tool); HasErrors() -> KernelOperationFailed; else measure common solid volume; volume <= linear_tolerance^3 (or no solid content) -> NoIntersection; else attempt BRepAlgoAPI_Cut.",
+    "fuse_qualification_AA_C04": "BRepExtrema_DistShapeShape(a, b) separation; separation > linear_tolerance -> NoIntersection; else attempt BRepAlgoAPI_Fuse; success requires exactly one resulting solid.",
+    "rectangle_orthogonality_AA_C02": "u_axis/v_axis normalized to gp_Dir, tested via gp_Dir::IsNormal(other, angular_tolerance); skewed-but-finite pairs classified DegenerateGeometry, never silently corrected.",
+    "boolean_failure_gate": "HasErrors() used throughout (never the unverified IsDone() on the Boolean-operation family).",
+    "exception_containment": "Every adapter/diagnostics entry point catches Standard_Failure, then std::exception, then ..., translating all to KernelOperationFailed / equivalent GeometryError.",
+    "result_validation": "ValidateAndWrapSolid() shared by MakeLinearExtrusion/Cut/Fuse: rejects null shape, zero solid content, BRepCheck_Analyzer-invalid, non-finite/non-positive volume; require_single_solid enforces exactly one solid where required."
+  },
+  "corpus_mapping": {
+    "shared_fixture_source": "tests/integration/geometry_occt_test_constants.hpp",
+    "primitive_P01_P04": {
+      "file": "integration_geometry_occt_primitive.cpp",
+      "expected_volumes": [
+        3.6,
+        4.8,
+        0.27,
+        1e-06
+      ]
+    },
+    "opening_cut_O01_O04": {
+      "file": "integration_geometry_occt_opening_cut.cpp",
+      "host": "P01",
+      "O01": "None, volume 3.2",
+      "O02": "NoIntersection",
+      "O03": "None, volume 3.4",
+      "O04": "NoIntersection"
+    },
+    "join_J01_J06": {
+      "file": "integration_geometry_occt_join.cpp",
+      "J01": "None, volume 4.2",
+      "J02": "None, volume 4.68",
+      "J03": "None, volume 3.48",
+      "J04": "None, volume 2.4, solid_count 1 (exact face contact)",
+      "J05": "NoIntersection at every mandatory linear tolerance (gap 0.001)",
+      "J06": "observational: never KernelOperationFailed, stable per matrix cell, valid when None"
+    },
+    "failure_F01_F04": {
+      "file": "integration_geometry_occt_failure_corpus.cpp",
+      "F01": "InvalidInput (zero distance)",
+      "F02": "DegenerateGeometry (zero direction)",
+      "F03": "InvalidInput (negative dimension)",
+      "F04": "observational (reuses J06 pair at C0/C2, every mandatory linear tolerance)"
+    },
+    "tolerance_matrix": {
+      "file": "integration_geometry_occt_tolerance_matrix.cpp",
+      "linear_candidates": [
+        1e-07,
+        1e-06,
+        1e-05,
+        0.0001
+      ],
+      "angular_candidates": [
+        1e-10,
+        1e-08,
+        1e-06
+      ],
+      "note": "evidence collection only, no preferred tolerance is chosen"
+    },
+    "coordinate_matrix": {
+      "file": "integration_geometry_occt_coordinate_matrix.cpp",
+      "offsets": [
+        "C0 origin",
+        "C1 1000-scale",
+        "C2 1,000,000-scale"
+      ],
+      "note": "looser epsilon(0.01) at C2 to record rather than presuppose numerical behavior"
+    },
+    "repeatability_contract": {
+      "file": "integration_geometry_occt_repeatability.cpp",
+      "repeat_count": 20,
+      "cases": [
+        "P01",
+        "O01",
+        "O02",
+        "J01",
+        "J04",
+        "J05",
+        "J06",
+        "F02",
+        "F04"
+      ]
+    },
+    "history_experiment": {
+      "file": "integration_geometry_occt_history.cpp",
+      "repeat_count": 10,
+      "cases": [
+        "O01_Cut",
+        "J01_Fuse",
+        "J02_Fuse"
+      ],
+      "note": "normalized (side, ordinal, generated_count, modified_count, deleted) tuple-set SIZE compared across runs; input_face_ordinal asserted only as a positive traversal index, never stable identity"
+    }
+  },
+  "evidence_executable": {
+    "path": "tests/integration/p0_t002_geometry_evidence.cpp",
+    "target_name": "p0_t002_geometry_evidence",
+    "links": [
+      "bim::geometry_api",
+      "bim::geometry_occt"
+    ],
+    "uses_catch2": false,
+    "json_dependency_added": false,
+    "cli": "--json <output-path>",
+    "timing": "std::chrono::steady_clock, diagnostic only, not a pass threshold",
+    "exit_code_semantics": "non-zero if any fixed-expectation case mismatches, any observational case reports KernelOperationFailed, or an exception reaches main()",
+    "scope_note": "executes and records every repetition and fails on a fixed-expectation mismatch; does not itself additionally assert cross-repetition consistency - that is owned by the corresponding CTest (integration_geometry_occt_repeatability / integration_geometry_occt_history)"
+  },
+  "scripts": {
+    "geometry_spike_ps1": {
+      "path": "scripts/ci/geometry-spike.ps1",
+      "mutates_source": false,
+      "evidence_output": "<BuildDir>/evidence/P0-T002/p0_t002_geometry_evidence.json",
+      "behavior": "locates the built evidence executable (VS-config or Ninja-flat layout), runs it via Invoke-Native (no -AllowFailure), independently re-parses and verifies the JSON (exists, non-empty, parses, overall_passed=true), prints a per-category summary and the evidence path"
+    },
+    "verification_runbook_c_ps1": {
+      "path": "Verification-RunbookC-v1.0.ps1",
+      "operator_run_only": true,
+      "modifies_p0_t001_runbooks": false,
+      "step_count": 21,
+      "steps": [
+        "exact task branch",
+        "expected pre-verification task HEAD",
+        "clean worktree",
+        "main unchanged/clean",
+        "VS2022 developer environment active",
+        "x64 target architecture",
+        "effective compiler is MSVC",
+        "compiler path validated",
+        "CMake reference version",
+        "Ninja presence/version",
+        "vcpkg baseline unchanged",
+        "OCCT resolves to 8.0.1",
+        "format job",
+        "configure/build/CTest job",
+        "static-analysis job",
+        "architecture job",
+        "license-inventory job",
+        "geometry-spike evidence job",
+        "all P0-T001 regression tests",
+        "all P0-T002 tests",
+        "final repository invariants"
+      ],
+      "failure_discipline": "every step drives a real exit-code-checked command; a step that cannot be mechanically checked throws rather than being marked PASS; the runbook stops at the first failure"
+    }
+  },
+  "architecture_checker_changes": {
+    "path": "tools/architecture_checker.cmake",
+    "new_selector": "BIM_ARCH_CHECK_RULE (default ALL; GEOMETRY_API_NO_OCCT_LEAK; GEOMETRY_OCCT_ONLY_KERNEL_OWNER)",
+    "new_rules": {
+      "R6_GEOMETRY_API_NO_OCCT_LEAK": "scans src/geometry/api/include/** for OCCT tokens",
+      "R7_GEOMETRY_OCCT_ONLY_KERNEL_OWNER": "scans everything under the checked root except geometry/occt/** for the same OCCT tokens"
+    },
+    "existing_rules_R1_R5": "unchanged, now gated behind BIM_ARCH_CHECK_RULE == ALL so arch_repository_boundaries / arch_checker_detects_violation keep running the complete original rule set",
+    "new_bad_architecture_fixture_added": false,
+    "new_ctest_registrations": [
+      "arch_geometry_api_no_occt_leak",
+      "arch_geometry_occt_only_kernel_owner"
+    ],
+    "architecture_ps1_required_tests_count": {
+      "before": 2,
+      "after": 4
+    }
+  },
+  "ctest_surface": {
+    "p0_t002_new_tests": [
+      "unit_geometry_api_contract",
+      "integration_geometry_occt_primitive",
+      "integration_geometry_occt_opening_cut",
+      "integration_geometry_occt_join",
+      "integration_geometry_occt_failure_corpus",
+      "integration_geometry_occt_tolerance_matrix",
+      "integration_geometry_occt_coordinate_matrix",
+      "integration_geometry_occt_history",
+      "integration_geometry_occt_repeatability",
+      "integration_geometry_occt_evidence",
+      "arch_geometry_api_no_occt_leak",
+      "arch_geometry_occt_only_kernel_owner"
+    ],
+    "p0_t001_regression_tests_confirmed_unchanged": [
+      "unit_foundation_smoke",
+      "unit_model_links_foundation",
+      "integration_geometry_occt_probe",
+      "integration_persistence_sqlite_memory",
+      "arch_repository_boundaries",
+      "arch_checker_detects_violation"
+    ]
+  },
+  "self_validation": {
+    "sandbox_toolchain_available": {
+      "msvc": false,
+      "occt": false,
+      "vcpkg": false,
+      "windows_ctest_cmake": false
+    },
+    "compilation_performed_by_claude": false,
+    "test_execution_performed_by_claude": false,
+    "performed": [
+      "independent SHA256 recomputation of every authorization/transport document and all 24 non-evidence candidate files",
+      "full re-read of geometry_occt_adapter.cpp and spike_diagnostics.cpp during this handover pass, cross-checked against OCCT-8.0.1-READPACK symbols",
+      "static check that unit_geometry_api_contract.cpp calls none of MakeLinearExtrusion/Cut/Fuse/Inspect (AA-C08 link-scope correctness)",
+      "static cross-check that every fixture used by the evidence executable and every test file resolves to a function in geometry_occt_test_constants.hpp with the correct locked expected volume",
+      "static self-consistency check that the two new architecture rule names agree across tools/architecture_checker.cmake, tests/architecture/CMakeLists.txt, and scripts/ci/architecture.ps1",
+      "round-3 Runbook C correction: manual line-by-line static review plus a from-scratch Python brace/paren/bracket/quote/comment balance checker run against the full corrected Verification-RunbookC-v1.0.ps1 (887+ lines); confirmed exactly steps 1-21 present once each in order; confirmed the $AuthorizedCandidatePaths 18/6/2 slice produces 26 total paths",
+      "round-4 Runbook C VS-version fix: manual line-by-line review plus the same from-scratch Python brace/paren/bracket/quote/comment balance checker re-run against the full corrected Verification-RunbookC-v1.0.ps1 (937 lines); grep-verified no direct raw-display-vs-$RequiredVSProductVersion comparison remains anywhere in the file, that the anchored numeric normalization regex and its fail-closed no-match throw are present, that Step 3/Step 21/ExpectedCandidateTree/CMake-4.4.2/Ninja-1.12.1/cl-19.44.35228/VCTools-14.44.35207 pins are textually unchanged from round 3, and that steps 1-21 remain present exactly once each in order",
+      "round-5 Runbook C fix: manual line-by-line review plus the same from-scratch Python brace/paren/bracket/quote/comment balance checker re-run against the full corrected Verification-RunbookC-v1.0.ps1 (1038 lines); grep-verified 'ls-files', '--others', '--exclude-standard' are present as actual invoked arguments (not just prose), that no candidate-scope check still parses 'git status --porcelain', that the only 'exit' statement remaining in the script body is the success-path 'exit 0' (the failure path now ends in a bare 'throw'), and that the default task branch / ExpectedCandidateTree contract / CMake-4.4.2 / Ninja-1.12.1 / cl-19.44.35228 / VCTools-14.44.35207 / VS-17.14.39-plus-regex pins are all textually unchanged from round 4",
+      "Round 6 only: manual line-by-line review plus a from-scratch Python brace/paren/bracket/quote/comment balance checker re-run against the complete round-6 file (1100 lines) with no errors; a targeted grep pass confirming no executable '-CmdArgs @()' call remains (only explanatory-comment occurrences), the new '$env:ComSpec /d /s /c' banner-capture pattern is present, the cl 19.44.35228 / 'for x64' / VCToolsVersion 14.44.35207 / VS numeric 17.14.39 checks remain textually unchanged downstream of the new capture, exactly one executable 'exit 0' remains (success path) with no executable 'exit 1' anywhere, the round-5 exact-leaf-file enumeration (git ls-files --others --exclude-standard / git diff --name-status / git diff --cached --name-only) and the round-5 throw-based top-level failure propagation are both textually unchanged, and all 21 Invoke-RunbookStep -Number calls remain present exactly once each.",
+      "Round 7 only: the corrected tools/architecture_checker.cmake was genuinely executed via real `cmake -P` runs in this sandbox (CMake 3.28.3, not the locked Windows 4.4.2 reference - disclosed) against constructed test fixtures, not merely statically reviewed - see candidate_hygiene_correction_log round 7 R7-01 self_verification for the full case list. This caught and led to fixing a real defect: the initial implementation used `while(TRUE)`, which - with CMP0012 unset, this script's default - is dereferenced as an unset variable (empty/false) rather than recognized as the boolean constant TRUE, so the comment-stripping loop silently never executed at all (0 violations reported for every input, including real code-level violations that should have failed). Replaced with an explicit sentinel variable (`set(_bim_loop_active TRUE)` / `while(_bim_loop_active)`), after which all nine constructed test cases produced the expected PASS/FAIL result. A grep pass additionally confirmed: R6 and R7 protected token sets are textually unchanged (still 9 tokens each: TopoDS_, gp_Pnt, gp_Vec, gp_Dir, gp_Trsf, gp_Ax, BRep, Handle(, opencascade); R6 and R7 now call bim_scan_files_for_tokens_ignoring_comments(); R1-R5 still call the original, untouched bim_scan_files_for_tokens(); R5's own non-comment-line CMakeLists.txt check is textually unchanged. Also independently re-verified (read-only, via fresh device_list_dir and device_stage_files/sha256sum against the live Windows snapshot) exactly which 13 paths the intervening clang-format 19.1.5 correction touched, rather than only trusting the reported count - see candidate_hygiene_correction_log round 7 for the method and the 2-file disclosed gap.",
+      "Round 8: re-attempted device_stage_files for geometry.hpp and spike_diagnostics.hpp (both failed again, same structural depth-limit error); freshly re-staged and independently re-hashed p0_t002_geometry_evidence.cpp before editing it; confirmed exactly 3 narrow NOLINT(performance-enum-size) suppressions exist and no enumerator value/underlying type changed for GeometryErrorCode, HistoryOperation, HistoryInputSide; confirmed no global .clang-tidy, compiler-warning, or CMake suppression was introduced; confirmed main() in p0_t002_geometry_evidence.cpp cannot let an exception escape by construction (exhaustive catch(...) around a call to RunEvidenceMain, whose extracted body is byte-identical to the prior main() body); confirmed both exception paths return non-zero, never 0; confirmed the normal-path JSON schema/overall_passed logic/case corpus/history records/--json handling are byte-identical to the pre-round-8 body via a whole-file brace-balance and RunEvidenceMain-reference check; confirmed architecture_checker.cmake, the Runbook script, and all other do-not-modify paths are untouched; ran an isolated (non-project) clang-tidy 18.1.3 repro of the main()-extraction technique (see candidate_manifest.add self_verification for p0_t002_geometry_evidence.cpp).",
+      "Round 8B: independently confirmed (read-only device_list_dir, no files modified) that a first reconciliation attempt's identities did not match the connected transport snapshot, halted rather than recording unverified/contradicted content, and re-verified again after the reported Operator sync before writing anything - all 3 files' byte sizes now match exactly with fresh mtimes; p0_t002_geometry_evidence.cpp additionally re-staged and re-hashed via sha256sum, matching the reported identity exactly. Confirmed via device_list_dir that tools/architecture_checker.cmake and Verification-RunbookC-v1.0.ps1 are unchanged from their round-7/round-6 state.",
+      "Final handover reconciliation: independently re-verified the corrected Runbook identity (fresh device_stage_files + sha256sum, exact match) and the pre-reconciliation handover identities (fresh device_list_dir, exact match) before writing anything. Recorded the Step-21 authority-baseline defect classification, the read-only Git blob lineage evidence, the mechanical correction-verification fields, and the corrected Runbook identity - all as reported by Architecture Authority following real Windows/Git inspection, not independently reproduced by Claude (no git or PowerShell execution channel in this session). Confirmed the RUNBOOK-ONLY pre-handover candidate tree is recorded distinctly from, and not mislabeled as, the final candidate tree (explicitly NOT YET CALCULATED).",
+      "Final handover reconciliation (Step-21d): independently re-verified the corrected Runbook identity (fresh device_stage_files + sha256sum, exact match) and the pre-reconciliation handover identities (fresh device_list_dir, exact match) before writing anything. Recorded the Step-21d duplicated-lexical-false-positive classification, the 4 raw hit locations and their comment-only nature, the 0-actual-leak read-only classification, both authoritative architecture test PASS results, the correction's mechanical-verification fields, and the corrected Runbook identity - all as reported by Architecture Authority following real Windows/Git inspection, not independently reproduced by Claude. Confirmed the prior Step-21c ExpectedTaskHead correction is retained as valid and not overwritten or contradicted. Confirmed the RUNBOOK-ONLY pre-handover candidate tree is recorded distinctly from, and not mislabeled as, the final candidate tree (explicitly NOT YET CALCULATED).",
+      "Final handover reconciliation (Step-21e): independently re-verified the corrected Runbook identity (fresh device_stage_files + sha256sum, exact match) and the pre-reconciliation handover identities (fresh device_list_dir, exact match) before writing anything. Recorded the Step-21e stale-scope/implicit-variable classification, the root-cause explanation (Step-21d's removed $apiDir assignment), the public/private Solid-definition-count proof (0 public, 1 private), the correction's mechanical-verification fields, and the corrected Runbook identity - all as reported by Architecture Authority following real Windows inspection, not independently reproduced by Claude. Confirmed the prior Step-21c and Step-21d corrections are retained as valid and not overwritten or contradicted. Confirmed the RUNBOOK-ONLY pre-handover candidate tree is recorded distinctly from, and not mislabeled as, the final candidate tree (explicitly NOT YET CALCULATED)."
+    ],
+    "not_performed": [
+      "MSVC compilation of any file",
+      "any CTest run, including the pre-existing P0-T001 regression tests",
+      "any static-analysis run",
+      "any Verification-RunbookC-v1.0.ps1 step",
+      "any scripts/ci/geometry-spike.ps1 run",
+      "authoritative confirmation that vcpkg/OCCT resolves as designed on Windows",
+      "an actual PowerShell/pwsh parser run against Verification-RunbookC-v1.0.ps1 - no PowerShell interpreter is available in this sandbox (attempted install via the Microsoft package repository; blocked by this session's egress policy), so 'PowerShell parse = PASS' in this round's report rests on the manual/heuristic review above, not on a real parser",
+      "round 4: an actual PowerShell/pwsh parser run or any Windows execution of the corrected Step 7 against a live vswhere.exe - no PowerShell interpreter is available in this sandbox; the round-4 fix is based on the raw vswhere evidence the Architecture Authority reported in chat (installationVersion 17.14.37614.0; catalog.productDisplayVersion '17.14.39 (August 2026)'), not on Claude independently invoking vswhere itself",
+      "round 5: any actual PowerShell/pwsh parser run or Windows execution of the corrected Step 3/catch-block logic - no PowerShell interpreter is available in this sandbox; the round-5 fix is built from the authoritative Windows attempt-1 console output and candidate-gate evidence the Architecture Authority reported in chat, not from Claude independently re-running the runbook",
+      "Round 6's Step 7 fix, like every prior round's fixes, was never executed by Claude on Windows - it is built from the authoritative attempt-2 console output and independently-proven compiler evidence the Architecture Authority reported in chat, not from an independent Claude-side execution of cl.exe or the runbook.",
+      "Round 7's architecture_checker.cmake fix was executed by Claude, but only in this sandbox's CMake 3.28.3, not on the locked Windows CMake 4.4.2 reference, and not as part of a real Runbook C run against the real repository (only against constructed synthetic test fixtures in a temporary directory). No CTest run, MSVC compilation, or authoritative Windows execution of any kind is claimed. The reported post-format authoritative build/test result (Steps 01-13 PASS, configure PASS, build 46/46, CTest 15/18) and the reported resulting candidate tree hash are recorded as reported by the Architecture Authority, not independently reproduced - Claude has no git working-tree access in this session to recompute a tree hash, and no Windows execution channel to reproduce the build/test result.",
+      "Round 8: could NOT independently verify that geometry.hpp's and spike_diagnostics.hpp's delivered content preserves round 7's clang-format-19.1.5 correction byte-for-byte outside the inserted NOLINT lines (content-provenance gap, disclosed above and in each file's manifest entry) - this requires either a shallower staging path or a genuine Windows Runbook C re-run to close. Could NOT run clang-tidy against the real p0_t002_geometry_evidence.cpp translation unit end-to-end (missing test-only header and OCCT/vcpkg dependencies in this sandbox); only an isolated repro of the fix technique and a brace-balance check were performed. Could NOT reformat with the exact locked clang-format 19.1.5 (only 18.1.3 available); no reformatting was attempted, only minimum syntactic edits.",
+      "Round 8B: could NOT independently compute SHA256 for geometry.hpp or spike_diagnostics.hpp (structural device-bridge staging depth limit, unrelated to the live-to-transport sync issue just resolved) - both values are recorded as reported by Architecture Authority following authoritative Windows clang-format/clang-tidy 19.1.5. Did not run any Windows execution, does not claim full authoritative Runbook PASS after round 8B, and does not claim implementation commit authorization - none of these were performed or are claimed.",
+      "Final handover reconciliation: did not independently reproduce the Git blob lineage classification, the prior full authoritative Runbook run, or the Step-21 correction's mechanical verification - all recorded as reported by Architecture Authority. Did not run Windows execution of any kind. Did not compute or claim a final candidate tree - that remains the Operator's responsibility after importing these two files.",
+      "Final handover reconciliation (Step-21d): did not independently reproduce the raw lexical scan, the read-only classification, the prior full authoritative Runbook run, or the correction's mechanical verification - all recorded as reported by Architecture Authority. Did not run Windows execution of any kind. Did not compute or claim a final candidate tree - that remains the Operator's responsibility after importing these two files.",
+      "Final handover reconciliation (Step-21e): did not independently reproduce the stale-scope root-cause analysis, the Solid-definition ownership inspection, the prior full authoritative Runbook run, or the correction's mechanical verification - all recorded as reported by Architecture Authority. Did not run Windows execution of any kind. Did not compute or claim a final candidate tree - that remains the Operator's responsibility after importing these two files."
+    ]
+  },
+  "known_deviations_from_brief": [],
+  "unresolved_items": [
+    "docs/evidence/P0-T002/CLAUDE_HANDOVER_SHA256_MANIFEST.txt (written in round 1, unauthorized) still exists on the writable snapshot and requires manual deletion by the Windows Execution Operator - Claude has no delete capability in this session. See candidate_hygiene_correction_log.",
+    "the two OCCT-header verification gaps (NCollection_List<TopoDS_Shape> iteration surface; BRepPrimAPI_MakeSweep.hxx) remain open until Windows/MSVC compilation",
+    "all 12 new P0-T002 CTest names and all 6 P0-T001 regression CTest names require a genuine Windows CTest run (Runbook C steps 19-20)",
+    "Implementation Brief section 39 final decision D2-B (future platform-wide tolerance default) remains explicitly out of scope; the tolerance/coordinate matrices supply evidence only",
+    "persistent topology reference design (P0-T008) remains untouched; input_face_ordinal stays transient-only by design",
+    "the round-3 Verification-RunbookC-v1.0.ps1 correction (Test-CandidateInvariant, the locked toolchain exact-version checks, the split pre-build/post-build OCCT check) has never been run on Windows - Claude has no Windows execution channel; the vswhere -property catalog.productDisplayVersion choice for the VS product version check in particular should be spot-checked by the Windows Execution Operator against the live vswhere output before relying on it",
+    "the round-4 Step 7 VS-product-version fix (raw-display capture, anchored numeric normalization, fail-closed on no match) has never been executed on Windows by Claude - it is built from the raw vswhere evidence reported by the Architecture Authority in chat, not from an independent Claude-side vswhere invocation; the Windows Execution Operator should confirm Step 7 actually passes (or fails, if the installed version has moved on) on a live run",
+    "the round-5-corrected Verification-RunbookC-v1.0.ps1 (exact leaf-file candidate-invariant enumeration via ls-files/diff --name-status/diff --cached, and throw-based failure propagation) has never been executed end-to-end on Windows by Claude - a second authoritative attempt is needed to confirm Step 3 now passes on the real working tree and that a deliberately-forced failure is correctly observed as FAIL by the external wrapper",
+    "Round 6's Step 7 cl.exe command-dispatch fix has never itself run on Windows. A third authoritative attempt is needed to confirm Step 7 now passes (banner captured without a parameter-binding error, and the captured banner correctly verifies cl 19.44.35228 x64 / VCTools 14.44.35207 / VS numeric 17.14.39), that the runbook proceeds past Step 7 into Steps 8-21 including build/test, and that the round-5 fixes (exact-leaf enumeration, throw-based failure propagation) continue to behave correctly on a live run that reaches further into the sequence than either prior authoritative attempt did.",
+    "Round 7's architecture_checker.cmake fix (R7-01) has not been re-run through the real authoritative Windows Runbook C / CTest sequence. A third authoritative attempt is needed to confirm arch_repository_boundaries, arch_geometry_api_no_occt_leak, and arch_geometry_occt_only_kernel_owner all now PASS against the real (unchanged) candidate tree, that arch_checker_detects_violation still correctly PASSes (the negative fixture under tests/fixtures/bad_architecture/ was not independently re-inspected this round - out of this round's three-path authorized scope - but R1-R5's scanning behavior is byte-for-byte unchanged and R6/R7 still fail on any genuine code-level violation, so this correction is not expected to weaken it), and that no other CTest regresses. Additionally, the new SHA256 for 2 of the 13 clang-format-reformatted files (geometry.hpp, spike_diagnostics.hpp) could not be independently computed by Claude this round (device-bridge staging depth limit) - only their new byte sizes are confirmed; a full hash re-verification of those two files by the Windows Execution Operator would close this gap.",
+    "Round 8: geometry.hpp and spike_diagnostics.hpp content-provenance gap (see candidate_hygiene_correction_log round 8 content_provenance_gap) - operator should diff these 2 files against the live post-round-7 snapshot before import, or apply the narrow NOLINT insertion directly to the live files instead of importing Claude's versions for exactly these 2 paths.",
+    "Round 8: Windows-authoritative Step 15 (static analysis) re-run at the locked clang-tidy/clang-format 19.1.5 toolchain has not yet occurred; this round's self-verification is limited to sandbox-local, non-project-context checks (brace-balance scan, isolated clang-tidy 18.1.3 repro) as disclosed above.",
+    "Round 8B: geometry.hpp and spike_diagnostics.hpp SHA256 values remain reported-not-independently-computed by Claude (structural staging depth limit, disclosed since round 1) - byte sizes are independently confirmed and match. A full hash re-verification of these two by the Windows Execution Operator, or a shallower staging path, would close this residual (non-blocking) gap.",
+    "Round 8B: full authoritative Runbook C has NOT been re-run end-to-end after round 8B (only format/static-analysis/evidence-rebuild/targeted-evidence-CTest were reported). Steps 16-21 and a full CTest re-run against the round-8B candidate remain to be confirmed before any acceptance/closure decision. Implementation commit is NOT authorized.",
+    "Final handover reconciliation: full authoritative Runbook C has not been rerun end-to-end since the Step-21 correction - this is the primary outstanding item before any acceptance/closure decision. Kimi independent review has not yet been performed. Implementation commit remains not authorized. The final candidate tree (distinct from the RUNBOOK-ONLY pre-handover tree f25dc5e525ed38ae12951570c4d51b4de46f7522) is not yet calculated and will be computed by the Operator after importing this reconciliation.",
+    "Final handover reconciliation (Step-21d): full authoritative Runbook C has not been rerun end-to-end since the Step-21d correction - this remains the primary outstanding item before any acceptance/closure decision. Kimi independent review has not yet been performed. Implementation commit remains not authorized. The final candidate tree (distinct from the RUNBOOK-ONLY pre-handover tree f04a86da7d8271890d0e060c16539e64e19cfe2e) is not yet calculated and will be computed by the Operator after importing this reconciliation.",
+    "Final handover reconciliation (Step-21e): full authoritative Runbook C has not been rerun end-to-end since the Step-21e correction - this remains the primary outstanding item before any acceptance/closure decision. Architecture Authority D2-A/B/C/D has not yet been issued. Kimi independent review has not yet been performed. Implementation commit remains not authorized. The final candidate tree (distinct from the RUNBOOK-ONLY pre-handover tree 229340ba610606b9355d1433198bd8cd69a6f201) is not yet calculated and will be computed by the Operator after importing this reconciliation."
+  ],
+  "manifest_scheme": {
+    "problem": "CLAUDE_HANDOVER.md and CLAUDE_HANDOVER.json are two of the 26 authorized candidate paths, and a complete manifest was required to list SHA256 for all 26 paths inside these two files (no separate manifest file). A file cannot contain its own final hash (writing the hash changes the file, which changes the hash - unterminating). Strict MUTUAL embedding (each file containing the other's final hash) is equally impossible for the same reason: finalizing file A requires file B's final hash, and finalizing file B requires file A's final hash - neither can be finalized first.",
+    "resolution": "Sequential (non-mutual) finalization, chosen from the authorized alternatives ('or another clearly non-recursive cross-manifest arrangement'). Order: (1) CLAUDE_HANDOVER.json is finalized FIRST. It contains SHA256 + byte size for all 24 non-evidence implementation files (18 ADD + 6 MODIFY) and does NOT reference either handover file's own hash - this makes the JSON's content independent of anything not yet known, so it can be finalized without circularity. (2) CLAUDE_HANDOVER.json's own SHA256 is computed once it is finalized. (3) CLAUDE_HANDOVER.md is finalized SECOND. It contains the same 24 implementation-file hashes PLUS the now-known final SHA256 of CLAUDE_HANDOVER.json (safe, because JSON is already frozen and will not be edited again). (4) CLAUDE_HANDOVER.md's own SHA256 is computed after it is finalized, but is NOT embedded in JSON (doing so would require re-finalizing JSON, which would change the JSON hash already recorded inside MD, reintroducing the exact circularity being avoided) and is NOT embedded in MD itself (self-reference). Instead MD's final SHA256 is reported directly in Claude's chat completion response for this correction round, where the Windows Operator can independently recompute and compare it with sha256sum - matching the brief's own statement that 'The Windows Operator will independently hash all 26 files anyway.'",
+    "consequence": "JSON is the 'inner' document (frozen first, its hash is a fact MD can safely cite). MD is the 'outer' document (frozen last, cites JSON's hash, and its own hash exists only outside both files - in the chat record and in the Operator's own independent re-hash)."
+  },
+  "candidate_hygiene_correction_log": [
+    {
+      "round": 2,
+      "trigger": "Architecture Authority hygiene review of the Phase C-M completion report",
+      "finding_1": "An unauthorized 27th path, docs/evidence/P0-T002/CLAUDE_HANDOVER_SHA256_MANIFEST.txt, had been written to the writable snapshot in round 1 - outside the exact 26-path authorized footprint (18 ADD + 6 MODIFY + 2 evidence).",
+      "correction_1": "The manifest's content is now embedded directly in CLAUDE_HANDOVER.md and CLAUDE_HANDOVER.json (this file), per the manifest_scheme above, so a separate manifest file is no longer needed.",
+      "correction_1_status": "BLOCKED - see candidate_hygiene_correction_log[0].blocker below",
+      "blocker": "This session's remote-device file-transfer tool surface (SendUserFile plus device_commit_files / device_list_dir / device_stage_files / device_request_folder_access) contains no file-delete and no shell-execute capability. Claude has no mechanism in this session to remove a file from the writable snapshot once written. docs/evidence/P0-T002/CLAUDE_HANDOVER_SHA256_MANIFEST.txt therefore still physically exists on the writable snapshot as of this document's finalization and requires manual deletion by the Windows Execution Operator before the candidate footprint is exactly 26 paths.",
+      "finding_2": "Independently re-staging and re-hashing the three authority documents from the live writable snapshot this round surfaced that the SHA256 recorded for docs/tasks/P0-T002/02-IMPLEMENTATION-BRIEF.md in round 1's authorization_provenance was malformed (63 hex characters, one short of a valid SHA256) - a transcription error carried forward across an earlier context-compaction boundary in this task, not a change to the file itself (its mtime and byte count are unchanged from the writable-snapshot baseline).",
+      "correction_2": "Recomputed independently this round directly from a fresh device_stage_files copy of the live file: 7958c0be210e4ebffd137ea102069b6332ce4bd26ba1d825fe8310cfb9de0d64 (64 hex characters). Recorded in authorization_provenance above.",
+      "correction_2_status": "DONE"
+    },
+    {
+      "round": 3,
+      "trigger": "Architecture Authority Windows read-only inspection of the imported round-2 candidate ('P0-T002 - MINIMUM-DELTA RUNBOOK C CORRECTION', RBC-01 through RBC-08). Explicitly not an ACR; explicitly not a request to rewrite the geometry/API/OCCT/tests/architecture implementation.",
+      "correction_scope": "Exactly 3 files: Verification-RunbookC-v1.0.ps1, docs/evidence/P0-T002/CLAUDE_HANDOVER.md, docs/evidence/P0-T002/CLAUDE_HANDOVER.json. No other candidate file was touched.",
+      "findings_and_corrections": [
+        {
+          "id": "RBC-01/RBC-02",
+          "finding": "Runbook C Step 3 and the pre-existing part of Step 21 required a CLEAN worktree. The authorized verification workflow is deliberately PRE-COMMIT (6 tracked MODIFY + 20 untracked ADD/EVIDENCE, 0 real staged paths) - clean-worktree was the wrong invariant for that state and would fail closed on every correct run.",
+          "correction": "Both steps now call one new, reusable Test-CandidateInvariant function that asserts the exact locked pre-commit shape (HEAD, branch, 0 real staged paths, exactly the 6 tracked-MODIFY / 20 untracked-ADD paths with no deletions or extras, and an isolated-temporary-index candidate tree equal to -ExpectedCandidateTree) instead of requiring a clean tree.",
+          "status": "DONE"
+        },
+        {
+          "id": "RBC-03",
+          "finding": "Step 21's candidate-scope check used `git diff --name-only <main-baseline> HEAD`, which excludes the dirty (uncommitted) candidate entirely and instead pulls in unrelated historical/docs commits between main and Authorization HEAD - architecturally wrong for this verification state.",
+          "correction": "Candidate scope is now computed exclusively from Test-CandidateInvariant's tracked-MODIFY/untracked-ADD partition of the real working tree against ExpectedTaskHead. main identity (21b) is checked as its own separate invariant and is never used to derive the candidate path set.",
+          "status": "DONE"
+        },
+        {
+          "id": "RBC-04",
+          "finding": "-TaskBranch default was 'task/P0-T002'; the exact live branch is 'task/P0-T002-occt-geometry-spike'.",
+          "correction": "Default corrected to 'task/P0-T002-occt-geometry-spike'.",
+          "status": "DONE"
+        },
+        {
+          "id": "RBC-05",
+          "finding": "Step 9 accepted any installed CMake >= the repository's own cmake_minimum_required floor (3.21); the locked P0-T002 verification-environment reference is exactly CMake 4.4.2.",
+          "correction": "Step 9 now requires installed CMake == exactly 4.4.2, a runbook-level pin kept separate from (and stricter than) CMakeLists.txt's own floor.",
+          "status": "DONE"
+        },
+        {
+          "id": "RBC-06",
+          "finding": "Step 10 accepted any non-empty ninja --version output; the locked reference is exactly Ninja 1.12.1.",
+          "correction": "Step 10 now requires installed ninja == exactly 1.12.1.",
+          "status": "DONE"
+        },
+        {
+          "id": "RBC-07",
+          "finding": "Step 7 proved only the generic MSVC/VS2022 banner signature, not the locked effective reference (cl 19.44.35228 x64; VCTools 14.44.35207; VS Build Tools 2022 product 17.14.39).",
+          "correction": "Step 7 now parses the exact cl.exe version and x64 target from the compiler banner, requires $env:VCToolsVersion == 14.44.35207 (failing closed, not skipping, if that environment variable is genuinely unset), and requires vswhere.exe's -property catalog.productDisplayVersion == 17.14.39 (failing closed if vswhere cannot be located). Step 8 additionally requires the locked VCTools version to appear as a literal path segment in the resolved cl.exe path. No value is invented when environment evidence is genuinely unavailable - the check fails closed instead.",
+          "status": "DONE - the vswhere catalog.productDisplayVersion property name is Claude's best-effort choice from documented vswhere usage; Claude has no Windows execution channel to confirm its exact output format against the live environment (see unresolved_items)."
+        },
+        {
+          "id": "RBC-08",
+          "finding": "Step 12 (OCCT resolves to 8.0.1) searched BuildDir/RepoRoot recursively for OpenCASCADEConfigVersion.cmake before Step 14 has configured/built anything - that file does not exist yet on a fresh P0-T002 build tree, so Step 12 could fail closed even on a fully correct candidate purely due to step ordering.",
+          "correction": "Step 12 (pre-build) now verifies Standard_Version.hxx directly, either from a new optional -OcctIncludeRoot parameter or from a single unambiguous mechanically-discovered vcpkg-installed location (never a hard-coded P0-T001 worktree path; zero or multiple candidates fails closed). Step 14 (post-build) additionally re-confirms OCCT 8.0.1 from the now-populated build tree's own generated OpenCASCADEConfigVersion.cmake package evidence - the original Step 12 logic, now safely placed after the tree it searches actually exists. The locked 21-step conceptual sequence is unchanged; this is folded into the existing Step 12 and Step 14, not a new 22nd step.",
+          "status": "DONE"
+        },
+        {
+          "id": "dirty-candidate contract",
+          "finding": "No mechanism existed to assert the exact 6 MODIFY + 20 ADD/EVIDENCE candidate shape against an isolated, real-index-safe tree computation.",
+          "correction": "Added -ExpectedCandidateTree (no default - fails closed if absent/empty, since this very correction changes the candidate tree) and -OcctIncludeRoot (optional). Added the single reusable Test-CandidateInvariant function and $ExpectedTrackedModifyPaths/$ExpectedUntrackedAddPaths, sliced mechanically from the existing $AuthorizedCandidatePaths array (one source of truth, not hand-duplicated). The isolated temporary index uses GIT_INDEX_FILE + git read-tree/add/write-tree exactly as specified, saves and restores the real GIT_INDEX_FILE in a finally block, and never touches the real Git index.",
+          "status": "DONE"
+        }
+      ],
+      "manifest_file_blocker_status": "UNCHANGED FROM ROUND 2 - out of this round's correction scope (limited to the 3 files above) and no direct integrity problem concerning it was discovered while performing this correction. docs/evidence/P0-T002/CLAUDE_HANDOVER_SHA256_MANIFEST.txt still physically exists on the writable snapshot; this session still has no delete/shell-execute capability. See round-2's candidate_hygiene_correction_log entry and unresolved_items for the Remove-Item command the Windows Execution Operator must run.",
+      "windows_execution_performed": false,
+      "live_git_modified_by_claude": false,
+      "main_modified_by_claude": false,
+      "commit_created_by_claude": false
+    },
+    {
+      "round": 4,
+      "trigger": "Architecture Authority live Windows vswhere precheck ('P0-T002 - RUNBOOK C MINIMUM-DELTA CORRECTION ROUND 4'). Explicitly not an ACR.",
+      "correction_scope": "Exactly 3 files: Verification-RunbookC-v1.0.ps1, docs/evidence/P0-T002/CLAUDE_HANDOVER.json, docs/evidence/P0-T002/CLAUDE_HANDOVER.md. No other candidate file was touched. Explicitly did not change: candidate-invariant logic, Step 3, Step 21, ExpectedCandidateTree semantics, CMake 4.4.2 pin, Ninja 1.12.1 pin, OCCT Step 12/14 design, test execution, source footprint, Git workflow.",
+      "finding": "Live Windows evidence: vswhere.exe -property catalog.productDisplayVersion returns the raw DISPLAY string '17.14.39 (August 2026)', not a bare version. Round 3's Step 7 compared that raw string directly, character-for-character, against $RequiredVSProductVersion ('17.14.39') - this would fail closed on every genuinely correct installation, since the raw string is never exactly equal to the bare numeric reference.",
+      "correction": "Step 7 now always captures and prints the raw catalog.productDisplayVersion display string as evidence ($vsProductRawDisplay), then extracts a normalized numeric version via the anchored regex '^([0-9]+\\.[0-9]+\\.[0-9]+)' into $installedVsNumericVersion - failing closed (throwing, not silently accepting or silently rejecting) if that regex does not match - and compares ONLY $installedVsNumericVersion against $RequiredVSProductVersion. A future release such as '17.14.40 (...)' or '18.x.x (...)' still fails, since its normalized numeric prefix differs from '17.14.39'.",
+      "status": "DONE",
+      "windows_execution_performed": false,
+      "live_git_modified_by_claude": false,
+      "main_modified_by_claude": false,
+      "commit_created_by_claude": false
+    },
+    {
+      "round": 5,
+      "trigger": "Architecture Authority review of the first real authoritative Windows Runbook C execution attempt ('P0-T002 - RUNBOOK C MINIMUM-DELTA CORRECTION ROUND 5'). Explicitly not an ACR.",
+      "correction_scope": "Exactly 3 files: Verification-RunbookC-v1.0.ps1, docs/evidence/P0-T002/CLAUDE_HANDOVER.json, docs/evidence/P0-T002/CLAUDE_HANDOVER.md. No other candidate file touched. Explicitly unchanged: default task branch, ExpectedCandidateTree contract, isolated temporary-index tree calculation, Step 3/Step 21 locked-pre-commit-candidate design, exact 6 MODIFY + 20 ADD footprint, CMake 4.4.2 pin, Ninja 1.12.1 pin, cl 19.44.35228 pin, VCTools 14.44.35207 pin, VS numeric 17.14.39 + normalization regex, OCCT Step 12/14 design, all CTests, all CI-equivalent jobs.",
+      "authoritative_attempt_1": {
+        "step_01": "PASS",
+        "step_02": "PASS",
+        "step_03": "FAIL - infrastructure defect (R5-01), not a candidate-scope violation",
+        "build_test": "NOT STARTED",
+        "candidate_state": "unchanged - external Windows candidate gate independently confirmed 6 tracked MODIFY / 20 untracked ADD-EVIDENCE / 0 staged / 26 total paths, candidate tree 27ba5de1896a3541981848ad2342a4c91764d13e, both before and after this failed attempt",
+        "failure_classification": "Runbook infrastructure defect, not an implementation defect"
+      },
+      "findings_and_corrections": [
+        {
+          "id": "R5-01",
+          "finding": "Step 3 failed with an 'Untracked ADD/EVIDENCE set mismatch' even though the real working tree was exactly the authorized shape. Test-CandidateInvariant derived the untracked-file set from `git status --porcelain`, whose short-form output can print an entire new untracked directory as ONE collapsed entry (e.g. 'docs/evidence/P0-T002/' instead of the two files inside it, or 'src/geometry/occt/include/' instead of the one exact header leaf path inside it) - a directory-prefix string is never set-equal to any of the 26 authorized LEAF paths, producing a false mismatch on a fully authorized tree.",
+          "correction": "Replaced the single porcelain-parsing pass with three separate exact-leaf-file git calls, none of which can collapse a path to a directory prefix: `git diff --cached --name-only` for real staged paths (must be 0), `git diff --name-status` for tracked working-tree changes (accepts only 'M'; a 'D' now throws its own explicit 'deleted candidate path' error), and `git ls-files --others --exclude-standard` for untracked ADD/EVIDENCE leaf files - the exact command specified for this fix. The downstream exact-set-equality checks, the total-must-equal-26 check, and the isolated-temporary-index tree comparison are unchanged.",
+          "status": "DONE"
+        },
+        {
+          "id": "R5-02",
+          "finding": "The authoritative attempt printed 'VERIFICATION RUNBOOK C ABORTED: ...' but the external wrapper still printed 'WINDOWS AUTHORITATIVE VERIFICATION = PASS'. Cause: the top-level catch block ended with `exit 1`, which only sets $LASTEXITCODE and raises no PowerShell exception the caller can catch - a wrapper invoking this runbook via `& .\\Verification-RunbookC-v1.0.ps1 ...` inside its own try/catch never saw `exit 1` as a caught error.",
+          "correction": "The catch block still prints every diagnostic and the completed-step summary exactly as before, then re-raises with a bare `throw` instead of `exit 1` - a real, catchable PowerShell exception for a try/catch-based caller, and (because an uncaught terminating error at a script's top level also makes powershell.exe/pwsh.exe itself exit non-zero) still leaves $LASTEXITCODE non-zero for a caller that only checks the exit code. The success path (`exit 0`) is unchanged.",
+          "status": "DONE"
+        }
+      ],
+      "manifest_file_blocker_status": "No longer applicable - the unauthorized docs/evidence/P0-T002/CLAUDE_HANDOVER_SHA256_MANIFEST.txt path was observed absent from the writable snapshot as of round 3's post-transfer check and has not reappeared since.",
+      "windows_execution_performed": false,
+      "live_git_modified_by_claude": false,
+      "main_modified_by_claude": false,
+      "commit_created_by_claude": false
+    },
+    {
+      "round": 6,
+      "title": "Runbook C Step 7 cl.exe command-dispatch fix",
+      "not_an_acr": true,
+      "correction_scope": [
+        "Verification-RunbookC-v1.0.ps1",
+        "docs/evidence/P0-T002/CLAUDE_HANDOVER.json",
+        "docs/evidence/P0-T002/CLAUDE_HANDOVER.md"
+      ],
+      "authoritative_attempt_2": {
+        "step_01": "PASS",
+        "step_02": "PASS",
+        "step_03": "PASS",
+        "step_04": "PASS",
+        "step_05": "PASS",
+        "step_06": "PASS",
+        "step_07": "FAIL - infrastructure defect (R6-01), not a compiler or implementation defect",
+        "build_test": "NOT STARTED",
+        "candidate_state": "unchanged - candidate tree remained exactly 16cc1a04afb2f9fd7c7dae8f2b2c3f4dff369645; real staged paths remained 0; main remained unchanged/clean",
+        "failure_classification": "Runbook infrastructure defect (PowerShell parameter-binding failure on an empty CmdArgs array passed to the shared Invoke-Native helper for a deliberate no-argument cl.exe banner probe), not an implementation defect",
+        "independent_compiler_evidence": "Windows wrapper independently proved the active compiler is cl.exe at C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\cl.exe, banner 'Microsoft (R) C/C++ Optimizing Compiler Version 19.44.35228 for x64'"
+      },
+      "findings_and_corrections": [
+        {
+          "id": "R6-01",
+          "finding": "Step 7 invoked the shared Invoke-Native helper with -CmdArgs @() for the deliberate no-source-input cl.exe banner probe. Invoke-Native's own -CmdArgs parameter (scripts/ci/_common.ps1, out of this correction's scope) rejects an empty array argument at PowerShell's own parameter-binding stage - 'Cannot bind argument to parameter (CmdArgs) because it is an empty array' - so the probe failed before cl.exe ever executed.",
+          "correction": "Step 7 now captures the cl.exe banner directly through a single '& $env:ComSpec /d /s /c' invocation of the form '\"<cl.exe path>\" 2>&1' (the Windows-proven-safe pattern supplied for this fix), never through Invoke-Native, so no empty-array parameter binding is ever attempted. cl.exe's expected non-zero, no-input exit code is still never treated as a failure signal - only the captured banner text is evidence, checked exactly as before for cl 19.44.35228, 'for x64', VCToolsVersion 14.44.35207, and VS numeric 17.14.39, each still failing closed on a mismatch or missing evidence. Invoke-Native itself is untouched; no other step's use of it is affected."
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "title": "Architecture checker R6/R7 comment-insensitive-scanning false-positive fix",
+      "not_an_acr": true,
+      "correction_scope": [
+        "tools/architecture_checker.cmake",
+        "docs/evidence/P0-T002/CLAUDE_HANDOVER.json",
+        "docs/evidence/P0-T002/CLAUDE_HANDOVER.md"
+      ],
+      "round_6_acceptance": "Round 6's Step 7 cl.exe command-dispatch fix (R6-01) is accepted: the intervening mechanical clang-format correction and this round's authoritative build/test attempt both proceeded past Step 7 without incident, consistent with R6-01 being resolved.",
+      "intervening_mechanical_format_correction": {
+        "description": "Between round 6 and round 7, a mechanically-authorized clang-format 19.1.5 correction was applied to the live Windows writable snapshot, outside this session - Claude did not run clang-format and has no Windows execution channel. Reported as: exactly 13 implementation/test paths reformatted, full scripts/ci/format.ps1 PASS, resulting candidate tree 'f18138f45d8eee04280550438fcff20b961e7175'.",
+        "independently_reverified_by_claude_this_round": true,
+        "reverification_method": "Read-only: a fresh recursive device_list_dir listing of the live Windows snapshot was compared by mtime/byte-size against this candidate's round-6 listing to independently identify exactly which paths changed (13, matching the reported count); 11 of those 13 files were then staged fresh from the live snapshot and re-hashed independently in this sandbox via sha256sum, confirming their new byte-for-byte identity. The remaining 2 (geometry.hpp, spike_diagnostics.hpp) could not be staged due to the same device-bridge staging depth limit disclosed since round 1 (8 folders below the connected root; 7 supported) - their new byte sizes are independently confirmed via device_list_dir, but their new SHA256 values are not independently computed by Claude and are recorded as null in candidate_manifest.add rather than left at their stale pre-format values. The resulting candidate tree hash 'f18138f45d8eee04280550438fcff20b961e7175' itself was not independently recomputed (no git working-tree access in this session) and is recorded as reported, not verified.",
+        "reformatted_paths": [
+          "src/geometry/api/include/bim/geometry_api/geometry.hpp",
+          "src/geometry/occt/include/bim/geometry_occt/spike_diagnostics.hpp",
+          "src/geometry/occt/src/geometry_occt_adapter.cpp",
+          "src/geometry/occt/src/spike_diagnostics.cpp",
+          "tests/integration/geometry_occt_test_constants.hpp",
+          "tests/integration/integration_geometry_occt_coordinate_matrix.cpp",
+          "tests/integration/integration_geometry_occt_failure_corpus.cpp",
+          "tests/integration/integration_geometry_occt_history.cpp",
+          "tests/integration/integration_geometry_occt_join.cpp",
+          "tests/integration/integration_geometry_occt_repeatability.cpp",
+          "tests/integration/integration_geometry_occt_tolerance_matrix.cpp",
+          "tests/integration/p0_t002_geometry_evidence.cpp",
+          "tests/unit/unit_geometry_api_contract.cpp"
+        ],
+        "candidate_tree_before_round_7": "f18138f45d8eee04280550438fcff20b961e7175"
+      },
+      "post_format_authoritative_verification": {
+        "steps_01_to_13": "PASS",
+        "configure": "PASS",
+        "build": "46/46 targets built successfully",
+        "compiler_evidence": {
+          "msvc": "19.44.35228 x64",
+          "vctools": "14.44.35207",
+          "vs": "17.14.39",
+          "cmake": "4.4.2",
+          "ninja": "1.12.1",
+          "occt": "8.0.1"
+        },
+        "ctest": "15/18 PASS",
+        "all_geometry_occt_tests_passed": [
+          "unit_geometry_api_contract",
+          "integration_geometry_occt_probe",
+          "integration_geometry_occt_primitive",
+          "integration_geometry_occt_opening_cut",
+          "integration_geometry_occt_join",
+          "integration_geometry_occt_failure_corpus",
+          "integration_geometry_occt_tolerance_matrix",
+          "integration_geometry_occt_coordinate_matrix",
+          "integration_geometry_occt_history",
+          "integration_geometry_occt_repeatability",
+          "integration_geometry_occt_evidence"
+        ],
+        "only_failed": [
+          "arch_repository_boundaries",
+          "arch_geometry_api_no_occt_leak",
+          "arch_geometry_occt_only_kernel_owner"
+        ],
+        "candidate_state": "unchanged - candidate tree remained exactly f18138f45d8eee04280550438fcff20b961e7175; real staged paths remained 0; main remained unchanged/clean at 8c1c38990f75d5b0122e90d85bb8757e83a553a1"
+      },
+      "read_only_classification": {
+        "summary": "Architecture Authority inspected every reported R6/R7 token occurrence in geometry.hpp and probe.hpp and found zero actual OCCT include/declaration/alias/forward-declaration/member/parameter/return-type/accessor occurrences - all 10 reported violations were comment-only text (documentation explaining the R6/R7 boundary itself, e.g. 'must never ... reference an OCCT type (TopoDS_*, gp_*, BRep*, Handle(...), ...)').",
+        "note_on_probe_hpp": "src/geometry/api/include/bim/geometry_api/probe.hpp is a pre-existing baseline file (mtime unchanged since round 1's original snapshot, per a fresh device_list_dir check this round) - it is not one of this candidate's 26 authorized P0-T002 paths and was never written or tracked by Claude in any round's candidate_manifest; it simply also lives under geometry/api/include and so falls within R6's/R7's glob scan. This was independently confirmed this round rather than assumed, since it was not previously part of Claude's own manifest.",
+        "conclusion": "Architecture checker false positive (R7-01, tools/architecture_checker.cmake's R6/R7 comment-insensitive scanning) - no Geometry implementation defect, no ACR."
+      },
+      "findings_and_corrections": [
+        {
+          "id": "R7-01",
+          "finding": "R6 and R7 in tools/architecture_checker.cmake both scanned whole raw file text (via bim_scan_files_for_tokens(), deliberately comment-inclusive, correct for R1-R5) for forbidden OCCT tokens, so architecture documentation that names a forbidden token while explaining the R6/R7 boundary itself self-triggered a false violation.",
+          "correction": "Added a new, separate comment-aware scan path used only by R6/R7: bim_strip_cpp_comments() strips '//' line comments and '/* ... */' block comments (including multi-line block comments), correctly respecting string/char literals (with backslash-escape awareness) so a '//' or '/*' inside a real literal is never misread as a comment start; bim_scan_files_for_tokens_ignoring_comments() applies this stripping before the same case-insensitive substring scan bim_scan_files_for_tokens() already performs. R6 and R7 now call the new function; R1-R5 are completely untouched and still call the original comment-inclusive bim_scan_files_for_tokens(). No protected OCCT token was removed from R6 or R7. A real code-level occurrence (before and/or after a comment on the same line, or standalone) still fails exactly as before.",
+          "self_verification": "Genuinely executed (not merely statically reviewed) in this sandbox via a real `cmake -P` run of the corrected script (CMake 3.28.3, not the locked Windows 4.4.2 reference - disclosed, not claimed as the authoritative Windows toolchain) against constructed test fixtures covering: a comment-only OCCT-token mention (must PASS), real code before a same-line comment (must FAIL), pure code with no comment (must FAIL), a string literal containing '/* */' followed by real code (must FAIL, proving the literal's contents are not misread as a comment boundary that would swallow the following code), a string literal containing '//' followed by real code on the same line (must FAIL, same proof for line comments), real OCCT code inside the authorized kernel-owner directory (must PASS under R7), comment-only mention outside the owner directory (must PASS under R7), real OCCT code outside the owner directory (must FAIL under R7), and a comment-only mention scanned under R1 (must still FAIL, proving R1-R5 remain byte-for-byte comment-inclusive and unchanged). All nine cases produced the expected PASS/FAIL result. This execution caught and led to fixing a real defect (see self_validation) that static review alone had missed."
+        }
+      ]
+    },
+    {
+      "round": 8,
+      "round_7_validation_confirmed_by_authoritative_windows_run": {
+        "summary": "Architecture Authority reported a full authoritative Windows Runbook C run reaching Step 15: Steps 01-14 PASS, format PASS, fresh configure PASS, build 46/46 PASS, CTest 18/18 PASS - the round-7 architecture-checker R6/R7 comment-aware-scanning fix is thereby validated by the full authoritative suite (previously only a 4/4 targeted architecture check had run authoritatively; this is the first full 18/18 CTest PASS since round 7's fix).",
+        "candidate_tree_before_round_8": "5f807cfc8a2cccccaa1761171286499a865cb03c",
+        "runbook_sha256_preserved": "a3aea2143f73631a586d9f711e01e191a0f78bf969a1b79bd5f8756a415d410d (unchanged; Verification-RunbookC-v1.0.ps1 not a round-8 path)"
+      },
+      "step_15_static_analysis_fail": {
+        "diagnostics": [
+          {
+            "id": "SA-R8-01",
+            "file": "src/geometry/api/include/bim/geometry_api/geometry.hpp",
+            "check": "performance-enum-size",
+            "entity": "GeometryErrorCode"
+          },
+          {
+            "id": "SA-R8-02",
+            "file": "src/geometry/occt/include/bim/geometry_occt/spike_diagnostics.hpp",
+            "check": "performance-enum-size",
+            "entity": "HistoryOperation"
+          },
+          {
+            "id": "SA-R8-03",
+            "file": "src/geometry/occt/include/bim/geometry_occt/spike_diagnostics.hpp",
+            "check": "performance-enum-size",
+            "entity": "HistoryInputSide"
+          },
+          {
+            "id": "SA-R8-04",
+            "file": "tests/integration/p0_t002_geometry_evidence.cpp",
+            "check": "bugprone-exception-escape",
+            "entity": "int main(int argc, char** argv)"
+          }
+        ]
+      },
+      "architecture_authority_disposition": {
+        "sa_r8_01_02_03": "Do NOT change any enum's underlying type or values. Use ONLY a narrowly-scoped `// NOLINT(performance-enum-size)` on each of the 3 enum declarations plus a concise source comment explaining the default representation is intentionally retained for this Phase-0 contract, without over-claiming ABI stability. Bare NOLINT, NOLINTBEGIN regions, global .clang-tidy changes, global check disabling, compiler-warning suppression, and CMake suppression were all explicitly forbidden.",
+        "sa_r8_04": "FIX, do not suppress: wrap main()'s existing execution so no exception - std::exception-derived or otherwise - can ever escape it, while preserving all existing evidence behavior, JSON schema, case corpus, overall_passed logic, --json handling, and exit semantics; never swallow an error into a success return.",
+        "no_acr": true
+      },
+      "findings_and_corrections": {
+        "SA-R8-01": "geometry.hpp: `// NOLINT(performance-enum-size)` added to the `enum class GeometryErrorCode {` declaration line, plus a 7-line explanatory comment above it. No enumerator or underlying-type change.",
+        "SA-R8-02_and_03": "spike_diagnostics.hpp: `// NOLINT(performance-enum-size)` added to both `enum class HistoryOperation {` and `enum class HistoryInputSide {` declaration lines, each with its own explanatory comment. No enumerator or underlying-type change.",
+        "SA-R8-04": "p0_t002_geometry_evidence.cpp: main()'s original body extracted unchanged (including its existing inner try/catch) into `static int RunEvidenceMain(int argc, char** argv)`; main() itself reduced to `return RunEvidenceMain(argc, argv);` inside an outer try/catch(const std::exception&)/catch(...) that reports a deterministic diagnostic to stderr and returns 1 on every exceptional path. See candidate_manifest.add entry for this path for the full self_verification detail."
+      },
+      "content_provenance_gap": {
+        "summary": "geometry.hpp and spike_diagnostics.hpp could not be independently re-staged this round either (structural device-bridge depth limit, re-confirmed via a fresh device_stage_files attempt this round; both files are 8 folders below the connected root, 7 supported). Claude's round-8 edits for these 2 files were therefore applied to its own last-verified PRE-round-7-reformat content, not the live post-round-7-reformat content - unlike p0_t002_geometry_evidence.cpp, which WAS freshly re-staged this round and independently confirmed (sha256 73bac822... byte-identical to round 7's sha256_after) before editing.",
+        "consequence": "For exactly these 2 files, round 8's delivered content is not guaranteed to preserve round 7's clang-format 19.1.5 correction byte-for-byte outside the inserted NOLINT lines. This is a disclosed gap, not a fabricated certainty - see each affected candidate_manifest.add entry's round_8_correction.content_provenance_gap_note for the full detail and the recommended operator verification/remediation step.",
+        "affected_paths": [
+          "src/geometry/api/include/bim/geometry_api/geometry.hpp",
+          "src/geometry/occt/include/bim/geometry_occt/spike_diagnostics.hpp"
+        ]
+      },
+      "clang_format_version_gap": "Only clang-format 18.1.3 (Ubuntu) is available in this sandbox, not the locked 19.1.5 reference. Per the round-8 instruction's own fallback guidance, no reformatting was applied with a different formatter version; only the minimum syntactic edits described above were made, and Windows-side formatting conformance for the 3 edited files remains to be authoritatively verified by the Runbook C run.",
+      "preserved_state_confirmation": {
+        "runbook_sha256": "a3aea2143f73631a586d9f711e01e191a0f78bf969a1b79bd5f8756a415d410d",
+        "architecture_checker_cmake": "unchanged (not a round-8 authorized path)",
+        "do_not_modify_list_confirmed_untouched": [
+          "tools/architecture_checker.cmake",
+          "scripts/ci/architecture.ps1",
+          "scripts/ci/geometry-spike.ps1",
+          "Verification-RunbookC-v1.0.ps1",
+          "all CMakeLists.txt",
+          "geometry_occt_adapter.cpp",
+          "spike_diagnostics.cpp",
+          "solid_impl.hpp",
+          "all other test sources",
+          ".clang-format",
+          ".clang-tidy",
+          "vcpkg.json",
+          "vcpkg-configuration.json",
+          "probe.hpp"
+        ],
+        "round_8_authorized_paths_changed": [
+          "src/geometry/api/include/bim/geometry_api/geometry.hpp",
+          "src/geometry/occt/include/bim/geometry_occt/spike_diagnostics.hpp",
+          "tests/integration/p0_t002_geometry_evidence.cpp",
+          "docs/evidence/P0-T002/CLAUDE_HANDOVER.json",
+          "docs/evidence/P0-T002/CLAUDE_HANDOVER.md"
+        ]
+      }
+    },
+    {
+      "round": "8B",
+      "summary": "Follow-up to round 8's SA-R8-04 fix. Authoritative Windows clang-tidy 19.1.5 accepted round 8's 3 enum NOLINT corrections (SA-R8-01/02/03) outright - zero remaining performance-enum-size diagnostics for GeometryErrorCode/HistoryOperation/HistoryInputSide - but still reported bugprone-exception-escape on p0_t002_geometry_evidence.cpp's main() (SA-R8-04), because round 8's catch handlers performed potentially-throwing operations (stream output, ex.what()) directly in main()'s body. Round 8B reduced main() to noexcept with trivial non-throwing catch handlers (direct `return 1;` only), re-validated on authoritative Windows: format PASS, static analysis PASS, evidence rebuild PASS, targeted integration_geometry_occt_evidence CTest PASS. Not an ACR.",
+      "authorized_paths_this_correction": [
+        "tests/integration/p0_t002_geometry_evidence.cpp"
+      ],
+      "pre_round_8b_candidate_tree": "5f807cfc8a2cccccaa1761171286499a865cb03c",
+      "authoritative_interim_candidate_tree": "56238d77dbce44ec97b8825c1a10a0144cff5b2c",
+      "candidate_shape": {
+        "tracked_modify": 6,
+        "untracked_add_evidence": 20,
+        "staged": 0,
+        "total_paths": 26
+      },
+      "main_head": "8c1c38990f75d5b0122e90d85bb8757e83a553a1",
+      "main_clean": true,
+      "authoritative_windows_toolchain": {
+        "visual_studio": "17.14.39",
+        "msvc": "19.44.35228 x64",
+        "vctools": "14.44.35207",
+        "clang_format": "19.1.5",
+        "clang_tidy": "19.1.5",
+        "cmake": "4.4.2",
+        "ctest": "4.4.2",
+        "ninja": "1.12.1"
+      },
+      "gate_results": {
+        "enum_nolint_count": 3,
+        "enum_underlying_types": "UNCHANGED",
+        "evidence_outer_main": "noexcept",
+        "evidence_catch_handlers": "direct return 1 only",
+        "bugprone_exception_escape_suppression": "NONE",
+        "format_job": "PASS",
+        "static_analysis": "PASS",
+        "evidence_rebuild": "PASS",
+        "targeted_evidence_ctest": "PASS",
+        "repository_isolation": "PASS",
+        "main_head_unchanged": true,
+        "main_clean": true,
+        "real_staged_paths": 0
+      },
+      "evidentiary_discrepancy_investigation": {
+        "what_happened": "A first Round-8B Handover Reconciliation attempt was halted by Claude before writing anything, because a read-only device_list_dir check of the connected transport snapshot showed geometry.hpp (7324 bytes) and spike_diagnostics.hpp (3364 bytes) still matched Claude's own round-8 delivered content byte-for-byte and mtime-for-mtime, not the reported authoritative Windows Round-8B identities (6775 / 2958 bytes). p0_t002_geometry_evidence.cpp matched exactly on that same check.",
+        "root_cause": "The Round-8B enum fixes (already-accepted from round 8, re-validated) had been applied in the live task worktree (D:\\Projects\\BIM-Platform-WT-P0-T002), not yet synchronized to the external transport snapshot (C:\\Users\\...\\source\\P0-T002-IMPLEMENTATION-6081a30\\work) this session's device bridge reads. Not a defect, not an ACR.",
+        "resolution": "Operator performed a controlled live-worktree -> transport-snapshot synchronization of exactly the 3 source/test files, after first locking the authoritative candidate tree. Claude independently re-verified before writing anything this time: all 3 files' byte sizes now match exactly via a fresh device_list_dir, with fresh mtimes confirming a real sync (not a stale re-report); p0_t002_geometry_evidence.cpp was additionally re-staged and re-hashed, matching exactly. geometry.hpp/spike_diagnostics.hpp remain unstageable for independent SHA256 computation (the same structural depth limit disclosed since round 1, unrelated to the sync) - their SHA256 values are recorded as reported by Architecture Authority, not independently recomputed.",
+        "classification": "EVIDENTIARY DISCREPANCY = RESOLVED; ACR = NONE"
+      }
+    },
+    {
+      "round": "Final handover reconciliation (post Step-21 authority-baseline correction)",
+      "summary": "Documentation-reconciliation-only pass. Round-8B source fix (3 enum NOLINT suppressions + evidence main() noexcept/trivial catch handlers) remains accepted and unchanged. A subsequent full authoritative Windows Runbook C run (candidate tree 1d3ef8e5a87ad42b127ad254ff9879d3c0a5e313) reached Steps 01-20 PASS (including build 46/46, CTest 18/18, static analysis, architecture, license inventory, geometry spike evidence, all P0-T001 regression and P0-T002 tests) before Step 21c FAILed: it compared the three P0-T002 authority documents against ExpectedMainHead (the older main baseline), but those documents were correctly ADDED at the P0-T002 authorization/task HEAD and never existed on that older main baseline. A read-only Git blob classification proved this mechanically (all 3 LIVE == Authorization HEAD; all 3 LIVE != Main; all 3 absent from Main) and classified it as a Runbook authority-baseline invariant defect - not an implementation, geometry, or architecture defect, and not an ACR. Architecture Authority applied a minimum-delta, Runbook-only correction (ExpectedMainHead -> ExpectedTaskHead) directly on the authoritative live task worktree, mechanically re-verified, then synchronized it to this session's connected transport snapshot. Only docs/evidence/P0-T002/CLAUDE_HANDOVER.json and CLAUDE_HANDOVER.md were authorized/changed in this pass.",
+      "geometry_evidence_step_18_from_prior_full_run": {
+        "case_count": 280,
+        "failed_case_count": 0,
+        "history_record_count": 360,
+        "overall_passed": true
+      },
+      "independent_verification_by_claude_before_editing": "Before writing anything: freshly staged Verification-RunbookC-v1.0.ps1 from the connected transport snapshot and re-hashed via sha256sum - matched the reported 67286 bytes / 85a321a3...5d2a14 exactly. Confirmed via device_list_dir that the currently-live CLAUDE_HANDOVER.json (95220 bytes) and CLAUDE_HANDOVER.md (110449 bytes) matched the expected pre-reconciliation identities exactly before editing either.",
+      "not_claimed": [
+        "final candidate tree is f25dc5e525ed38ae12951570c4d51b4de46f7522 (it is the RUNBOOK-ONLY pre-handover tree, not final)",
+        "full Runbook 21/21 PASS after the Step-21 correction (NOT YET RERUN)",
+        "Kimi review passed (NOT YET PERFORMED)",
+        "implementation commit authorized (NOT AUTHORIZED)",
+        "P0-T002 accepted",
+        "P0-T002 closed",
+        "integration authorized",
+        "Windows execution performed by Claude"
+      ]
+    },
+    {
+      "round": "Final handover reconciliation (post Step-21d lexical false-positive correction)",
+      "summary": "Documentation-reconciliation-only pass. Round-8B source fix and the earlier Step-21c ExpectedTaskHead authority-baseline correction both remain accepted and valid, not undone. A further full authoritative Windows Runbook C run (candidate tree 5de619003b11bfbecb307d0042fd6e258e37102e) reached Steps 01-20 PASS again before Step 21d FAILed: a second, simplified lexical spot-check in the Runbook duplicated the mechanical architecture checker's own semantics with a comment-insensitive raw regex scan over src/geometry/api headers, producing 4 hits that were all comment text explaining the OCCT-leak prohibition, not code-level leakage. A read-only classification mechanically confirmed 0 actual OCCT include leaks and that both authoritative architecture tests already PASS. Classified as a Runbook duplicated lexical false positive - not an implementation, geometry, or architecture defect, and not an ACR. Architecture Authority replaced the raw lexical block with a direct re-run of the authoritative architecture CTest itself, applied on the live task worktree, mechanically re-verified, and synchronized to this session's connected transport snapshot. Only docs/evidence/P0-T002/CLAUDE_HANDOVER.json and CLAUDE_HANDOVER.md were authorized/changed in this pass.",
+      "independent_verification_by_claude_before_editing": "Before writing anything: freshly staged Verification-RunbookC-v1.0.ps1 from the connected transport snapshot and re-hashed via sha256sum - matched the reported 67106 bytes / 3fd1fcb6...0e73f exactly. Confirmed via device_list_dir that the currently-live CLAUDE_HANDOVER.json (106984 bytes) and CLAUDE_HANDOVER.md (122067 bytes) matched the expected pre-reconciliation identities exactly before editing either.",
+      "not_claimed": [
+        "f04a86da7d8271890d0e060c16539e64e19cfe2e is the final candidate tree (it is the RUNBOOK-ONLY pre-handover tree, not final)",
+        "the corrected Step-21d Runbook has completed a full 21/21 run (NOT YET RERUN)",
+        "the previous run was 21/21 PASS (Steps 01-20 PASS, Step 21 FAIL)",
+        "Kimi has reviewed the candidate (NOT YET PERFORMED)",
+        "implementation commit is authorized (NOT AUTHORIZED)",
+        "P0-T002 is accepted",
+        "P0-T002 is closed",
+        "integration is authorized",
+        "Windows execution was performed by Claude"
+      ]
+    },
+    {
+      "round": "Final handover reconciliation (post Step-21e stale-scope correction)",
+      "summary": "Documentation-reconciliation-only pass. Round-8B source fix, the Step-21c ExpectedTaskHead authority-baseline correction, and the Step-21d duplicated-lexical-false-positive correction all remain accepted and valid, not undone. A further full authoritative Windows Runbook C run (candidate tree e80e84d8eb19e365e36263cf9bfe52347ca62735) reached Steps 01-20 PASS again before Step 21e FAILed: Step-21e's complete-Solid-definition scan implicitly depended on $apiDir, a local variable previously assigned only inside Step-21d; once Step-21d was replaced by a direct CTest re-invocation, that assignment no longer existed, so Step-21e resolved a stale scope value and misreported the adapter-private src/geometry/occt/src/solid_impl.hpp as if it were under the public src/geometry/api root. A direct inspection confirmed 0 complete Solid definitions under the public API root and exactly 1 under the private adapter file - the intended opaque-public / concrete-private Solid architecture, with no ownership violation. Classified as a Runbook stale-scope / implicit-variable-dependency defect - not an implementation, geometry, architecture, or Solid-ownership defect, and not an ACR. Architecture Authority replaced the implicit $apiDir reuse with a locally-resolved, existence-validated $publicGeometryApiDir, applied on the live task worktree, mechanically re-verified, and synchronized to this session's connected transport snapshot. Only docs/evidence/P0-T002/CLAUDE_HANDOVER.json and CLAUDE_HANDOVER.md were authorized/changed in this pass.",
+      "independent_verification_by_claude_before_editing": "Before writing anything: freshly staged Verification-RunbookC-v1.0.ps1 from the connected transport snapshot and re-hashed via sha256sum - matched the reported 67371 bytes / 1889c133...dc5978 exactly. Confirmed via device_list_dir that the currently-live CLAUDE_HANDOVER.json (119495 bytes) and CLAUDE_HANDOVER.md (135038 bytes) matched the expected pre-reconciliation identities exactly before editing either.",
+      "not_claimed": [
+        "229340ba610606b9355d1433198bd8cd69a6f201 is the final candidate tree (it is the RUNBOOK-ONLY pre-handover tree, not final)",
+        "the corrected Step-21e Runbook has completed a full 21/21 run (NOT YET RERUN)",
+        "the previous e80e84d8eb19e365e36263cf9bfe52347ca62735 run was 21/21 PASS (Steps 01-20 PASS, Step 21 FAIL)",
+        "the private solid_impl.hpp Solid definition is an architecture defect (it is intentional adapter-private state)",
+        "Architecture Authority D2-A/B/C/D has been issued (NOT YET ISSUED)",
+        "Kimi has reviewed the candidate (NOT YET PERFORMED)",
+        "implementation commit is authorized (NOT AUTHORIZED)",
+        "P0-T002 is accepted",
+        "P0-T002 is closed",
+        "integration is authorized",
+        "Windows execution was performed by Claude"
+      ]
+    }
+  ],
+  "current_status": {
+    "round_8b_source_fix": "ACCEPTED",
+    "round_8b_handover_reconciliation": "ACCEPTED",
+    "step_21_authority_baseline_failure": "CLASSIFIED AND CORRECTED",
+    "step_21_authority_reference": "ExpectedTaskHead",
+    "step_21d_failure_classification": "RUNBOOK DUPLICATED LEXICAL FALSE POSITIVE",
+    "step_21d_runbook_correction": "APPLIED AND MECHANICALLY VERIFIED",
+    "step_21e_failure_classification": "RUNBOOK STALE-SCOPE / IMPLICIT VARIABLE DEPENDENCY DEFECT",
+    "step_21e_runbook_correction": "APPLIED AND MECHANICALLY VERIFIED",
+    "public_geometry_api_solid_definitions": 0,
+    "private_solid_impl_solid_definitions": 1,
+    "current_runbook": {
+      "bytes": 67371,
+      "sha256": "1889c1337ecbe19c5bacf42eb9345ac58bbebdb65d68ab46d34efac853dc5978"
+    },
+    "acr": "NONE",
+    "implementation_source_after_round_8b": "UNCHANGED",
+    "runbook_only_pre_handover_candidate": "229340ba610606b9355d1433198bd8cd69a6f201",
+    "final_candidate_tree": "NOT YET CALCULATED",
+    "full_authoritative_runbook_after_step_21e_correction": "NOT YET RERUN",
+    "architecture_authority_d2_a_b_c_d": "NOT YET ISSUED",
+    "kimi_independent_review": "NOT YET PERFORMED",
+    "implementation_commit": "NOT AUTHORIZED",
+    "p0_t002_accepted": false,
+    "p0_t002_closed": false,
+    "integration_authorized": false,
+    "next_sequence": [
+      "1. finalize these two handover documents",
+      "2. Operator imports exactly these two files",
+      "3. Operator computes the new TRUE FINAL candidate tree",
+      "4. Full Authoritative Runbook C reruns from Step 01 through Step 21",
+      "5. Architecture Authority reviews geometry evidence and issues D2-A/B/C/D",
+      "6. Kimi performs independent read-only review",
+      "7. only then may implementation commit be considered"
+    ]
+  }
+}
