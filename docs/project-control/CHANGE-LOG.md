@@ -459,3 +459,17 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Production implementation remains NOT AUTHORIZED pending controlled C0
   VCPKG_ROOT/toolchain execution preflight and a separate authorization
   record.
+
+## 2026-09-08 - P0-T003 Production Implementation Authorized
+
+- Accepted C0 toolchain execution preflight.
+- Confirmed historical Visual Studio bundled vcpkg runtime.
+- Confirmed frozen baseline unchanged.
+- Confirmed Ninja 1.12.1, CMake 4.4.2, VS Build Tools 17.14 and VCTools
+  14.44.35207.
+- Released `BIM-TASK-P0-T003-IMPLEMENTATION-AUTH v1.0`.
+- Authorized Claude production implementation only in the P0-T003 worktree.
+- Authorized exactly 59 implementation/verification/evidence paths.
+- Preserved main untouched.
+- Preserved Architecture Authority control over staging, commit, acceptance,
+  closure and integration.

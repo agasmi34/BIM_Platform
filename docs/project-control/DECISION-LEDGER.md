@@ -303,3 +303,44 @@ NOT AUTHORIZED
 ACR:
 
 NONE
+
+## 2026-09-08 - P0-T003 Implementation Authorization Decision
+
+Architecture Authority accepted the final C0 toolchain execution evidence:
+
+- runtime mode: Visual Studio bundled vcpkg;
+- VCPKG_ROOT:
+  C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\vcpkg
+- vcpkg version:
+  2025-11-19-da1f056dc0775ac651bea7e3fbbf4066146a55f3
+- frozen baseline:
+  f89a4a1da4e3176a8d1a14c1825b9b2f98e48843
+- Ninja 1.12.1 from the same historically validated P0-T001/P0-T002 path;
+- CMake 4.4.2;
+- Visual Studio Build Tools 17.14.37614.0;
+- VCTools 14.44.35207;
+- x64 cl.exe present.
+
+C0:
+
+PASS
+
+C0 ACR:
+
+NONE
+
+Decision:
+
+Production implementation of P0-T003 is AUTHORIZED to Claude only within the
+exact 59-path footprint locked by BIM-TASK-P0-T003-CLAUDE v1.0.
+
+Claude may configure/build/test using manifest mode and the frozen baseline.
+
+Claude may not stage/commit or modify main.
+
+Any material deviation or 60th path requires Architecture Authority
+disposition.
+
+Authorization:
+
+BIM-TASK-P0-T003-IMPLEMENTATION-AUTH v1.0

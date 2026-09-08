@@ -104,14 +104,46 @@ Implementation Brief status:
 
 RELEASED + LOCKED
 
+C0 toolchain execution preflight:
+
+PASS
+
+C0 ACR:
+
+NONE
+
+Implementation Authorization:
+
+BIM-TASK-P0-T003-IMPLEMENTATION-AUTH v1.0
+
+Implementation Authorization status:
+
+AUTHORIZED
+
 Implementation:
 
-NOT AUTHORIZED
+AUTHORIZED
+
+Authorized Implementation Engineer:
+
+Claude
+
+Authorized worktree:
+
+D:\Projects\BIM-Platform-WT-P0-T003
+
+Authorized footprint:
+
+59 paths exactly
+
+Main:
+
+MUST REMAIN UNTOUCHED
 
 Next:
 
-Controlled C0 VCPKG_ROOT/toolchain execution preflight, followed by a
-separate Architecture Authority implementation-authorization record.
+Claude production implementation within the locked 59-path footprint,
+followed by Claude handover to Architecture Authority.
 
 ## Next state transition
 
