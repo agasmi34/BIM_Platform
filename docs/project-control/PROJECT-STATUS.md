@@ -4,7 +4,7 @@
 
 **System of record:** Git
 
-**Current active task:** P0-T002 - OCCT Geometry Spike
+**Current active task:** P0-T003 - Desktop + Viewport Spike
 
 ## P0-T001
 
@@ -16,53 +16,89 @@ Main baseline:
 
 ## P0-T002
 
+ACCEPTED + CLOSED + INTEGRATED
+
+Implementation commit:
+
+2dca329ecc7ebeaeee27dba85017db7aad3842ba
+
+Closure commit:
+
+5e266a2629c2f9502505dd36bfe6986e5caec0cc
+
+Final integration-record commit / previous authoritative main baseline:
+
+3f2230be5fcd796c370f485975547112ad52d2e3
+
+Full Authoritative Runbook C:
+
+PASS
+
+D2-A/B/C/D:
+
+ISSUED
+
+Kimi implementation review:
+
+PASS
+
+AC021:
+
+PASS
+
+AC022:
+
+PASS
+
+ACR:
+
+NONE
+
+## P0-T003
+
+Task:
+
+Desktop + Viewport Spike
+
 Architecture Gate:
 
-APPROVED + COMMITTED + LOCKED
+BIM-AG-P0-T003 v1.0
 
-Phase A + B:
+Status:
 
-ACCEPTED
+APPROVED + LOCKED
 
-Implementation Brief Amendment 01:
+Authoritative parent:
 
-APPROVED + COMMITTED
+3f2230be5fcd796c370f485975547112ad52d2e3
 
-OCCT 8.0.1 API verification:
+Targeted Kimi architecture consultation:
 
-ACCEPTED
+PASS
+
+BLOCKER:
+
+0
+
+MAJOR:
+
+0
 
 Current ACR:
 
 NONE
 
-Phase C-M:
+Implementation:
 
-AUTHORIZED
-
-Implementation Authorization:
-
-BIM-TASK-P0-T002-IMPLEMENTATION-AUTH v1.0
-
-Authorization SHA256:
-
-2D987978D21B9343B90A61B6BF8B94678773FF6CBD63626FAC3C9BC3596C001E
-
-## Implementation channel
-
-Claude writes only to:
-
-C:\Users\abdallah\source\P0-T002-IMPLEMENTATION-6081a30\work
-
-Live task Git worktree remains protected and operator-controlled.
-
-No implementation import, verification, review, acceptance, closure or
-integration has occurred yet.
+NOT AUTHORIZED
 
 ## Next state transition
 
-Claude implements Phases C-M inside the file-transfer snapshot and produces
-the required handover.
+Phase A performs read-only resolution of Qt 6 / Qt Widgets, bgfx, D3D11
+backend capability, licensing and non-presented test capability against the
+existing frozen vcpkg baseline.
 
-Architecture Authority then performs an operator-controlled candidate import
-into the live P0-T002 worktree for authoritative Windows verification.
+Phase B then performs the Contract Design Check.
+
+Production implementation remains blocked until Architecture Authority
+releases the implementation brief and explicit authorization.

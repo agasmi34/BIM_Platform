@@ -162,3 +162,50 @@ snapshot.
 
 No live-Git implementation, Windows verification, independent review,
 acceptance or integration is asserted by this authorization.
+
+## P0-T003 - Desktop + Viewport Spike
+
+Architecture Gate:
+
+BIM-AG-P0-T003 v1.0
+
+Status:
+
+ARCHITECTURE GATE APPROVED + LOCKED
+
+Authoritative parent:
+
+3f2230be5fcd796c370f485975547112ad52d2e3
+
+Branch:
+
+task/P0-T003-desktop-viewport-spike
+
+Worktree:
+
+D:\Projects\BIM-Platform-WT-P0-T003
+
+Technology direction:
+
+Qt 6 + Qt Widgets desktop shell
+
+bgfx viewport-abstraction candidate
+
+D3D11 authoritative Windows Phase-0 backend
+
+Independent architecture consultation:
+
+PASS
+
+BLOCKER = 0
+
+MAJOR = 0
+
+Implementation:
+
+NOT AUTHORIZED
+
+Next:
+
+Phase A read-only dependency/capability probe, then Phase B Contract Design
+Check.

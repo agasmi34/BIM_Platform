@@ -416,3 +416,27 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Explicitly authorized the two required Claude handover evidence files.
 - No production implementation is contained in this docs-only authorization
   commit.
+
+## 2026-09-08 - P0-T003 Architecture Gate
+
+- Recorded P0-T002 as ACCEPTED + CLOSED + INTEGRATED.
+- Recorded final P0-T002 main integration-record commit
+  `3f2230be5fcd796c370f485975547112ad52d2e3`.
+- Started P0-T003 - Desktop + Viewport Spike.
+- Approved `BIM-AG-P0-T003 v1.0`.
+- Locked Qt 6 / Qt Widgets as the Desktop direction.
+- Locked bgfx as the viewport-abstraction candidate.
+- Locked D3D11 as the authoritative Windows Phase-0 backend.
+- Preserved Qt/bgfx/D3D/native-window isolation from BIM/domain public APIs.
+- Preserved viewport/OCCT separation.
+- Added a minimal render-neutral mesh seam.
+- Added explicit native-surface, HiDPI, cross-monitor and teardown lifecycle
+  acceptance requirements.
+- Added non-interactive automated-test requirements for CPU-owned
+  camera/ray/mesh logic.
+- Required Phase A verification of any bgfx Noop/offscreen/non-presented test
+  path before use.
+- Recorded targeted Kimi architecture consultation:
+  BLOCKER=0, MAJOR=0, MINOR=4, NOTE=6, PASS.
+- No production source or dependency implementation is authorized by this
+  architecture-record change.

@@ -174,3 +174,75 @@ aliases.
 The Standard_Version.hxx creation-date observation is recorded as a
 non-blocking provenance note; OCCT 8.0.1 version identity was independently
 confirmed from version macros and package config evidence.
+
+## 2026-09-08 - P0-T003 Desktop + Viewport Architecture Gate
+
+Architecture Gate:
+
+BIM-AG-P0-T003 v1.0
+
+Status:
+
+APPROVED + LOCKED
+
+Authority:
+
+Product Authority + Architecture Authority
+
+Authoritative parent:
+
+3f2230be5fcd796c370f485975547112ad52d2e3
+
+Decisions:
+
+- Qt 6 is the approved desktop framework direction.
+- P0-T003 desktop shell uses Qt Widgets.
+- Qt Quick and QRhi are not part of the P0-T003 viewport path.
+- bgfx is the Phase-0 viewport rendering-abstraction candidate.
+- D3D11 is the authoritative Windows Phase-0 live-render backend.
+- exact Qt/bgfx versions are resolved from the frozen vcpkg baseline;
+- no silent dependency-baseline update is allowed;
+- Qt/bgfx/D3D/native-window types do not enter BIM/domain public APIs;
+- viewport public APIs do not depend directly on OCCT;
+- P0-T003 introduces one minimal render-neutral mesh seam;
+- neutral mesh uses triangle lists, float32 local positions, optional float32
+  per-vertex normals and uint32 indices;
+- global/survey coordinates are not submitted directly as GPU vertex
+  coordinates;
+- native-window acquisition, surface recreation, DPI transitions and teardown
+  ordering are explicit acceptance concerns;
+- camera/ray/mesh CPU tests must not require an interactive GPU desktop;
+- any bgfx non-presented test capability must first be verified from the
+  frozen baseline;
+- performance evidence is observational only.
+
+Targeted Kimi architecture consultation:
+
+PASS
+
+BLOCKER:
+
+0
+
+MAJOR:
+
+0
+
+MINOR:
+
+4
+
+NOTE:
+
+6
+
+Architecture Authority accepted all four MINOR findings as minimum-delta Gate
+clarifications.
+
+ACR:
+
+NONE
+
+Implementation:
+
+NOT AUTHORIZED
