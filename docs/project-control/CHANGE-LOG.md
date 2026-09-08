@@ -440,3 +440,22 @@ exists yet); once Phase P commits land, this log should be read alongside
   BLOCKER=0, MAJOR=0, MINOR=4, NOTE=6, PASS.
 - No production source or dependency implementation is authorized by this
   architecture-record change.
+
+## 2026-09-08 - P0-T003 Implementation Brief Release
+
+- Accepted P0-T003 Phase A dependency/capability verification.
+- Accepted P0-T003 Phase B Contract Design Check with Architecture Authority
+  clarifications.
+- Locked right-handed Z-up local-render conventions.
+- Locked float32 mesh / double CPU camera-ray precision split.
+- Locked semantic camera contract with backend projection conversion private
+  to the renderer adapter.
+- Locked controlled shutdown/re-init for true native-surface recreation.
+- Locked Qt Widgets + private QWindow-derived viewport surface.
+- Locked bgfx `default-features=false`; multithreaded remains disabled.
+- Locked exact implementation footprint in `BIM-TASK-P0-T003-CLAUDE v1.0`.
+- Preserved frozen vcpkg baseline.
+- Preserved main untouched.
+- Production implementation remains NOT AUTHORIZED pending controlled C0
+  VCPKG_ROOT/toolchain execution preflight and a separate authorization
+  record.

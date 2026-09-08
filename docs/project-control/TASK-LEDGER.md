@@ -209,3 +209,46 @@ Next:
 
 Phase A read-only dependency/capability probe, then Phase B Contract Design
 Check.
+
+## 2026-09-08 - P0-T003 Implementation Brief Release
+
+Brief:
+
+BIM-TASK-P0-T003-CLAUDE v1.0
+
+Architecture Gate:
+
+BIM-AG-P0-T003 v1.0
+
+Gate commit:
+
+cf7a971903d8103143b2b94e94a4d185d86ce42b
+
+Phase A:
+
+ACCEPTED
+
+Phase B:
+
+ACCEPTED
+
+ACR:
+
+NONE
+
+Exact implementation footprint:
+
+59 exact implementation/verification/evidence paths. No path is conditional.
+
+Status:
+
+BRIEF RELEASED + LOCKED
+
+Production implementation:
+
+NOT AUTHORIZED
+
+Next:
+
+controlled C0 VCPKG_ROOT/toolchain execution preflight and explicit
+implementation authorization.

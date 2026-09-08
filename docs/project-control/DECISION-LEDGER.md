@@ -246,3 +246,60 @@ NONE
 Implementation:
 
 NOT AUTHORIZED
+
+## 2026-09-08 - P0-T003 Phase A/B + Implementation Brief Disposition
+
+Phase A dependency/capability verification:
+
+ACCEPTED
+
+Confirmed frozen identities:
+
+- qtbase 6.11.1#1
+- bgfx 1.129.8940-496#1
+- Qt Widgets available
+- bgfx D3D11 capability
+- bgfx PlatformData capability
+- headless-related exact-version capability
+- bgfx Windows static packaging
+- bgfx default multithreaded feature
+
+AA-P0T003-A01:
+
+bgfx default-features = false
+
+The bgfx multithreaded feature is not authorized for P0-T003.
+
+Phase B Contract Design Check:
+
+ACCEPTED WITH AA CLARIFICATIONS
+
+Locked contract clarifications include:
+
+- RH + Z-up local render convention;
+- CCW outward mesh winding;
+- float32 GPU mesh data;
+- double-precision CPU camera/ray math;
+- semantic camera contract with no backend clip-space leakage;
+- surface recreation handled by controlled renderer shutdown/re-init;
+- renderer-epoch invalidation of RenderMeshHandle after full re-init;
+- Qt Widgets shell with private QWindow-derived native viewport surface;
+- code-based public error categories with diagnostics kept private;
+- Qt dynamic linkage posture through x64-windows;
+- Qt distribution/legal review remains a separate distribution gate.
+
+Implementation Brief:
+
+BIM-TASK-P0-T003-CLAUDE v1.0
+
+Status:
+
+RELEASED + LOCKED
+
+Production implementation:
+
+NOT AUTHORIZED
+
+ACR:
+
+NONE

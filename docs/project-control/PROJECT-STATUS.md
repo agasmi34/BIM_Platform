@@ -88,9 +88,30 @@ Current ACR:
 
 NONE
 
+Phase A:
+
+ACCEPTED
+
+Phase B:
+
+ACCEPTED
+
+Implementation Brief:
+
+BIM-TASK-P0-T003-CLAUDE v1.0
+
+Implementation Brief status:
+
+RELEASED + LOCKED
+
 Implementation:
 
 NOT AUTHORIZED
+
+Next:
+
+Controlled C0 VCPKG_ROOT/toolchain execution preflight, followed by a
+separate Architecture Authority implementation-authorization record.
 
 ## Next state transition
 
