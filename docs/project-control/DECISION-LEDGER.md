@@ -344,3 +344,103 @@ disposition.
 Authorization:
 
 BIM-TASK-P0-T003-IMPLEMENTATION-AUTH v1.0
+
+## 2026-09-14 - P0-T003 Acceptance / Closure and P0-T004 Persistence Architecture Gate
+
+P0-T003 disposition:
+
+ACCEPTED + CLOSED + INTEGRATED
+
+P0-T003 integrated commit:
+
+5bac905e29c1390c90cc6807a5d92ab217764396
+
+P0-T003 integrated tree:
+
+3121a74e2e5edf960adfe5f36d0684541c805a1a
+
+Integration method:
+
+FAST-FORWARD
+
+P0-T003 Full Verification Runbook D:
+
+CLOSED PASS
+
+Independent implementation review:
+
+BLOCKER = 0
+
+MAJOR = 0
+
+P0-T003 ACR:
+
+NONE
+
+P0-T004 Architecture Gate:
+
+BIM-AG-P0-T004 v1.0
+
+P0-T004 status:
+
+APPROVED + LOCKED
+
+Authority:
+
+Product Authority + Architecture Authority
+
+Authoritative parent:
+
+5bac905e29c1390c90cc6807a5d92ab217764396
+
+Decisions:
+
+- SQLite remains the Phase-0 persistence engine.
+- `src/persistence/**` remains the only first-party SQLite owner.
+- persistence public headers remain SQLite-neutral.
+- `bim_transactions` owns the neutral journal contract and does not depend on
+  SQLite or `bim_persistence`.
+- schema version authority is `PRAGMA user_version`.
+- P0-T004 implements only schema version 1.
+- version 0 may bootstrap only when no pre-existing user tables exist.
+- newer unsupported schemas and unrecognized databases fail closed.
+- schema bootstrap `0 -> 1` is atomic.
+- schema version 1 is restricted to journal transaction/entry persistence for
+  this spike; BIM domain tables are forbidden.
+- file-backed test policy requires foreign keys enabled, a 5000 ms busy
+  timeout, WAL journal mode and FULL synchronous mode, with effective settings
+  verified.
+- one journal transaction append is all-or-nothing.
+- committed data must survive close/reopen.
+- uncommitted data must be absent after close/reopen.
+- duplicate transaction IDs are rejected atomically.
+- binary payload bytes must round-trip exactly.
+- persisted journal ordering is deterministic.
+- direct SQLite use outside persistence and SQLite leakage through persistence
+  public headers receive explicit architecture rules and negative fixtures.
+- no ORM, database replacement, new persistence dependency or frozen vcpkg
+  baseline movement is authorized.
+- P0-T004 does not define the complete BIM project-file format or product
+  undo/redo system.
+
+SQLite CMake maintenance disposition:
+
+Prefer `SQLite3::SQLite3`, then legacy `SQLite::SQLite3`, then
+`unofficial::sqlite3::sqlite3` if required by the frozen baseline.
+
+This is enforcement/maintenance within the already-approved SQLite direction,
+not an architecture change.
+
+Packaging correction:
+
+The pre-commit approved gate package accidentally retained the word `Draft`
+in its title/document ID. Those two labels were corrected before the first
+P0-T004 governance commit. Architecture semantics are unchanged.
+
+P0-T004 ACR:
+
+NONE
+
+Implementation:
+
+NOT AUTHORIZED

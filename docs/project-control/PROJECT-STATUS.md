@@ -56,6 +56,8 @@ NONE
 
 ## P0-T003
 
+ACCEPTED + CLOSED + INTEGRATED
+
 Task:
 
 Desktop + Viewport Spike
@@ -64,17 +66,29 @@ Architecture Gate:
 
 BIM-AG-P0-T003 v1.0
 
-Status:
+Implementation commit / integrated main baseline:
 
-APPROVED + LOCKED
+5bac905e29c1390c90cc6807a5d92ab217764396
 
-Authoritative parent:
+Integrated tree:
 
-3f2230be5fcd796c370f485975547112ad52d2e3
+3121a74e2e5edf960adfe5f36d0684541c805a1a
 
-Targeted Kimi architecture consultation:
+Integration method:
 
-PASS
+FAST-FORWARD
+
+Full Verification Runbook D:
+
+CLOSED PASS
+
+Authoritative Runbook D attempt:
+
+ATTEMPT 5
+
+Independent implementation review:
+
+APPROVED FOR ARCHITECTURE AUTHORITY INTEGRATION DECISION
 
 BLOCKER:
 
@@ -84,74 +98,88 @@ MAJOR:
 
 0
 
+MINOR:
+
+1
+
+NOTE:
+
+3
+
+Local task worktree:
+
+REMOVED
+
+Local task branch:
+
+DELETED
+
+ACR:
+
+NONE
+
+## P0-T004
+
+Task:
+
+Persistence Spike
+
+Architecture Gate:
+
+BIM-AG-P0-T004 v1.0
+
+Status:
+
+APPROVED + LOCKED
+
+Authoritative parent:
+
+5bac905e29c1390c90cc6807a5d92ab217764396
+
+Authoritative parent tree:
+
+3121a74e2e5edf960adfe5f36d0684541c805a1a
+
+Branch:
+
+task/P0-T004-persistence-spike
+
+Worktree:
+
+D:\Projects\BIM-Platform-WT-P0-T004
+
+Discovery:
+
+PASS
+
+Discovery classification:
+
+READY_FOR_ARCHITECTURE_GATE_DRAFT
+
+Locked direction:
+
+SQLite schema version 1 + neutral transaction journal proof behind
+bim_persistence.
+
+SQLite ownership:
+
+src/persistence/** only
+
+Schema version authority:
+
+PRAGMA user_version
+
 Current ACR:
 
 NONE
 
-Phase A:
-
-ACCEPTED
-
-Phase B:
-
-ACCEPTED
-
-Implementation Brief:
-
-BIM-TASK-P0-T003-CLAUDE v1.0
-
-Implementation Brief status:
-
-RELEASED + LOCKED
-
-C0 toolchain execution preflight:
-
-PASS
-
-C0 ACR:
-
-NONE
-
-Implementation Authorization:
-
-BIM-TASK-P0-T003-IMPLEMENTATION-AUTH v1.0
-
-Implementation Authorization status:
-
-AUTHORIZED
-
 Implementation:
 
-AUTHORIZED
-
-Authorized Implementation Engineer:
-
-Claude
-
-Authorized worktree:
-
-D:\Projects\BIM-Platform-WT-P0-T003
-
-Authorized footprint:
-
-59 paths exactly
-
-Main:
-
-MUST REMAIN UNTOUCHED
-
-Next:
-
-Claude production implementation within the locked 59-path footprint,
-followed by Claude handover to Architecture Authority.
+NOT AUTHORIZED
 
 ## Next state transition
 
-Phase A performs read-only resolution of Qt 6 / Qt Widgets, bgfx, D3D11
-backend capability, licensing and non-presented test capability against the
-existing frozen vcpkg baseline.
+Prepare and review the P0-T004 Implementation Brief.
 
-Phase B then performs the Contract Design Check.
-
-Production implementation remains blocked until Architecture Authority
-releases the implementation brief and explicit authorization.
+Production implementation remains blocked until Architecture Authority issues
+a separate explicit P0-T004 implementation authorization.

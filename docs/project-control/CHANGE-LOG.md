@@ -473,3 +473,43 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Preserved main untouched.
 - Preserved Architecture Authority control over staging, commit, acceptance,
   closure and integration.
+
+## 2026-09-14 - P0-T003 Acceptance, Fast-Forward Integration and Local Closure
+
+- Closed authoritative Full Verification Runbook D as PASS on Attempt 5.
+- Accepted independent implementation review with BLOCKER=0 and MAJOR=0.
+- Committed the reviewed P0-T003 implementation as
+  `5bac905e29c1390c90cc6807a5d92ab217764396`.
+- Fast-forwarded `main` to that exact commit/tree.
+- Verified final main tree
+  `3121a74e2e5edf960adfe5f36d0684541c805a1a`.
+- Removed the local P0-T003 task worktree after proving the two observed
+  license paths were status-only LF/CRLF artifacts with no real delta.
+- Deleted the fully merged local P0-T003 task branch.
+- Recorded ACR=NONE.
+- Remote push was not part of the local closure action.
+
+## 2026-09-14 - P0-T004 Persistence Architecture Gate
+
+- Started P0-T004 - Persistence Spike from accepted P0-T003 main baseline
+  `5bac905e29c1390c90cc6807a5d92ab217764396`.
+- Created isolated branch `task/P0-T004-persistence-spike`.
+- Created isolated worktree `D:\Projects\BIM-Platform-WT-P0-T004`.
+- Completed read-only P0-T004 architecture discovery with classification
+  `READY_FOR_ARCHITECTURE_GATE_DRAFT`.
+- Approved and locked `BIM-AG-P0-T004 v1.0`.
+- Locked SQLite sole ownership to `src/persistence/**`.
+- Locked persistence public-header neutrality.
+- Locked the neutral transaction-journal contract to `bim_transactions`.
+- Locked `PRAGMA user_version` as schema-version authority.
+- Locked Phase-0 schema version 1 and atomic `0 -> 1` bootstrap behavior.
+- Locked fail-closed behavior for newer or unrecognized database states.
+- Locked journal atomicity, reopen durability, rollback proof, duplicate-ID
+  rejection, binary payload fidelity and deterministic ordering.
+- Locked R12/R13 architecture enforcement plus negative fixtures.
+- Included the previously deferred SQLite CMake target-name maintenance
+  correction without moving the frozen vcpkg baseline.
+- Corrected a pre-commit packaging-only `Draft` label in the approved gate
+  title/document ID; no architecture semantics changed.
+- Recorded ACR=NONE.
+- Production implementation remains NOT AUTHORIZED.

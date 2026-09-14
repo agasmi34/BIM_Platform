@@ -299,3 +299,90 @@ Next:
 
 Claude implements the locked P0-T003 candidate and returns the required
 handover to Architecture Authority.
+
+## 2026-09-14 - P0-T003 Acceptance, Integration and Closure
+
+| Event | Result |
+|---|---|
+| Implementation commit | `5bac905e29c1390c90cc6807a5d92ab217764396` |
+| Integrated tree | `3121a74e2e5edf960adfe5f36d0684541c805a1a` |
+| Integration method | FAST-FORWARD |
+| Full Verification Runbook D | CLOSED PASS |
+| Authoritative Runbook D attempt | ATTEMPT 5 |
+| Kimi BLOCKER | 0 |
+| Kimi MAJOR | 0 |
+| Kimi MINOR | 1 |
+| Kimi NOTE | 3 |
+| Task worktree | REMOVED |
+| Local task branch | DELETED |
+| ACR | NONE |
+
+P0-T003 is accepted, closed and integrated locally on `main`.
+
+The four non-blocking independent-review findings remain deferred follow-up
+items and are not silently folded into P0-T004.
+
+## P0-T004 - Persistence Spike
+
+Architecture Gate:
+
+BIM-AG-P0-T004 v1.0
+
+Status:
+
+ARCHITECTURE GATE APPROVED + LOCKED
+
+Date:
+
+2026-09-14
+
+Authoritative parent:
+
+5bac905e29c1390c90cc6807a5d92ab217764396
+
+Authoritative parent tree:
+
+3121a74e2e5edf960adfe5f36d0684541c805a1a
+
+Branch:
+
+task/P0-T004-persistence-spike
+
+Worktree:
+
+D:\Projects\BIM-Platform-WT-P0-T004
+
+Discovery:
+
+PASS
+
+Discovery classification:
+
+READY_FOR_ARCHITECTURE_GATE_DRAFT
+
+Architecture direction:
+
+- SQLite remains private to `bim_persistence`;
+- schema version authority is `PRAGMA user_version`;
+- schema version 1 contains only the Phase-0 journal persistence needed by
+  this spike;
+- `bim_transactions` owns the neutral journal contract;
+- persistence proves atomic append, close/reopen durability, rollback,
+  duplicate-ID rejection, binary payload integrity and deterministic order;
+- R12 enforces SQLite sole ownership;
+- R13 enforces persistence public-header neutrality;
+- frozen vcpkg baseline remains unchanged.
+
+ACR:
+
+NONE
+
+Implementation:
+
+NOT AUTHORIZED
+
+Next:
+
+Prepare the P0-T004 Implementation Brief, perform Architecture Authority
+review, and issue a separate implementation authorization before any
+production source implementation.
