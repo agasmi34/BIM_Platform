@@ -177,13 +177,26 @@ Implementation Brief:
 
 APPROVED + RELEASED
 
+Implementation Authorization:
+
+BIM-AUTH-P0-T004 v1.0
+
 Implementation:
+
+AUTHORIZED
+
+Implementation commit:
+
+NOT AUTHORIZED
+
+Main integration:
 
 NOT AUTHORIZED
 
 ## Next state transition
 
-Prepare and record the separate P0-T004 Implementation Authorization.
+Claude begins P0-T004 Phase A on the authorized task branch/worktree and
+proceeds through the released brief using minimum necessary delta.
 
-Production implementation remains blocked until Architecture Authority issues
-that explicit authorization.
+After implementation verification and candidate freeze, control returns to
+Architecture Authority before independent review or any implementation commit.

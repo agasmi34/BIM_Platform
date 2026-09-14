@@ -530,3 +530,17 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Confirmed ACR=NONE.
 - This release does NOT authorize production implementation.
 - A separate P0-T004 Implementation Authorization is still required.
+
+## 2026-09-14 - P0-T004 Implementation Authorized
+
+- Issued `BIM-AUTH-P0-T004 v1.0`.
+- Bound authorization to brief-release commit
+  `4bc4bed53c9f8c4c1e31a247fc4dc23a5d691e68` and tree
+  `f9d0db2bbf99fb6e3f58473c19a82859c6e28dfd`.
+- Authorized Claude to begin P0-T004 production implementation at Phase A.
+- Implementation must remain inside the frozen Gate and released Brief.
+- Implementation must stop at candidate freeze before commit.
+- Implementation commit remains NOT AUTHORIZED.
+- Main integration remains NOT AUTHORIZED.
+- Remote push remains NOT AUTHORIZED.
+- ACR remains NONE.

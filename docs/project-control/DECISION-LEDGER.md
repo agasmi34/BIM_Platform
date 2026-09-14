@@ -486,3 +486,37 @@ NOT YET GRANTED
 
 A separate explicit Implementation Authorization document/commit is required
 before Claude may edit production source.
+
+## 2026-09-14 - P0-T004 Implementation Authorization
+
+Authorization:
+
+BIM-AUTH-P0-T004 v1.0
+
+Authorization baseline commit:
+
+4bc4bed53c9f8c4c1e31a247fc4dc23a5d691e68
+
+Authorization baseline tree:
+
+f9d0db2bbf99fb6e3f58473c19a82859c6e28dfd
+
+Decision:
+
+IMPLEMENTATION AUTHORIZED
+
+Implementation Engineer:
+
+Claude
+
+Authority boundaries:
+
+- Claude may edit production source only inside frozen P0-T004 scope.
+- Claude must follow Brief phases A-K.
+- Out-of-scope production edits require AA STOP/review first.
+- No implementation commit is authorized.
+- No main integration is authorized.
+- No remote push is authorized.
+- Candidate returns to AA after verification/freeze.
+- Kimi remains read-only/minimum-delta.
+- ACR remains NONE.

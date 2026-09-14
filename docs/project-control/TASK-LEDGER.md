@@ -422,3 +422,48 @@ Next gate:
 
 Architecture Authority must issue a separate P0-T004 Implementation
 Authorization before production source editing begins.
+
+## 2026-09-14 - P0-T004 Implementation Authorization
+
+Authorization:
+
+BIM-AUTH-P0-T004 v1.0
+
+Status:
+
+IMPLEMENTATION AUTHORIZED
+
+Bound baseline:
+
+- Brief-release commit:
+  `4bc4bed53c9f8c4c1e31a247fc4dc23a5d691e68`
+- Brief-release tree:
+  `f9d0db2bbf99fb6e3f58473c19a82859c6e28dfd`
+
+Implementation Engineer:
+
+Claude
+
+Authorized start:
+
+Phase A - baseline inspection
+
+Required stop:
+
+Candidate freeze / Architecture Authority review
+
+Implementation commit:
+
+NOT AUTHORIZED
+
+Main integration:
+
+NOT AUTHORIZED
+
+Remote push:
+
+NOT AUTHORIZED
+
+ACR:
+
+NONE
