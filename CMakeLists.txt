@@ -53,7 +53,8 @@ include(BimSanitizers)
 # First-party module composition, in dependency-safe (topological) order.
 #
 # Allowed dependency direction (Architecture Gate section 8.1 / Implementation
-# Brief section 7):
+# Brief section 7; extended P0-T003 - Implementation Brief
+# BIM-TASK-P0-T003-CLAUDE v1.0 sections 4, 9, 11):
 #
 #   foundation
 #     ^
@@ -69,8 +70,15 @@ include(BimSanitizers)
 #   geometry_occt --> geometry_api + foundation + OCCT
 #   persistence   --> model + transactions + foundation + SQLite
 #
-# Future modules (interop/ifc, interop/dwg, interop/rvt, documentation,
-# viewport, desktop) are NOT added here in P0-T001. They contain only a
+#   viewport        --> (nothing first-party, not even foundation) + stdlib only
+#   viewport_bgfx   --> viewport + bgfx
+#   desktop (bim_desktop_spike) --> viewport + viewport_bgfx + Qt6::Widgets
+#
+# viewport/viewport_bgfx/desktop are added as of P0-T003 - Desktop +
+# Viewport Spike (previously boundary-README-only placeholder directories
+# through P0-T001/P0-T002, per the prior revision of this comment block).
+# Remaining future modules (interop/ifc, interop/dwg, interop/rvt,
+# documentation) are still NOT added here - they still contain only a
 # boundary README.md (Implementation Brief Phase G).
 # ------------------------------------------------------------------------------
 add_subdirectory(src/foundation)
@@ -82,6 +90,9 @@ add_subdirectory(src/query)
 add_subdirectory(src/commands)
 add_subdirectory(src/geometry/occt)
 add_subdirectory(src/persistence)
+add_subdirectory(src/viewport)
+add_subdirectory(src/viewport/bgfx)
+add_subdirectory(src/desktop)
 
 if(BUILD_TESTING)
     add_subdirectory(tests)

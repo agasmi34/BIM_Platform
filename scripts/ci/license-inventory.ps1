@@ -4,13 +4,19 @@
  (Implementation Brief Phase L / Phase M, logical job 5 of 5).
 
  Copies the real, vcpkg-installed copyright/usage notice files for every
- direct P0-T001 dependency into third_party/licenses/, then verifies all
- five are present. Fails if any is missing. Never fabricates or hand-retypes
- license text (Implementation Brief section 11: "Do not insert fake SHAs or
- fake PASS results.").
+ direct dependency into third_party/licenses/, then verifies all are
+ present. Fails if any is missing. Never fabricates or hand-retypes license
+ text (Implementation Brief section 11: "Do not insert fake SHAs or fake
+ PASS results.").
 
- Exit code: 0 only if all five direct dependencies have a captured license
- file.
+ P0-T003 Desktop + Viewport Spike (Implementation Brief
+ BIM-TASK-P0-T003-CLAUDE v1.0 section 9; Implementation Authorization
+ section 5) adds two more direct dependencies to $DirectDependencies:
+ qtbase and bgfx - both newly linked by this task (bim_desktop_spike and
+ bim_viewport_bgfx respectively). The five P0-T001 dependencies
+ (opencascade, sqlite3, catch2, fmt, spdlog) are unchanged.
+
+ Exit code: 0 only if every direct dependency has a captured license file.
 
  Usage: powershell -File scripts\ci\license-inventory.ps1 [-BuildDir <path>] [-Triplet <triplet>]
 ==============================================================================
@@ -29,7 +35,7 @@ if (-not $BuildDir) {
     $BuildDir = Join-Path $RepoRoot 'build\ci-win-msvc'
 }
 $LicensesDir = Join-Path $RepoRoot 'third_party\licenses'
-$DirectDependencies = @('opencascade', 'sqlite3', 'catch2', 'fmt', 'spdlog')
+$DirectDependencies = @('opencascade', 'sqlite3', 'catch2', 'fmt', 'spdlog', 'qtbase', 'bgfx')
 
 try {
     Write-CiSection 'license-inventory: locate vcpkg installed tree'

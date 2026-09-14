@@ -1,12 +1,27 @@
-# src/desktop/ (boundary placeholder)
+# src/desktop/ (P0-T003 Desktop + Viewport Spike)
 
-Reserved for the Qt desktop application shell. **Not built in P0-T001** -
-this directory intentionally contains no `CMakeLists.txt` and is not added
-via `add_subdirectory()` from the root `CMakeLists.txt`.
+Built as of **P0-T003 - Desktop + Viewport Spike** (Implementation Brief
+BIM-TASK-P0-T003-CLAUDE v1.0; Implementation Authorization
+`cf7a971903d8103143b2b94e94a4d185d86ce42b`). Was a boundary placeholder
+(no `CMakeLists.txt`, not added via `add_subdirectory()`) through P0-T001
+and P0-T002; the root `CMakeLists.txt` now composes `bim_desktop_spike`
+here (`src/desktop/CMakeLists.txt`), the interactive Qt Widgets spike
+application (`MainWindow` / `ViewportWindow` / `ViewportBridge` /
+spike scenes / headless evidence mode).
 
-Scope owner: **P0-T003 - Desktop + Viewport Spike** (Qt stable/LTS version
-lock; see `docs/gates/P0-T001_Architecture_Gate_Package_v1.0.md` section 23,
-AG-008/AG-009). Qt is deliberately not linked anywhere in this repository as
-of P0-T001. When built, this module MUST reach the rest of the system only
-through application-facing public APIs and must never hold a raw DB or raw
-OCCT dependency (Architecture Gate section 8.1).
+`bim_desktop_spike` is the ONLY target permitted to include Qt headers or
+link Qt anywhere in this repository (`tools/architecture_checker.cmake`
+rule R9/QT_DESKTOP_ONLY) - Qt Widgets only (Phase A fact: qtbase 6.11.1#1
+Widgets-only, Qt Quick forbidden). It links `bim::viewport` and
+`bim::viewport_bgfx` and never includes a bgfx or D3D/Windows native
+header directly itself - all rendering goes through
+`bim::viewport_bgfx::Renderer`'s pimpl-based public API
+(`src/viewport/bgfx/include/bim/viewport_bgfx/renderer.hpp`). Must never
+hold a raw DB or raw OCCT dependency (Architecture Gate section 8.1) -
+unchanged from the pre-P0-T003 boundary rule.
+
+Per the Implementation Brief and Implementation Authorization, every file
+under this directory authored during the P0-T003 authoring pass is
+UNVERIFIED - written without a build/execution channel in this session -
+see `docs/evidence/P0-T003/CLAUDE_HANDOVER.md` for the full disclosure and
+the Operator's required next steps.

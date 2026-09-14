@@ -21,6 +21,22 @@
    - arch_geometry_occt_only_kernel_owner  (rule R7: no OCCT token appears
      anywhere under src/ outside src/geometry/occt/**)
 
+ P0-T003 Desktop + Viewport Spike (Implementation Brief
+ BIM-TASK-P0-T003-CLAUDE v1.0 section 20 "Architecture enforcement" -
+ corrected here per AA Source Review Round 1 MINOR fix; previously cited
+ section 24, which is actually "Verification Runbook D"; Implementation
+ Authorization section 9) adds eight more required tests, four real-tree
+ positive checks and their four fixture-rejection negative-self-tests
+ (rules R8-R11):
+   - arch_viewport_public_neutral              (rule R8, real tree)
+   - arch_p0_t003_viewport_fixture_rejected    (rule R8, bad fixture)
+   - arch_qt_desktop_only                      (rule R9, real tree)
+   - arch_p0_t003_qt_fixture_rejected          (rule R9, bad fixture)
+   - arch_bgfx_viewport_owner                  (rule R10, real tree)
+   - arch_p0_t003_bgfx_fixture_rejected        (rule R10, bad fixture)
+   - arch_no_direct_d3d                        (rule R11, real tree)
+   - arch_p0_t003_d3d_fixture_rejected         (rule R11, bad fixture)
+
  v1.5 fix (architecture review "P0-T001 Architecture Review - Verification
  Candidate v1.4" - ONE FINAL BLOCKER): a single broad
  `ctest -R "^arch_"` invocation does not prove all required tests were
@@ -34,6 +50,9 @@
    ctest -R "^arch_checker_detects_violation$"         --output-on-failure --no-tests=error
    ctest -R "^arch_geometry_api_no_occt_leak$"         --output-on-failure --no-tests=error
    ctest -R "^arch_geometry_occt_only_kernel_owner$"   --output-on-failure --no-tests=error
+   ... and, as of P0-T003, the eight tests listed above (see $RequiredTests
+   below for the authoritative, current list rather than this illustrative
+   excerpt)
 
  `--no-tests=error` makes ctest itself exit non-zero if the exact-name
  regex matches zero registered tests (i.e. the test is missing/not
@@ -75,7 +94,15 @@ $RequiredTests = @(
     'arch_repository_boundaries',
     'arch_checker_detects_violation',
     'arch_geometry_api_no_occt_leak',
-    'arch_geometry_occt_only_kernel_owner'
+    'arch_geometry_occt_only_kernel_owner',
+    'arch_viewport_public_neutral',
+    'arch_p0_t003_viewport_fixture_rejected',
+    'arch_qt_desktop_only',
+    'arch_p0_t003_qt_fixture_rejected',
+    'arch_bgfx_viewport_owner',
+    'arch_p0_t003_bgfx_fixture_rejected',
+    'arch_no_direct_d3d',
+    'arch_p0_t003_d3d_fixture_rejected'
 )
 
 try {

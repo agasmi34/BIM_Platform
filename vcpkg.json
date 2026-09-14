@@ -1,7 +1,7 @@
 {
   "name": "bim-platform",
-  "version-string": "0.0.1-p0-t001",
-  "description": "BIM Platform engineering repository - P0-T001 toolchain scaffold. bim-platform is an internal engineering identifier and is not the commercial product name.",
+  "version-string": "0.0.1-p0-t003",
+  "description": "BIM Platform engineering repository - P0-T001 toolchain scaffold, extended P0-T003 (Desktop + Viewport Spike). bim-platform is an internal engineering identifier and is not the commercial product name.",
   "dependencies": [
     {
       "name": "opencascade",
@@ -10,6 +10,20 @@
     "sqlite3",
     "catch2",
     "fmt",
-    "spdlog"
+    "spdlog",
+    {
+      "name": "qtbase",
+      "default-features": false,
+      "features": [
+        "widgets"
+      ]
+    },
+    {
+      "name": "bgfx",
+      "default-features": false,
+      "features": [
+        "tools"
+      ]
+    }
   ]
 }

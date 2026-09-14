@@ -156,3 +156,37 @@ add_test(
     NAME integration_geometry_occt_evidence
     COMMAND p0_t002_geometry_evidence --json ${CMAKE_BINARY_DIR}/evidence/P0-T002/p0_t002_geometry_evidence.ctest.json
 )
+
+# --- P0-T003 Desktop + Viewport Spike (Implementation Brief
+# BIM-TASK-P0-T003-CLAUDE v1.0 section 24; section 12 "headless/test
+# split") - bim::viewport_bgfx integration tests. Both run against bgfx's
+# headless/noop backend (RendererCreateInfo::headless = true), so they
+# require no live D3D11 device and no visible window - safe under CI/CTest
+# exactly like integration_geometry_occt_probe requires no interactive
+# session.
+
+add_executable(integration_viewport_bgfx_headless
+    integration_viewport_bgfx_headless.cpp
+)
+target_link_libraries(integration_viewport_bgfx_headless
+    PRIVATE
+        bim::viewport
+        bim::viewport_bgfx
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_viewport_bgfx_headless PRIVATE cxx_std_20)
+bim_apply_warnings(integration_viewport_bgfx_headless)
+add_test(NAME integration_viewport_bgfx_headless COMMAND integration_viewport_bgfx_headless)
+
+add_executable(integration_viewport_bgfx_resource_lifecycle
+    integration_viewport_bgfx_resource_lifecycle.cpp
+)
+target_link_libraries(integration_viewport_bgfx_resource_lifecycle
+    PRIVATE
+        bim::viewport
+        bim::viewport_bgfx
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_viewport_bgfx_resource_lifecycle PRIVATE cxx_std_20)
+bim_apply_warnings(integration_viewport_bgfx_resource_lifecycle)
+add_test(NAME integration_viewport_bgfx_resource_lifecycle COMMAND integration_viewport_bgfx_resource_lifecycle)

@@ -39,3 +39,58 @@ target_link_libraries(unit_geometry_api_contract
 target_compile_features(unit_geometry_api_contract PRIVATE cxx_std_20)
 bim_apply_warnings(unit_geometry_api_contract)
 add_test(NAME unit_geometry_api_contract COMMAND unit_geometry_api_contract)
+
+# --- P0-T003 Desktop + Viewport Spike (Implementation Brief
+# BIM-TASK-P0-T003-CLAUDE v1.0 section 24) - the neutral bim::viewport
+# contract's unit tests. Each links ONLY bim::viewport (never
+# bim::viewport_bgfx) - a successful build of these targets is itself
+# mechanical proof that bim::viewport needs no bgfx/Qt/D3D symbol, mirroring
+# unit_geometry_api_contract's "link only the neutral layer" pattern above.
+
+add_executable(unit_viewport_mesh_contract
+    unit_viewport_mesh_contract.cpp
+)
+target_link_libraries(unit_viewport_mesh_contract
+    PRIVATE
+        bim::viewport
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_viewport_mesh_contract PRIVATE cxx_std_20)
+bim_apply_warnings(unit_viewport_mesh_contract)
+add_test(NAME unit_viewport_mesh_contract COMMAND unit_viewport_mesh_contract)
+
+add_executable(unit_viewport_camera
+    unit_viewport_camera.cpp
+)
+target_link_libraries(unit_viewport_camera
+    PRIVATE
+        bim::viewport
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_viewport_camera PRIVATE cxx_std_20)
+bim_apply_warnings(unit_viewport_camera)
+add_test(NAME unit_viewport_camera COMMAND unit_viewport_camera)
+
+add_executable(unit_viewport_ray
+    unit_viewport_ray.cpp
+)
+target_link_libraries(unit_viewport_ray
+    PRIVATE
+        bim::viewport
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_viewport_ray PRIVATE cxx_std_20)
+bim_apply_warnings(unit_viewport_ray)
+add_test(NAME unit_viewport_ray COMMAND unit_viewport_ray)
+
+add_executable(unit_viewport_lifecycle
+    unit_viewport_lifecycle.cpp
+)
+target_link_libraries(unit_viewport_lifecycle
+    PRIVATE
+        bim::viewport
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_viewport_lifecycle PRIVATE cxx_std_20)
+bim_apply_warnings(unit_viewport_lifecycle)
+add_test(NAME unit_viewport_lifecycle COMMAND unit_viewport_lifecycle)
