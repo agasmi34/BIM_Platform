@@ -386,3 +386,39 @@ Next:
 Prepare the P0-T004 Implementation Brief, perform Architecture Authority
 review, and issue a separate implementation authorization before any
 production source implementation.
+
+## 2026-09-14 - P0-T004 Implementation Brief Release
+
+Brief:
+
+BIM-TASK-P0-T004-CLAUDE v1.0
+
+Status:
+
+APPROVED + RELEASED
+
+Bound baseline:
+
+- Gate commit: `14d3d66b89c7d7597777e3fcc0e2e32257499d93`
+- Gate tree: `b9f362929e47ae7a4342b8d60a2b638209e465d0`
+
+Implementation Engineer:
+
+Claude
+
+Independent Reviewer:
+
+Kimi - read-only / minimum-delta
+
+ACR:
+
+NONE
+
+Implementation:
+
+NOT AUTHORIZED
+
+Next gate:
+
+Architecture Authority must issue a separate P0-T004 Implementation
+Authorization before production source editing begins.

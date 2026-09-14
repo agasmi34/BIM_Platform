@@ -173,13 +173,17 @@ Current ACR:
 
 NONE
 
+Implementation Brief:
+
+APPROVED + RELEASED
+
 Implementation:
 
 NOT AUTHORIZED
 
 ## Next state transition
 
-Prepare and review the P0-T004 Implementation Brief.
+Prepare and record the separate P0-T004 Implementation Authorization.
 
 Production implementation remains blocked until Architecture Authority issues
-a separate explicit P0-T004 implementation authorization.
+that explicit authorization.

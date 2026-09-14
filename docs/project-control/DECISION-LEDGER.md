@@ -444,3 +444,45 @@ NONE
 Implementation:
 
 NOT AUTHORIZED
+
+## 2026-09-14 - P0-T004 Implementation Brief Release
+
+Implementation Brief:
+
+BIM-TASK-P0-T004-CLAUDE v1.0
+
+Status:
+
+APPROVED + RELEASED
+
+Architecture Gate commit:
+
+14d3d66b89c7d7597777e3fcc0e2e32257499d93
+
+Architecture Gate tree:
+
+b9f362929e47ae7a4342b8d60a2b638209e465d0
+
+Decisions:
+
+- Claude shall implement only the frozen P0-T004 Persistence Spike.
+- Production scope is limited to the neutral transaction-journal contract,
+  private SQLite persistence infrastructure, schema v1, journal semantics,
+  R12/R13 enforcement, targeted tests and standalone evidence.
+- All SQLite APIs remain private to `src/persistence/**`.
+- The public persistence surface remains SQLite-neutral.
+- `bim_transactions` remains SQLite-independent.
+- The existing SQLite memory probe remains passing.
+- The vcpkg baseline remains frozen.
+- Implementation must proceed in controlled phases A-K.
+- Claude must not create an implementation commit.
+- Main integration remains prohibited.
+- Independent review remains read-only/minimum-delta.
+- ACR remains NONE.
+
+Implementation authorization:
+
+NOT YET GRANTED
+
+A separate explicit Implementation Authorization document/commit is required
+before Claude may edit production source.

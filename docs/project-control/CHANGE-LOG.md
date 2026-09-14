@@ -513,3 +513,20 @@ exists yet); once Phase P commits land, this log should be read alongside
   title/document ID; no architecture semantics changed.
 - Recorded ACR=NONE.
 - Production implementation remains NOT AUTHORIZED.
+
+## 2026-09-14 - P0-T004 Implementation Brief Released
+
+- Architecture Authority approved and released
+  `BIM-TASK-P0-T004-CLAUDE v1.0`.
+- Bound the brief to Architecture Gate commit
+  `14d3d66b89c7d7597777e3fcc0e2e32257499d93` and tree
+  `b9f362929e47ae7a4342b8d60a2b638209e465d0`.
+- Locked implementation phases A-K, minimum-delta source discipline,
+  R12/R13 enforcement, evidence requirements and acceptance mapping.
+- Recorded the expected implementation scope around
+  `src/transactions/**`, `src/persistence/**`, P0-T004 tests, architecture
+  fixtures/checker/CI, and evidence handover.
+- Confirmed the frozen vcpkg baseline must not move.
+- Confirmed ACR=NONE.
+- This release does NOT authorize production implementation.
+- A separate P0-T004 Implementation Authorization is still required.
