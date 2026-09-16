@@ -94,3 +94,20 @@ target_link_libraries(unit_viewport_lifecycle
 target_compile_features(unit_viewport_lifecycle PRIVATE cxx_std_20)
 bim_apply_warnings(unit_viewport_lifecycle)
 add_test(NAME unit_viewport_lifecycle COMMAND unit_viewport_lifecycle)
+
+# unit_transactions_journal_contract - P0-T004 Phase B (Implementation
+# Brief BIM-TASK-P0-T004-CLAUDE v1.0 section 16 / Architecture Gate
+# BIM-AG-P0-T004 v1.0 section 5). Links ONLY bim::transactions (never
+# bim::persistence) - a successful build is itself mechanical proof the
+# neutral journal contract needs no persistence/SQLite symbol.
+add_executable(unit_transactions_journal_contract
+    unit_transactions_journal_contract.cpp
+)
+target_link_libraries(unit_transactions_journal_contract
+    PRIVATE
+        bim::transactions
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_transactions_journal_contract PRIVATE cxx_std_20)
+bim_apply_warnings(unit_transactions_journal_contract)
+add_test(NAME unit_transactions_journal_contract COMMAND unit_transactions_journal_contract)

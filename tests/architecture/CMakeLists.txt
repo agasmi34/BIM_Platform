@@ -149,3 +149,58 @@ add_test(
             -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
 )
 set_tests_properties(arch_p0_t003_d3d_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# --- P0-T004 Persistence Spike Phase F additions (Architecture Enforcement) -
+# rules R12-R13 (tools/architecture_checker.cmake), each run both against the
+# real src/ tree (must PASS) and against its own deliberately-broken fixture
+# under tests/fixtures/ (the checker must FAIL there; WILL_FAIL TRUE inverts
+# that, matching the P0-T003 pattern above).
+
+# arch_sqlite_persistence_only - R12 against the real src/ tree: no raw
+# SQLite API token (sqlite3_*, SQLITE_*, sqlite3*, #include <sqlite3.h>)
+# appears anywhere under src/ outside src/persistence/** - bim_persistence
+# remains the sole raw-SQLite owner.
+add_test(
+    NAME arch_sqlite_persistence_only
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=SQLITE_PERSISTENCE_ONLY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p0_t004_sqlite_fixture_rejected - R12 against
+# tests/fixtures/p0_t004_bad_sqlite_outside_persistence/, which deliberately
+# puts a raw SQLite token under model/src/ (outside persistence/**). The
+# checker must FAIL here.
+add_test(
+    NAME arch_p0_t004_sqlite_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p0_t004_bad_sqlite_outside_persistence
+            -DBIM_ARCH_CHECK_RULE=SQLITE_PERSISTENCE_ONLY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p0_t004_sqlite_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# arch_persistence_public_neutral - R13 against the real src/ tree: zero raw
+# SQLite tokens under src/persistence/include/** - bim::persistence's public
+# contract stays vendor-neutral.
+add_test(
+    NAME arch_persistence_public_neutral
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=PERSISTENCE_PUBLIC_NEUTRAL
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p0_t004_persistence_public_fixture_rejected - R13 against
+# tests/fixtures/p0_t004_bad_persistence_public_sqlite/, which deliberately
+# leaks a raw SQLite token into a persistence/include/** header. The checker
+# must FAIL here.
+add_test(
+    NAME arch_p0_t004_persistence_public_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p0_t004_bad_persistence_public_sqlite
+            -DBIM_ARCH_CHECK_RULE=PERSISTENCE_PUBLIC_NEUTRAL
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p0_t004_persistence_public_fixture_rejected PROPERTIES WILL_FAIL TRUE)

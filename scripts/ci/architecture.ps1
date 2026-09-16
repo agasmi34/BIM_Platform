@@ -37,6 +37,14 @@
    - arch_no_direct_d3d                        (rule R11, real tree)
    - arch_p0_t003_d3d_fixture_rejected         (rule R11, bad fixture)
 
+ P0-T004 Persistence Spike Phase F (Architecture Enforcement) adds four more
+ required tests, two real-tree positive checks and their two
+ fixture-rejection negative-self-tests (rules R12-R13):
+   - arch_sqlite_persistence_only              (rule R12, real tree)
+   - arch_p0_t004_sqlite_fixture_rejected      (rule R12, bad fixture)
+   - arch_persistence_public_neutral           (rule R13, real tree)
+   - arch_p0_t004_persistence_public_fixture_rejected (rule R13, bad fixture)
+
  v1.5 fix (architecture review "P0-T001 Architecture Review - Verification
  Candidate v1.4" - ONE FINAL BLOCKER): a single broad
  `ctest -R "^arch_"` invocation does not prove all required tests were
@@ -50,9 +58,9 @@
    ctest -R "^arch_checker_detects_violation$"         --output-on-failure --no-tests=error
    ctest -R "^arch_geometry_api_no_occt_leak$"         --output-on-failure --no-tests=error
    ctest -R "^arch_geometry_occt_only_kernel_owner$"   --output-on-failure --no-tests=error
-   ... and, as of P0-T003, the eight tests listed above (see $RequiredTests
-   below for the authoritative, current list rather than this illustrative
-   excerpt)
+   ... and, as of P0-T003, the eight tests listed above, and, as of P0-T004
+   Phase F, four more (see $RequiredTests below for the authoritative,
+   current list rather than this illustrative excerpt)
 
  `--no-tests=error` makes ctest itself exit non-zero if the exact-name
  regex matches zero registered tests (i.e. the test is missing/not
@@ -102,7 +110,11 @@ $RequiredTests = @(
     'arch_bgfx_viewport_owner',
     'arch_p0_t003_bgfx_fixture_rejected',
     'arch_no_direct_d3d',
-    'arch_p0_t003_d3d_fixture_rejected'
+    'arch_p0_t003_d3d_fixture_rejected',
+    'arch_sqlite_persistence_only',
+    'arch_p0_t004_sqlite_fixture_rejected',
+    'arch_persistence_public_neutral',
+    'arch_p0_t004_persistence_public_fixture_rejected'
 )
 
 try {

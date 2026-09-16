@@ -20,22 +20,25 @@
 # rejects the fixture).
 #
 # BIM_ARCH_CHECK_RULE (added P0-T002 Phase C-M, Amendment 01 AA-C09; extended
-# P0-T003) selects which rule group to run:
-#   ALL                          (default) - every rule below (R1-R11)
+# P0-T003; extended P0-T004 Phase F) selects which rule group to run:
+#   ALL                          (default) - every rule below (R1-R13)
 #   GEOMETRY_API_NO_OCCT_LEAK    - only R6
 #   GEOMETRY_OCCT_ONLY_KERNEL_OWNER - only R7
 #   VIEWPORT_PUBLIC_NEUTRAL      - only R8  (P0-T003)
 #   QT_DESKTOP_ONLY              - only R9  (P0-T003)
 #   BGFX_VIEWPORT_OWNER          - only R10 (P0-T003)
 #   NO_DIRECT_D3D                - only R11 (P0-T003)
+#   SQLITE_PERSISTENCE_ONLY      - only R12 (P0-T004 Phase F)
+#   PERSISTENCE_PUBLIC_NEUTRAL   - only R13 (P0-T004 Phase F)
 # This selector exists so each single-rule CTest test (arch_geometry_api_no_occt_leak,
 # arch_geometry_occt_only_kernel_owner, and, as of P0-T003,
 # arch_viewport_public_neutral / arch_qt_desktop_only / arch_bgfx_viewport_owner /
-# arch_no_direct_d3d - tests/architecture/CMakeLists.txt) can each exercise
-# exactly one rule, while arch_repository_boundaries and
-# arch_checker_detects_violation continue to omit BIM_ARCH_CHECK_RULE entirely
-# and so continue to run every rule (ALL), preserving their pre-P0-T002
-# behavior unchanged.
+# arch_no_direct_d3d, and, as of P0-T004 Phase F,
+# arch_sqlite_persistence_only / arch_persistence_public_neutral -
+# tests/architecture/CMakeLists.txt) can each exercise exactly one rule,
+# while arch_repository_boundaries and arch_checker_detects_violation
+# continue to omit BIM_ARCH_CHECK_RULE entirely and so continue to run
+# every rule (ALL), preserving their pre-P0-T002 behavior unchanged.
 #
 # Rules enforced:
 #   R1 - no OCCT/Qt/SQLite/ODA/IfcOpenShell tokens in <root>/model/include/**
@@ -77,7 +80,55 @@
 #        direct D3D11" framing: this also forbids the dxgi.h/IDXGI
 #        tokens, disclosed as an intentional addition rather than a
 #        literal restatement of the Brief text.
+#   R12 - (P0-T004 Phase F) SQLITE_PERSISTENCE_ONLY: raw SQLite API
+#        ownership belongs only to <root>/persistence/**. No SQLite
+#        implementation token (#include <sqlite3.h>, #include "sqlite3.h",
+#        sqlite3_, SQLITE_, sqlite3*, sqlite3 *) may appear in any
+#        first-party C/C++ source/header file under BIM_ARCH_CHECK_ROOT
+#        outside <root>/persistence/** (Architecture Gate rule
+#        R12/SQLITE_PERSISTENCE_ONLY). Mirrors R7/R9/R10's
+#        ownership-partition pattern exactly.
+#   R13 - (P0-T004 Phase F) PERSISTENCE_PUBLIC_NEUTRAL: bim::persistence's
+#        public contract stays vendor-neutral - no SQLite implementation
+#        token under <root>/persistence/include/** (Architecture Gate rule
+#        R13/PERSISTENCE_PUBLIC_NEUTRAL). This is the public-boundary rule;
+#        R12 is the ownership rule. Deliberately scoped to
+#        persistence/include/** only, so it never scans
+#        <root>/persistence/src/detail/** - private detail headers there
+#        (schema_v1.hpp, journal_store.hpp) are not public API and are not
+#        in this rule's file list at all, so an opaque private sqlite3*
+#        signature there can never trigger R13 (see Implementation Brief
+#        BIM-TASK-P0-T004-CLAUDE v1.0 Phase F section 7).
 #
+# ==============================================================================
+# P0-T004 PHASE F ADDITION NOTE - R12/SQLITE_PERSISTENCE_ONLY,
+# R13/PERSISTENCE_PUBLIC_NEUTRAL
+#
+# Added to mechanically enforce the persistence/SQLite boundaries already
+# implemented and proven in Phases B-E (Architecture Gate AG-P0T004-001/002;
+# Implementation Brief BIM-TASK-P0-T004-CLAUDE v1.0 Phase F). Both rules
+# reuse existing helpers unchanged rather than inventing new scanning
+# machinery: R12 mirrors R7/R9/R10's ownership-partition pattern
+# (bim_scan_files_for_tokens_ignoring_comments() against the
+# outside-persistence-owner file subset) and R13 mirrors R6/R8's
+# public-header-neutrality pattern (the same comment-aware helper against
+# only the persistence/include/** file list). Plain substring tokens are
+# used throughout (like R2's/R3's existing "sqlite3" token), not the
+# identifier-boundary-aware helpers RD1-05/RD1-05A added for "Handle(" and
+# "bgfx::" - none of R12/R13's tokens share those tokens' known
+# suffix-collision false-positive class (a real identifier merely ENDING in
+# "sqlite3_"/"SQLITE_"/"sqlite3*" would be a false positive in principle,
+# but no such identifier exists anywhere in this codebase at the time of
+# this addition - see this phase's own report for the real-tree PASS
+# evidence).
+#
+# This addition was authored without a live command-execution channel in
+# this session (no execution channel - consistent with every UNVERIFIED
+# disclosure elsewhere in this file and in this task's own Phase D/E
+# reports) and could not be self-validated against real fixture input by
+# actually running cmake -P. The Windows Execution Operator's first real
+# `ctest -R "^arch_"` run against these two new rules is their first actual
+# execution.
 # ==============================================================================
 # ROUND 7 REVISION NOTE - R6/R7 COMMENT-INSENSITIVE SCANNING FALSE-POSITIVE FIX
 # (post-format authoritative Windows build/test attempt reached real
@@ -252,6 +303,8 @@ set(_bim_valid_rules
     "QT_DESKTOP_ONLY"
     "BGFX_VIEWPORT_OWNER"
     "NO_DIRECT_D3D"
+    "SQLITE_PERSISTENCE_ONLY"
+    "PERSISTENCE_PUBLIC_NEUTRAL"
 )
 list(FIND _bim_valid_rules "${BIM_ARCH_CHECK_RULE}" _bim_rule_idx)
 if(_bim_rule_idx EQUAL -1)
@@ -691,7 +744,11 @@ if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "GEOMETRY_
     )
     set(_r7_boundary_tokens "Handle(")
     bim_scan_files_for_tokens_ignoring_comments("${_non_occt_owner_files}" "${_r7_tokens}" "R7-occt-outside-kernel-owner")
-    bim_scan_files_for_boundary_tokens_ignoring_comments("${_non_occt_owner_files}" "${_r7_boundary_tokens}" "R7-occt-outside-kernel-owner")
+    # P0-T004 Phase F AA correction: OCCT Handle(...) is a case-sensitive C++
+    # construct. The prior case-insensitive boundary helper also matched the
+    # unrelated lowercase persistence accessor handle(). Keep identifier-boundary
+    # and comment stripping semantics, but require exact-case Handle( for R7.
+    bim_scan_files_for_case_sensitive_boundary_tokens_ignoring_comments("${_non_occt_owner_files}" "${_r7_boundary_tokens}" "R7-occt-outside-kernel-owner")
 endif()
 
 # ------------------------------------------------------------------------------
@@ -858,6 +915,64 @@ if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "NO_DIRECT
     )
     set(_r11_tokens "d3d11.h" "ID3D11" "D3D11_" "dxgi.h" "IDXGI")
     bim_scan_files_for_tokens_ignoring_comments("${_all_source_files_r11}" "${_r11_tokens}" "R11-no-direct-d3d")
+endif()
+
+# ------------------------------------------------------------------------------
+# R12 - raw SQLite API ownership belongs only to src/persistence
+# (SQLITE_PERSISTENCE_ONLY, P0-T004 Phase F). Mirrors R7/R9/R10's
+# ownership-partition pattern exactly: partition all first-party files by
+# whether they live under <root>/persistence/**, then scan only the
+# outside-owner subset for SQLite implementation tokens. Selectable alone
+# via BIM_ARCH_CHECK_RULE=SQLITE_PERSISTENCE_ONLY.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "SQLITE_PERSISTENCE_ONLY")
+    file(GLOB_RECURSE _all_source_files_r12
+        "${BIM_ARCH_CHECK_ROOT}/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/*.hxx"
+        "${BIM_ARCH_CHECK_ROOT}/*.cpp"
+        "${BIM_ARCH_CHECK_ROOT}/*.cc"
+    )
+    set(_persistence_dir "${BIM_ARCH_CHECK_ROOT}/persistence/")
+    set(_non_persistence_owner_files "")
+    foreach(f IN LISTS _all_source_files_r12)
+        string(FIND "${f}" "${_persistence_dir}" _owner_idx)
+        if(_owner_idx EQUAL -1)
+            list(APPEND _non_persistence_owner_files "${f}")
+        endif()
+    endforeach()
+    set(_r12_tokens
+        "#include <sqlite3.h>" "#include \"sqlite3.h\""
+        "sqlite3_" "SQLITE_" "sqlite3*" "sqlite3 *"
+    )
+    bim_scan_files_for_tokens_ignoring_comments("${_non_persistence_owner_files}" "${_r12_tokens}" "R12-sqlite-outside-persistence-owner")
+endif()
+
+# ------------------------------------------------------------------------------
+# R13 - bim::persistence's public contract stays vendor-neutral
+# (PERSISTENCE_PUBLIC_NEUTRAL, P0-T004 Phase F): no SQLite implementation
+# token under <root>/persistence/include/**. Mirrors R6/R8's
+# public-header-neutrality pattern: only the public include/** subtree is
+# globbed, so <root>/persistence/src/detail/** (private headers such as
+# schema_v1.hpp/journal_store.hpp, which do contain the opaque private
+# sqlite3* type) is never even in this rule's file list - not merely
+# tolerated by a token exception. Selectable alone via
+# BIM_ARCH_CHECK_RULE=PERSISTENCE_PUBLIC_NEUTRAL. R13 is specifically the
+# public-boundary rule; R12 above is the ownership rule.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "PERSISTENCE_PUBLIC_NEUTRAL")
+    file(GLOB_RECURSE _persistence_public_headers
+        "${BIM_ARCH_CHECK_ROOT}/persistence/include/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/persistence/include/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/persistence/include/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/persistence/include/*.hxx"
+    )
+    set(_r13_tokens
+        "#include <sqlite3.h>" "#include \"sqlite3.h\""
+        "sqlite3_" "SQLITE_" "sqlite3*" "sqlite3 *"
+    )
+    bim_scan_files_for_tokens_ignoring_comments("${_persistence_public_headers}" "${_r13_tokens}" "R13-persistence-public-sqlite-leak")
 endif()
 
 # ------------------------------------------------------------------------------

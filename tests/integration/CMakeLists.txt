@@ -190,3 +190,124 @@ target_link_libraries(integration_viewport_bgfx_resource_lifecycle
 target_compile_features(integration_viewport_bgfx_resource_lifecycle PRIVATE cxx_std_20)
 bim_apply_warnings(integration_viewport_bgfx_resource_lifecycle)
 add_test(NAME integration_viewport_bgfx_resource_lifecycle COMMAND integration_viewport_bgfx_resource_lifecycle)
+
+# --- P0-T004 Phase D Schema v1 Bootstrap + Validation (Implementation
+# Brief BIM-TASK-P0-T004-CLAUDE v1.0 Phase D). Exercises the private
+# bim::persistence::detail schema-v1 logic directly via file-relative
+# quoted includes into src/persistence/src/detail/ (no public persistence
+# surface exposes this - Architecture Gate AG-P0T004-001/002), so this
+# target links the same bim::persistence + bim::foundation libraries as
+# integration_persistence_sqlite_memory above rather than any new library.
+
+add_executable(integration_persistence_schema_v1
+    integration_persistence_schema_v1.cpp
+)
+target_link_libraries(integration_persistence_schema_v1
+    PRIVATE
+        bim::persistence
+        bim::foundation
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_persistence_schema_v1 PRIVATE cxx_std_20)
+bim_apply_warnings(integration_persistence_schema_v1)
+add_test(NAME integration_persistence_schema_v1 COMMAND integration_persistence_schema_v1)
+
+# --- P0-T004 Phase E Journal Persistence (Implementation Brief
+# BIM-TASK-P0-T004-CLAUDE v1.0 Phase E). Exercises the private
+# bim::persistence::detail journal_store (append/read) logic together with
+# the frozen Phase D schema-v1 open/bootstrap logic, directly via
+# file-relative quoted includes into src/persistence/src/detail/ (no
+# public persistence surface exposes any of this - Architecture Gate
+# AG-P0T004-001/002). persistence_journal_test_support.hpp is a shared,
+# non-executable header (no add_executable of its own) included directly
+# by every target below via a same-directory quote-include, following the
+# existing geometry_occt_test_constants.hpp convention above.
+
+add_executable(integration_persistence_journal_commit_reopen
+    integration_persistence_journal_commit_reopen.cpp
+)
+target_link_libraries(integration_persistence_journal_commit_reopen
+    PRIVATE
+        bim::persistence
+        bim::transactions
+        bim::foundation
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_persistence_journal_commit_reopen PRIVATE cxx_std_20)
+bim_apply_warnings(integration_persistence_journal_commit_reopen)
+add_test(NAME integration_persistence_journal_commit_reopen COMMAND integration_persistence_journal_commit_reopen)
+
+add_executable(integration_persistence_journal_duplicate_id
+    integration_persistence_journal_duplicate_id.cpp
+)
+target_link_libraries(integration_persistence_journal_duplicate_id
+    PRIVATE
+        bim::persistence
+        bim::transactions
+        bim::foundation
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_persistence_journal_duplicate_id PRIVATE cxx_std_20)
+bim_apply_warnings(integration_persistence_journal_duplicate_id)
+add_test(NAME integration_persistence_journal_duplicate_id COMMAND integration_persistence_journal_duplicate_id)
+
+add_executable(integration_persistence_journal_binary_payload
+    integration_persistence_journal_binary_payload.cpp
+)
+target_link_libraries(integration_persistence_journal_binary_payload
+    PRIVATE
+        bim::persistence
+        bim::transactions
+        bim::foundation
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_persistence_journal_binary_payload PRIVATE cxx_std_20)
+bim_apply_warnings(integration_persistence_journal_binary_payload)
+add_test(NAME integration_persistence_journal_binary_payload COMMAND integration_persistence_journal_binary_payload)
+
+add_executable(integration_persistence_journal_rollback
+    integration_persistence_journal_rollback.cpp
+)
+target_link_libraries(integration_persistence_journal_rollback
+    PRIVATE
+        bim::persistence
+        bim::transactions
+        bim::foundation
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_persistence_journal_rollback PRIVATE cxx_std_20)
+bim_apply_warnings(integration_persistence_journal_rollback)
+add_test(NAME integration_persistence_journal_rollback COMMAND integration_persistence_journal_rollback)
+
+# --- P0-T004 Phase G standalone evidence executable (Implementation Brief
+# BIM-TASK-P0-T004-CLAUDE v1.0 section 22; Architecture Gate section 14;
+# Phase G Execution Handoff v1.0). Not a Catch2 target - it has its own
+# main() - mirroring p0_t002_geometry_evidence above exactly: links the
+# SAME production bim::persistence implementation exercised by the Phase
+# D/E integration tests above (never a separate copy), and every evidence
+# field is recorded via hand-rolled JSON serialization inside the
+# executable itself (bim::persistence::RunPersistenceSpike returns only a
+# plain project-owned PersistenceSpikeEvidence struct - see
+# src/persistence/include/bim/persistence/probe.hpp - so no JSON dependency
+# is introduced anywhere in src/**). Registered under CTest name
+# integration_persistence_evidence, following the
+# integration_geometry_occt_evidence naming precedent, and writes its JSON
+# into the build tree (never the source tree), matching
+# p0_t002_geometry_evidence's own --json ${CMAKE_BINARY_DIR}/evidence/...
+# convention exactly.
+
+add_executable(p0_t004_persistence_evidence
+    p0_t004_persistence_evidence.cpp
+)
+target_link_libraries(p0_t004_persistence_evidence
+    PRIVATE
+        bim::persistence
+        bim::foundation
+)
+target_compile_features(p0_t004_persistence_evidence PRIVATE cxx_std_20)
+bim_apply_warnings(p0_t004_persistence_evidence)
+
+add_test(
+    NAME integration_persistence_evidence
+    COMMAND p0_t004_persistence_evidence --json ${CMAKE_BINARY_DIR}/evidence/P0-T004/p0_t004_persistence_evidence.ctest.json
+)

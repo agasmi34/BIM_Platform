@@ -1,14 +1,16 @@
 # bim_persistence - the ONLY target permitted to include SQLite headers or
-# link SQLite (Architecture Gate section 8.1/8.2). P0-T001 implements only an
-# in-memory smoke probe: no project schema, no on-disk database file
-# (Implementation Brief Phase I, "Persistence"). Dual-path SQLite resolution
-# is defensive: different vcpkg SQLite port configurations across triplets
-# have historically exposed either an "official" SQLite3 CMake package name
-# or an "unofficial-sqlite3" one.
+# link SQLite (Architecture Gate AG-P0T004-001/002). SQLite is resolved via
+# a preference order (Architecture Gate BIM-AG-P0-T004 v1.0 section 11):
+# SQLite3::SQLite3, then the deprecated SQLite::SQLite3, then
+# unofficial::sqlite3::sqlite3. Multi-path resolution is defensive:
+# different vcpkg SQLite port configurations across triplets have
+# historically exposed different CMake package/target names.
 
 find_package(SQLite3 QUIET)
 
-if(TARGET SQLite::SQLite3)
+if(TARGET SQLite3::SQLite3)
+    set(BIM_SQLITE_TARGET SQLite3::SQLite3)
+elseif(TARGET SQLite::SQLite3)
     set(BIM_SQLITE_TARGET SQLite::SQLite3)
 else()
     find_package(unofficial-sqlite3 CONFIG QUIET)
@@ -20,13 +22,19 @@ endif()
 if(NOT BIM_SQLITE_TARGET)
     message(FATAL_ERROR
         "bim_persistence: SQLite could not be resolved via find_package("
-        "SQLite3) or find_package(unofficial-sqlite3 CONFIG). Verify the "
-        "vcpkg 'sqlite3' port resolved correctly for the active triplet "
-        "before treating this as an architectural blocker requiring an ACR.")
+        "SQLite3) (SQLite3::SQLite3 or the deprecated SQLite::SQLite3) or "
+        "find_package(unofficial-sqlite3 CONFIG). Verify the vcpkg "
+        "'sqlite3' port resolved correctly for the active triplet before "
+        "treating this as an architectural blocker requiring an ACR.")
 endif()
 
 add_library(bim_persistence STATIC
     src/persistence_probe.cpp
+    src/detail/sqlite_status.cpp
+    src/detail/sqlite_connection.cpp
+    src/detail/sqlite_statement.cpp
+    src/detail/schema_v1.cpp
+    src/detail/journal_store.cpp
 )
 add_library(bim::persistence ALIAS bim_persistence)
 
