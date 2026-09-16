@@ -22,3 +22,14 @@ resolve the required package.
 Until release:
 
 **IMPLEMENTATION MUST NOT START.**
+
+## Dependency exception status
+
+`ACR-P0-T005-001` is APPROVED.
+
+The P0-T005 Implementation Brief remains blocked until external dependency
+evidence freezes the exact IfcOpenShell upstream commit and proves the Windows
+C++ core build contract.
+
+Do not implement against an assumed tag, package name, CMake option, imported
+target, include path, library name, or transitive dependency.

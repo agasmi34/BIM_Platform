@@ -48,3 +48,17 @@ Implementation:
 
 The next activity after this governance commit is a read-only dependency
 resolution preflight against the frozen vcpkg baseline.
+
+## ACR-P0-T005-001
+
+**Status:** APPROVED — 2026-09-16
+
+The frozen vcpkg baseline does not contain IfcOpenShell.
+
+Architecture Authority approved a scoped dependency exception permitting an
+exact pinned IfcOpenShell 0.8.5-line upstream source revision to be built into
+an external dependency prefix for P0-T005 only.
+
+The exact upstream commit and build contract remain pending Phase B evidence.
+
+Implementation remains NOT AUTHORIZED.

@@ -482,3 +482,15 @@ NONE
 | 8 | P0-T005 production implementation | Architecture Authority | NOT AUTHORIZED |
 
 No production-code implementation is authorized by the architecture-record commit.
+
+## P0-T005 — ACR-P0-T005-001
+
+| Event | State |
+|---|---|
+| Frozen-baseline IfcOpenShell metadata resolution | STOP — port absent |
+| ACR-P0-T005-001 | APPROVED |
+| vcpkg baseline advancement | NOT AUTHORIZED |
+| Pinned upstream source exception | AUTHORIZED |
+| Dependency Resolution Phase B | NEXT |
+| Implementation Brief | NOT RELEASED |
+| Implementation | NOT AUTHORIZED |

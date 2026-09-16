@@ -547,3 +547,20 @@ the post-materialization dependency-resolution preflight.
 
 Implementation remains blocked until the Implementation Brief is separately
 released and implementation is separately authorized.
+
+## ACR-P0-T005-001 — IfcOpenShell dependency delivery
+
+**Status:** APPROVED
+
+**Date:** 2026-09-16
+
+The frozen vcpkg baseline does not contain IfcOpenShell. P0-T005 therefore has
+a scoped exception allowing an exact pinned IfcOpenShell 0.8.5-line upstream
+source revision to be built into an external dependency prefix.
+
+Existing vcpkg dependencies and the project vcpkg baseline remain unchanged.
+
+Python integration is prohibited. P0-T005 must prove the minimum C++ IFC
+parse/write core and must not silently introduce a second OCCT runtime.
+
+Exact upstream commit/build options remain pending dependency evidence.

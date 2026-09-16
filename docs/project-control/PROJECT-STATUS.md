@@ -234,3 +234,16 @@ Implementation:
 Current ACR:
 
 `NONE`
+
+## P0-T005 dependency status
+
+```text
+ACR-P0-T005-001               = APPROVED
+IfcOpenShell vcpkg resolution = FAILED — PORT ABSENT
+vcpkg baseline                = UNCHANGED
+Approved dependency route     = PINNED UPSTREAM SOURCE / EXTERNAL PREFIX
+Release line                  = 0.8.5
+Exact commit                  = PENDING PHASE B
+Implementation Brief          = NOT RELEASED
+Implementation                = NOT AUTHORIZED
+```

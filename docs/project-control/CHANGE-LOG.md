@@ -561,3 +561,14 @@ exists yet); once Phase P commits land, this log should be read alongside
   defect before staging/commit; recovery-aware v3 completed the controlled delta.
 - No production source, CMake, dependency, or test implementation is modified
   by this architecture-record commit.
+
+## 2026-09-16 — P0-T005 ACR-P0-T005-001
+
+- Approved scoped IfcOpenShell pinned-source dependency exception.
+- Kept the existing vcpkg baseline unchanged.
+- Locked the dependency proof to the 0.8.5 release line.
+- Required an exact upstream commit before Implementation Brief release.
+- Prohibited Python integration and silent second-OCCT introduction.
+- Authorized external/read-only Dependency Resolution Phase B after this
+  governance materialization.
+- Production implementation remains NOT AUTHORIZED.
