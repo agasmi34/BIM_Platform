@@ -467,3 +467,18 @@ NOT AUTHORIZED
 ACR:
 
 NONE
+
+## P0-T005 — IFC Spike
+
+| Seq | Event | Authority / source | State |
+|---|---|---|---|
+| 1 | Read-only repository discovery | Architecture Authority + Windows Execution Operator | PASS |
+| 2 | Base fixed at `2c2b89f73651f7d5981d42546cbc0e321d6bb055` | Architecture Authority | LOCKED |
+| 3 | `BIM-AG-P0-T005 v1.0` | Product Authority | APPROVED |
+| 4 | Isolated branch `task/P0-T005-ifc-spike` | Windows Execution Operator | MATERIALIZED / VERIFIED |
+| 5 | Isolated worktree `D:\Projects\BIM-Platform-WT-P0-T005` | Windows Execution Operator | MATERIALIZED / VERIFIED |
+| 6 | IfcOpenShell dependency-resolution preflight | Architecture Authority | NEXT |
+| 7 | P0-T005 Implementation Brief | Architecture Authority | NOT RELEASED |
+| 8 | P0-T005 production implementation | Architecture Authority | NOT AUTHORIZED |
+
+No production-code implementation is authorized by the architecture-record commit.

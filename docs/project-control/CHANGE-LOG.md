@@ -544,3 +544,20 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Main integration remains NOT AUTHORIZED.
 - Remote push remains NOT AUTHORIZED.
 - ACR remains NONE.
+
+## 2026-09-16 — P0-T005 IFC Architecture Gate
+
+- Recorded P0-T004 as locally closed and integrated to `main`.
+- Started P0-T005 — IFC Spike from accepted main baseline
+  `2c2b89f73651f7d5981d42546cbc0e321d6bb055`.
+- Approved `BIM-AG-P0-T005 v1.0`.
+- Locked `src/interop/ifc/**` as the future sole IfcOpenShell owner.
+- Locked a vendor-neutral C++ public IFC boundary.
+- Locked IFC4 as the Phase-0 spike schema.
+- Locked the neutral round-trip proof and R14/R15 architecture enforcement.
+- Kept the vcpkg baseline frozen; dependency resolution is the next read-only gate.
+- Implementation remains NOT RELEASED / NOT AUTHORIZED.
+- Governance materialization v2 stopped on a final-newline byte-identity harness
+  defect before staging/commit; recovery-aware v3 completed the controlled delta.
+- No production source, CMake, dependency, or test implementation is modified
+  by this architecture-record commit.

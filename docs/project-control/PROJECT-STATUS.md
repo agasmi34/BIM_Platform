@@ -4,7 +4,7 @@
 
 **System of record:** Git
 
-**Current active task:** P0-T003 - Desktop + Viewport Spike
+**Current active task:** P0-T005 — IFC Spike
 
 ## P0-T001
 
@@ -200,3 +200,37 @@ proceeds through the released brief using minimum necessary delta.
 
 After implementation verification and candidate freeze, control returns to
 Architecture Authority before independent review or any implementation commit.
+
+## P0-T005 — IFC Spike
+
+Architecture Gate:
+
+`BIM-AG-P0-T005 v1.0 = APPROVED`
+
+Approved base:
+
+`main@2c2b89f73651f7d5981d42546cbc0e321d6bb055`
+
+Task branch:
+
+`task/P0-T005-ifc-spike`
+
+Task worktree:
+
+`D:\Projects\BIM-Platform-WT-P0-T005`
+
+Next gate:
+
+`IfcOpenShell dependency-resolution preflight against frozen vcpkg baseline`
+
+Implementation Brief:
+
+`NOT RELEASED`
+
+Implementation:
+
+`NOT AUTHORIZED`
+
+Current ACR:
+
+`NONE`

@@ -520,3 +520,30 @@ Authority boundaries:
 - Candidate returns to AA after verification/freeze.
 - Kimi remains read-only/minimum-delta.
 - ACR remains NONE.
+
+## P0-T005 architecture decisions
+
+### BIM-AG-P0-T005 v1.0
+
+**Status:** APPROVED
+
+**Date:** 2026-09-16
+
+**Authority:** Product Authority + Architecture Authority
+
+P0-T005 is locked as an IFC interoperability spike proving:
+
+- `src/interop/ifc/**` as the sole IfcOpenShell owner;
+- a project-owned vendor-neutral C++ IFC public boundary;
+- no production model-contract expansion during the spike;
+- IFC4 as the Phase-0 spike schema;
+- neutral seed -> IFC export -> reopen/import -> neutral invariant comparison;
+- R14 sole-owner and R15 public-neutral architecture enforcement;
+- no Python runtime;
+- no automatic vcpkg baseline advancement.
+
+The exact IfcOpenShell package/version/CMake targets remain unresolved until
+the post-materialization dependency-resolution preflight.
+
+Implementation remains blocked until the Implementation Brief is separately
+released and implementation is separately authorized.
