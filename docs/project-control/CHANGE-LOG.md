@@ -583,3 +583,12 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Released `BIM-TASK-P0-T005-CLAUDE v1.0`.
 - Production implementation remains NOT AUTHORIZED pending a separate
   Architecture Authority authorization.
+
+## 2026-09-17 — P0-T005 implementation authorized
+
+- Issued `BIM-AUTH-P0-T005-IMPLEMENTATION v1.0`.
+- Authorized Claude to implement from task commit
+  `d6d84632cf467ce56f535c525db6e0d884c07207`.
+- Implementation remains isolated to the P0-T005 task worktree.
+- Candidate staging/commit, Kimi review, main integration, and push remain NOT
+  AUTHORIZED.

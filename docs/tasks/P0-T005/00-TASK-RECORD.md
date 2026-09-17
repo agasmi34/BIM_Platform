@@ -74,3 +74,15 @@ ACR-P0-T005-001.
 
 Claude must wait for a separate Architecture Authority Implementation
 Authorization before changing production implementation files.
+
+## Implementation Authorization — BIM-AUTH-P0-T005-IMPLEMENTATION v1.0
+
+**Status:** ISSUED
+**Date:** 2026-09-17
+
+Claude is authorized to begin minimum-delta P0-T005 implementation from task
+commit `d6d84632cf467ce56f535c525db6e0d884c07207` and tree
+`70721dbd111efcf692fb81fdb0d5b9b862520ce2`.
+
+Candidate staging/commit, Kimi review, main integration, and push remain NOT
+AUTHORIZED.

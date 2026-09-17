@@ -580,3 +580,18 @@ without Python, IfcGeom, IfcOpenShell OpenCascade, or CGAL.
 The project vcpkg baseline remains unchanged.
 
 Implementation is not authorized by this decision.
+
+## P0-T005 — Implementation Authorization
+
+**Date:** 2026-09-17
+**Status:** ISSUED
+
+Architecture Authority authorizes Claude to implement P0-T005 against
+`BIM-TASK-P0-T005-CLAUDE v1.0` from task baseline
+`d6d84632cf467ce56f535c525db6e0d884c07207`.
+
+Implementation edits and local validation are authorized only in the isolated
+P0-T005 task worktree.
+
+Candidate staging/commit, independent review, main integration, and push remain
+separate gates and are not authorized.
