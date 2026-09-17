@@ -592,3 +592,13 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Implementation remains isolated to the P0-T005 task worktree.
 - Candidate staging/commit, Kimi review, main integration, and push remain NOT
   AUTHORIZED.
+
+## 2026-09-17 — P0-T005 implementation baseline conflict clarified
+
+- Classified `d6d84632... / 70721dbd...` as the pre-authorization parent.
+- Classified `3eb6fed9... / 6f52d12f...` as the authorization materialization
+  state.
+- Withdrew Execution Packet v1.0 for execution because the two governing
+  documents used conflicting baseline-start wording.
+- Implementation authorization remains issued, but Claude execution is paused
+  until Execution Packet v1.1 names the exact post-clarification baseline.

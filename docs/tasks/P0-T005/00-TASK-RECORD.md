@@ -86,3 +86,16 @@ commit `d6d84632cf467ce56f535c525db6e0d884c07207` and tree
 
 Candidate staging/commit, Kimi review, main integration, and push remain NOT
 AUTHORIZED.
+
+## Implementation baseline clarification — BIM-AA-P0-T005-BASELINE-CLARIFICATION v1.0
+
+**Status:** AUTHORITATIVE CLARIFICATION
+**Date:** 2026-09-17
+
+The task identity `d6d84632... / 70721dbd...` is the pre-authorization
+parent baseline, not the executable implementation start baseline.
+
+The authorization was materialized at `3eb6fed9... / 6f52d12f...`.
+
+Implementation execution is paused until Architecture Authority issues
+Execution Packet v1.1 against the exact post-clarification commit/tree.

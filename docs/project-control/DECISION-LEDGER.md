@@ -595,3 +595,17 @@ P0-T005 task worktree.
 
 Candidate staging/commit, independent review, main integration, and push remain
 separate gates and are not authorized.
+
+## P0-T005 — Implementation execution baseline semantics
+
+**Date:** 2026-09-17
+**Status:** CLARIFIED
+
+The implementation authorization remains valid, but the pre-authorization
+parent commit recorded in Authorization section 2 must not be used as Claude's
+execution start baseline.
+
+The exact execution baseline shall be the post-clarification task commit/tree
+named by Architecture Authority in Execution Packet v1.1.
+
+Execution Packet v1.0 is withdrawn for execution.

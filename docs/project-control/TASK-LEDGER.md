@@ -523,3 +523,17 @@ No production-code implementation is authorized by the architecture-record commi
 | Independent review | NOT AUTHORIZED |
 | Main integration | NOT AUTHORIZED |
 | Push | NOT AUTHORIZED |
+
+## P0-T005 — Baseline clarification gate
+
+| Gate | State |
+|---|---|
+| Implementation Authorization | ISSUED |
+| Baseline conflict | CLARIFIED |
+| Execution Packet v1.0 | WITHDRAWN FOR EXECUTION |
+| Claude implementation | PAUSED |
+| Execution Packet v1.1 | PENDING POST-CLARIFICATION COMMIT |
+| Candidate staging/commit | NOT AUTHORIZED |
+| Independent review | NOT AUTHORIZED |
+| Main integration | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |

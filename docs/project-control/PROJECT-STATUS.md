@@ -279,3 +279,17 @@ Push                          = NOT AUTHORIZED
 ```
 
 Current execution owner: Claude, minimum-delta implementation only.
+
+## P0-T005 baseline clarification hold
+
+```text
+Implementation Authorization = ISSUED
+Baseline conflict             = CLARIFIED
+Execution Packet v1.0         = WITHDRAWN FOR EXECUTION
+Claude implementation        = PAUSED
+Execution Packet v1.1         = PENDING
+Candidate staging/commit     = NOT AUTHORIZED
+Independent Review           = NOT AUTHORIZED
+Main integration             = NOT AUTHORIZED
+Push                         = NOT AUTHORIZED
+```
