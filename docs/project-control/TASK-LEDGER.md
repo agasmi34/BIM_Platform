@@ -494,3 +494,17 @@ No production-code implementation is authorized by the architecture-record commi
 | Dependency Resolution Phase B | NEXT |
 | Implementation Brief | NOT RELEASED |
 | Implementation | NOT AUTHORIZED |
+
+## P0-T005 — Implementation Brief Release
+
+| Gate | State |
+|---|---|
+| Architecture Gate | APPROVED |
+| ACR-P0-T005-001 | APPROVED |
+| Dependency Resolution Phase C | CLOSED / PASS |
+| BIM-TASK-P0-T005-CLAUDE v1.0 | RELEASED |
+| Implementation Authorization | NOT ISSUED |
+| Claude implementation | NOT AUTHORIZED |
+| Independent review | NOT AUTHORIZED |
+| Main integration | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |

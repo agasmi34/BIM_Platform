@@ -564,3 +564,19 @@ Python integration is prohibited. P0-T005 must prove the minimum C++ IFC
 parse/write core and must not silently introduce a second OCCT runtime.
 
 Exact upstream commit/build options remain pending dependency evidence.
+
+## P0-T005 — Implementation Brief dependency boundary
+
+**Date:** 2026-09-17
+**Status:** FROZEN FOR IMPLEMENTATION BRIEF
+
+P0-T005 shall build pinned IfcOpenShell 0.8.5 commit
+`16723d11cab9bc8a13b4e025a00d39445ccc462e` as an external C++17 dependency,
+while the BIM Platform and the installed-package consumer remain C++20.
+
+The boundary is accepted only through `IfcOpenShell::IfcParse`, IFC4-only,
+without Python, IfcGeom, IfcOpenShell OpenCascade, or CGAL.
+
+The project vcpkg baseline remains unchanged.
+
+Implementation is not authorized by this decision.

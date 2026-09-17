@@ -572,3 +572,14 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Authorized external/read-only Dependency Resolution Phase B after this
   governance materialization.
 - Production implementation remains NOT AUTHORIZED.
+
+## 2026-09-17 — P0-T005 Implementation Brief released
+
+- Closed Dependency Resolution Phase C as PASS.
+- Froze IfcOpenShell 0.8.5 commit `16723d11cab9bc8a13b4e025a00d39445ccc462e`.
+- Froze IFC4-only `IfcOpenShell::IfcParse` boundary.
+- Froze third-party dependency build at C++17 with first-party BIM Platform
+  remaining C++20.
+- Released `BIM-TASK-P0-T005-CLAUDE v1.0`.
+- Production implementation remains NOT AUTHORIZED pending a separate
+  Architecture Authority authorization.

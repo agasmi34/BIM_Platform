@@ -62,3 +62,15 @@ an external dependency prefix for P0-T005 only.
 The exact upstream commit and build contract remain pending Phase B evidence.
 
 Implementation remains NOT AUTHORIZED.
+
+## Implementation Brief release — BIM-TASK-P0-T005-CLAUDE v1.0
+
+**Status:** RELEASED — IMPLEMENTATION NOT AUTHORIZED
+**Date:** 2026-09-17
+
+Dependency Resolution Phase C closed PASS and froze the exact IfcOpenShell
+integration contract. The P0-T005 implementation brief is released against
+ACR-P0-T005-001.
+
+Claude must wait for a separate Architecture Authority Implementation
+Authorization before changing production implementation files.
