@@ -20,8 +20,9 @@
 # rejects the fixture).
 #
 # BIM_ARCH_CHECK_RULE (added P0-T002 Phase C-M, Amendment 01 AA-C09; extended
-# P0-T003; extended P0-T004 Phase F) selects which rule group to run:
-#   ALL                          (default) - every rule below (R1-R13)
+# P0-T003; extended P0-T004 Phase F; extended P0-T005) selects which rule
+# group to run:
+#   ALL                          (default) - every rule below (R1-R15)
 #   GEOMETRY_API_NO_OCCT_LEAK    - only R6
 #   GEOMETRY_OCCT_ONLY_KERNEL_OWNER - only R7
 #   VIEWPORT_PUBLIC_NEUTRAL      - only R8  (P0-T003)
@@ -30,11 +31,14 @@
 #   NO_DIRECT_D3D                - only R11 (P0-T003)
 #   SQLITE_PERSISTENCE_ONLY      - only R12 (P0-T004 Phase F)
 #   PERSISTENCE_PUBLIC_NEUTRAL   - only R13 (P0-T004 Phase F)
+#   IFC_OPEN_SHELL_ONLY_IFC_OWNER - only R14 (P0-T005)
+#   IFC_PUBLIC_NEUTRAL           - only R15 (P0-T005)
 # This selector exists so each single-rule CTest test (arch_geometry_api_no_occt_leak,
 # arch_geometry_occt_only_kernel_owner, and, as of P0-T003,
 # arch_viewport_public_neutral / arch_qt_desktop_only / arch_bgfx_viewport_owner /
 # arch_no_direct_d3d, and, as of P0-T004 Phase F,
-# arch_sqlite_persistence_only / arch_persistence_public_neutral -
+# arch_sqlite_persistence_only / arch_persistence_public_neutral, and, as of
+# P0-T005, arch_ifc_openshell_only_ifc_owner / arch_ifc_public_neutral -
 # tests/architecture/CMakeLists.txt) can each exercise exactly one rule,
 # while arch_repository_boundaries and arch_checker_detects_violation
 # continue to omit BIM_ARCH_CHECK_RULE entirely and so continue to run
@@ -99,6 +103,28 @@
 #        in this rule's file list at all, so an opaque private sqlite3*
 #        signature there can never trigger R13 (see Implementation Brief
 #        BIM-TASK-P0-T004-CLAUDE v1.0 Phase F section 7).
+#   R14 - (P0-T005) IFC_OPEN_SHELL_ONLY_IFC_OWNER: IfcOpenShell-specific
+#        tokens are permitted only under <root>/interop/ifc/** (Execution
+#        Packet v1.1 section 10; Implementation Brief
+#        BIM-TASK-P0-T005-CLAUDE v1.0 section 13). Mirrors R7/R9/R10's
+#        ownership-partition pattern, but - per the Brief's own explicit
+#        instruction - uses identifier-aware/token-boundary matching for
+#        every token (bim_scan_files_for_boundary_tokens_ignoring_comments()
+#        / bim_scan_files_for_case_sensitive_boundary_tokens_ignoring_comments(),
+#        the same helpers RD1-05/RD1-05A added for R7/R8/R10's "Handle("/
+#        "bgfx::"/"BGFX_"), specifically to avoid R12/R13's known latent
+#        plain-substring false-positive class. R12/R13 are deliberately NOT
+#        touched or refactored by this addition (Brief section 13: "Do not
+#        repair or refactor R12/R13 as part of P0-T005").
+#   R15 - (P0-T005) IFC_PUBLIC_NEUTRAL: bim::ifc's public contract stays
+#        vendor-neutral - no IfcOpenShell/IfcParse/IfcUtil/Ifc4 token under
+#        <root>/interop/ifc/include/** (Execution Packet v1.1 section 10;
+#        Brief section 13). Mirrors R6/R8/R13's public-header-neutrality
+#        pattern exactly, including using the existing plain comment-aware
+#        substring helper (not the boundary-aware one) - consistent with
+#        R6/R8/R13's own precedent, since a public-header file set is small
+#        and entirely first-party-authored, unlike R14's repository-wide
+#        scan.
 #
 # ==============================================================================
 # P0-T004 PHASE F ADDITION NOTE - R12/SQLITE_PERSISTENCE_ONLY,
@@ -275,6 +301,40 @@
 # checker's own matching logic was the defect.
 # ==============================================================================
 #
+# ==============================================================================
+# P0-T005 ADDITION NOTE - R14/IFC_OPEN_SHELL_ONLY_IFC_OWNER,
+# R15/IFC_PUBLIC_NEUTRAL
+#
+# Added to mechanically enforce the IfcOpenShell sole-ownership and
+# public-neutrality boundaries established by ACR-P0-T005-001 and
+# Implementation Brief BIM-TASK-P0-T005-CLAUDE v1.0 sections 7-8, 13. R14
+# reuses the existing RD1-05/RD1-05A boundary-aware helpers (added for R7's
+# "Handle(" and R10's "bgfx::"/"BGFX_") per the Brief's own explicit
+# instruction, rather than R12's plain-substring helper - this is a
+# deliberate, disclosed divergence from R12/R13's own precedent, made
+# because the Brief singles out R14 specifically to avoid repeating
+# R12/R13's known latent substring-false-positive class, while also
+# explicitly forbidding touching R12/R13 themselves in this same change.
+# R15 instead follows R6/R8/R13's plain-substring public-header-neutrality
+# precedent unchanged, since the Brief does not extend the boundary-aware
+# instruction to R15 and R15's scanned scope (a small, first-party-only
+# public header set) carries the same low false-positive risk R6/R8/R13
+# already accepted.
+#
+# This addition was authored without a live command-execution channel
+# against the real IfcOpenShell dependency in this session (no device_bash
+# on the Windows worktree; building IfcOpenShell+Boost from source in this
+# cloud sandbox is infeasible within this session - consistent with every
+# other UNVERIFIED disclosure in this file and in this task's own
+# implementation report). It WAS, however, self-validated locally in this
+# session's own cloud sandbox (which has a bare `cmake` binary, no
+# IfcOpenShell/Boost/vcpkg needed - this checker is dependency-free by
+# design) by running `cmake -P` against a local mirror of the real src/
+# tree plus both new P0-T005 negative fixtures - see this task's own
+# implementation report for that run's actual output, mirroring how P0-T004
+# Phase F's R12/R13 self-validation was performed before this task's first
+# real Windows execution.
+# ==============================================================================
 # On the first pass through the selected rule(s), every violation found is
 # collected; if any exist, this script calls message(FATAL_ERROR ...), which
 # makes `cmake -P` exit non-zero. On a clean pass it prints
@@ -305,6 +365,8 @@ set(_bim_valid_rules
     "NO_DIRECT_D3D"
     "SQLITE_PERSISTENCE_ONLY"
     "PERSISTENCE_PUBLIC_NEUTRAL"
+    "IFC_OPEN_SHELL_ONLY_IFC_OWNER"
+    "IFC_PUBLIC_NEUTRAL"
 )
 list(FIND _bim_valid_rules "${BIM_ARCH_CHECK_RULE}" _bim_rule_idx)
 if(_bim_rule_idx EQUAL -1)
@@ -973,6 +1035,76 @@ if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "PERSISTEN
         "sqlite3_" "SQLITE_" "sqlite3*" "sqlite3 *"
     )
     bim_scan_files_for_tokens_ignoring_comments("${_persistence_public_headers}" "${_r13_tokens}" "R13-persistence-public-sqlite-leak")
+endif()
+
+# ------------------------------------------------------------------------------
+# R14 - raw IfcOpenShell API ownership belongs only to src/interop/ifc
+# (IFC_OPEN_SHELL_ONLY_IFC_OWNER, P0-T005). Mirrors R7/R9/R10/R12's
+# ownership-partition pattern (partition all first-party files by whether
+# they live under <root>/interop/ifc/**, then scan only the outside-owner
+# subset), but - per Implementation Brief BIM-TASK-P0-T005-CLAUDE v1.0
+# section 13's explicit instruction - every token is matched through the
+# existing identifier-boundary-aware helpers (RD1-05/RD1-05A), not R12's
+# plain-substring helper. Selectable alone via
+# BIM_ARCH_CHECK_RULE=IFC_OPEN_SHELL_ONLY_IFC_OWNER.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "IFC_OPEN_SHELL_ONLY_IFC_OWNER")
+    file(GLOB_RECURSE _all_source_files_r14
+        "${BIM_ARCH_CHECK_ROOT}/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/*.hxx"
+        "${BIM_ARCH_CHECK_ROOT}/*.cpp"
+        "${BIM_ARCH_CHECK_ROOT}/*.cc"
+    )
+    set(_interop_ifc_dir "${BIM_ARCH_CHECK_ROOT}/interop/ifc/")
+    set(_non_ifc_owner_files "")
+    foreach(f IN LISTS _all_source_files_r14)
+        string(FIND "${f}" "${_interop_ifc_dir}" _owner_idx)
+        if(_owner_idx EQUAL -1)
+            list(APPEND _non_ifc_owner_files "${f}")
+        endif()
+    endforeach()
+    # "::"-suffixed so each token is inherently right-bounded (mirroring
+    # R10's "bgfx::"), combined with the existing helper's left-boundary
+    # check - a real project-owned identifier that merely ENDS with one of
+    # these names (there are none in this codebase today) would still not
+    # false-match, since the "::" immediately after it would not be present.
+    set(_r14_case_sensitive_boundary_tokens
+        "IfcOpenShell::" "IfcParse::" "IfcUtil::" "Ifc4::"
+    )
+    # Header-include forms: naturally delimited by "<"/"/" already (mirrors
+    # R10's "<bgfx/" treatment), so the plain comment-aware substring helper
+    # is sufficient here - no boundary-token variant needed for these two.
+    set(_r14_include_tokens "<ifcparse/" "<ifcgeom/")
+    bim_scan_files_for_case_sensitive_boundary_tokens_ignoring_comments("${_non_ifc_owner_files}" "${_r14_case_sensitive_boundary_tokens}" "R14-ifcopenshell-outside-ifc-owner")
+    bim_scan_files_for_tokens_ignoring_comments("${_non_ifc_owner_files}" "${_r14_include_tokens}" "R14-ifcopenshell-outside-ifc-owner")
+endif()
+
+# ------------------------------------------------------------------------------
+# R15 - bim::ifc's public contract stays vendor-neutral (IFC_PUBLIC_NEUTRAL,
+# P0-T005): no IfcOpenShell/IfcParse/IfcUtil/Ifc4 token under
+# <root>/interop/ifc/include/**. Mirrors R6/R8/R13's public-header
+# -neutrality pattern exactly, including reusing the plain comment-aware
+# substring helper (Implementation Brief BIM-TASK-P0-T005-CLAUDE v1.0
+# section 13 does not extend the boundary-aware instruction to R15, and
+# this rule's scanned scope - a small, entirely first-party-authored public
+# header set - carries the same low false-positive risk R6/R8/R13 already
+# accepted). Selectable alone via BIM_ARCH_CHECK_RULE=IFC_PUBLIC_NEUTRAL.
+# R15 is specifically the public-boundary rule; R14 above is the ownership
+# rule.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "IFC_PUBLIC_NEUTRAL")
+    file(GLOB_RECURSE _ifc_public_headers
+        "${BIM_ARCH_CHECK_ROOT}/interop/ifc/include/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/interop/ifc/include/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/interop/ifc/include/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/interop/ifc/include/*.hxx"
+    )
+    set(_r15_tokens
+        "IfcOpenShell" "IfcParse" "IfcUtil" "Ifc4"
+    )
+    bim_scan_files_for_tokens_ignoring_comments("${_ifc_public_headers}" "${_r15_tokens}" "R15-ifc-public-openshell-leak")
 endif()
 
 # ------------------------------------------------------------------------------

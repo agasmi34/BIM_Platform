@@ -311,3 +311,98 @@ add_test(
     NAME integration_persistence_evidence
     COMMAND p0_t004_persistence_evidence --json ${CMAKE_BINARY_DIR}/evidence/P0-T004/p0_t004_persistence_evidence.ctest.json
 )
+
+# --- P0-T005 IFC Spike (Implementation Brief BIM-TASK-P0-T005-CLAUDE v1.0
+# sections 9-15; Execution Packet v1.1 sections 9, 12). Every target below
+# links bim::ifc, which is only defined when BIM_ENABLE_IFC is ON (root
+# CMakeLists.txt) - see src/interop/ifc/CMakeLists.txt's own comment.
+# ifc_test_support.hpp is a shared, non-executable header (no
+# add_executable of its own) included directly by every target below via a
+# same-directory quote-include, following the existing
+# geometry_occt_test_constants.hpp / persistence_journal_test_support.hpp
+# convention above. BIM_P0_T005_IFC_FIXTURES_DIR is the absolute
+# source-tree path to the malformed/unsupported-schema fixtures (Brief
+# section 11) - injected at compile time rather than derived at runtime, so
+# every target below resolves the exact same fixture files regardless of
+# the working directory CTest launches them from. Declared once via
+# add_compile_definitions() (directory scope, applies to every target added
+# below this point in this file only - every other target in this file was
+# already defined earlier and is unaffected) rather than repeated per
+# target, since ifc_test_support.hpp's own #ifndef/#error guard (see that
+# header) requires the macro to be defined in every translation unit that
+# includes it, not only the ones that call FixturesDir().
+if(BIM_ENABLE_IFC)
+    set(BIM_P0_T005_IFC_FIXTURES_DIR "${CMAKE_SOURCE_DIR}/tests/fixtures/p0_t005_ifc")
+    add_compile_definitions(BIM_P0_T005_IFC_FIXTURES_DIR="${BIM_P0_T005_IFC_FIXTURES_DIR}")
+
+    add_executable(integration_ifc_round_trip
+        integration_ifc_round_trip.cpp
+    )
+    target_link_libraries(integration_ifc_round_trip
+        PRIVATE
+            bim::ifc
+            Catch2::Catch2WithMain
+    )
+    target_compile_features(integration_ifc_round_trip PRIVATE cxx_std_20)
+    bim_apply_warnings(integration_ifc_round_trip)
+    add_test(NAME integration_ifc_round_trip COMMAND integration_ifc_round_trip)
+
+    add_executable(integration_ifc_missing_file
+        integration_ifc_missing_file.cpp
+    )
+    target_link_libraries(integration_ifc_missing_file
+        PRIVATE
+            bim::ifc
+            Catch2::Catch2WithMain
+    )
+    target_compile_features(integration_ifc_missing_file PRIVATE cxx_std_20)
+    bim_apply_warnings(integration_ifc_missing_file)
+    add_test(NAME integration_ifc_missing_file COMMAND integration_ifc_missing_file)
+
+    add_executable(integration_ifc_malformed_input
+        integration_ifc_malformed_input.cpp
+    )
+    target_link_libraries(integration_ifc_malformed_input
+        PRIVATE
+            bim::ifc
+            Catch2::Catch2WithMain
+    )
+    target_compile_features(integration_ifc_malformed_input PRIVATE cxx_std_20)
+    bim_apply_warnings(integration_ifc_malformed_input)
+    add_test(NAME integration_ifc_malformed_input COMMAND integration_ifc_malformed_input)
+
+    add_executable(integration_ifc_unsupported_schema
+        integration_ifc_unsupported_schema.cpp
+    )
+    target_link_libraries(integration_ifc_unsupported_schema
+        PRIVATE
+            bim::ifc
+            Catch2::Catch2WithMain
+    )
+    target_compile_features(integration_ifc_unsupported_schema PRIVATE cxx_std_20)
+    bim_apply_warnings(integration_ifc_unsupported_schema)
+    add_test(NAME integration_ifc_unsupported_schema COMMAND integration_ifc_unsupported_schema)
+
+    # Standalone evidence executable (Brief section 15; Packet section 12) -
+    # mirrors p0_t002_geometry_evidence.cpp / p0_t004_persistence_evidence.cpp
+    # exactly: not a Catch2 target, has its own main(), links the SAME
+    # production bim::ifc implementation exercised by the Catch2 targets
+    # above (never a separate copy). Registered under CTest name
+    # integration_ifc_evidence, matching Brief section 12's required test
+    # name directly (unlike P0-T002/P0-T004, no separate p0_t00N_* /
+    # integration_* naming split is needed here).
+    add_executable(p0_t005_ifc_evidence
+        p0_t005_ifc_evidence.cpp
+    )
+    target_link_libraries(p0_t005_ifc_evidence
+        PRIVATE
+            bim::ifc
+    )
+    target_compile_features(p0_t005_ifc_evidence PRIVATE cxx_std_20)
+    bim_apply_warnings(p0_t005_ifc_evidence)
+
+    add_test(
+        NAME integration_ifc_evidence
+        COMMAND p0_t005_ifc_evidence --json ${CMAKE_BINARY_DIR}/evidence/P0-T005/p0_t005_ifc_evidence.ctest.json
+    )
+endif()

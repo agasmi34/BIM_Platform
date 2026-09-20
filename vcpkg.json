@@ -24,6 +24,23 @@
       "features": [
         "tools"
       ]
-    }
+    },
+    "boost-system",
+    "boost-program-options",
+    "boost-regex",
+    "boost-thread",
+    "boost-date-time",
+    "boost-iostreams",
+    "boost-uuid",
+    "boost-logic",
+    "boost-scope-exit",
+    "boost-multi-index",
+    "boost-circular-buffer",
+    "boost-filesystem",
+    "boost-locale",
+    "boost-math",
+    "boost-property-tree",
+    "boost-variant",
+    "eigen3"
   ]
 }

@@ -204,3 +204,61 @@ add_test(
             -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
 )
 set_tests_properties(arch_p0_t004_persistence_public_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# --- P0-T005 IFC Spike additions (Architecture Enforcement) - rules R14-R15
+# (tools/architecture_checker.cmake), each run both against the real src/
+# tree (must PASS) and against its own deliberately-broken fixture under
+# tests/fixtures/ (the checker must FAIL there; WILL_FAIL TRUE inverts
+# that, matching the P0-T003/P0-T004 pattern above). Registered
+# unconditionally (not gated by BIM_ENABLE_IFC): both rules are pure text
+# scans over tools/architecture_checker.cmake and the real src/ tree /
+# fixtures, requiring no compiled IfcOpenShell dependency at all.
+
+# arch_ifc_openshell_only_ifc_owner - R14 against the real src/ tree: no
+# IfcOpenShell/IfcParse/IfcUtil/Ifc4 token appears anywhere under src/
+# outside src/interop/ifc/** - bim_ifc remains the sole IfcOpenShell owner.
+add_test(
+    NAME arch_ifc_openshell_only_ifc_owner
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=IFC_OPEN_SHELL_ONLY_IFC_OWNER
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p0_t005_ifc_owner_fixture_rejected - R14 against
+# tests/fixtures/p0_t005_bad_ifc_owner/, which deliberately puts raw
+# IfcOpenShell tokens under model/src/ (outside interop/ifc/**). The
+# checker must FAIL here.
+add_test(
+    NAME arch_p0_t005_ifc_owner_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p0_t005_bad_ifc_owner
+            -DBIM_ARCH_CHECK_RULE=IFC_OPEN_SHELL_ONLY_IFC_OWNER
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p0_t005_ifc_owner_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# arch_ifc_public_neutral - R15 against the real src/ tree: zero
+# IfcOpenShell/IfcParse/IfcUtil/Ifc4 tokens under
+# src/interop/ifc/include/** - bim::ifc's public contract stays
+# vendor-neutral.
+add_test(
+    NAME arch_ifc_public_neutral
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=IFC_PUBLIC_NEUTRAL
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p0_t005_ifc_public_fixture_rejected - R15 against
+# tests/fixtures/p0_t005_bad_ifc_public/, which deliberately leaks a raw
+# IfcOpenShell token into a simulated interop/ifc/include/** header. The
+# checker must FAIL here.
+add_test(
+    NAME arch_p0_t005_ifc_public_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p0_t005_bad_ifc_public
+            -DBIM_ARCH_CHECK_RULE=IFC_PUBLIC_NEUTRAL
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p0_t005_ifc_public_fixture_rejected PROPERTIES WILL_FAIL TRUE)

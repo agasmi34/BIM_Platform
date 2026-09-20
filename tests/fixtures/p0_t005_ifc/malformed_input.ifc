@@ -1,0 +1,7 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION((''), '2;1'
+FILE_NAME(this is not valid STEP syntax - unterminated string, missing
+parentheses/semicolons, garbage tokens ***%%%### deliberately breaking the
+ISO-10303-21 header grammar so a STEP/IFC parser must reject this file.
+ENDSEC

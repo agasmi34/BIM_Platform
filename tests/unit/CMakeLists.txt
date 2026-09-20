@@ -111,3 +111,22 @@ target_link_libraries(unit_transactions_journal_contract
 target_compile_features(unit_transactions_journal_contract PRIVATE cxx_std_20)
 bim_apply_warnings(unit_transactions_journal_contract)
 add_test(NAME unit_transactions_journal_contract COMMAND unit_transactions_journal_contract)
+
+# --- P0-T005 IFC Spike (Implementation Brief BIM-TASK-P0-T005-CLAUDE v1.0
+# section 9 / Execution Packet v1.1 section 9's "unit_ifc_probe_contract").
+# Links bim::ifc, which is only defined when BIM_ENABLE_IFC is ON (root
+# CMakeLists.txt) - see src/interop/ifc/CMakeLists.txt's own comment on why
+# this module, unlike every other one here, is not always available.
+if(BIM_ENABLE_IFC)
+    add_executable(unit_ifc_probe_contract
+        unit_ifc_probe_contract.cpp
+    )
+    target_link_libraries(unit_ifc_probe_contract
+        PRIVATE
+            bim::ifc
+            Catch2::Catch2WithMain
+    )
+    target_compile_features(unit_ifc_probe_contract PRIVATE cxx_std_20)
+    bim_apply_warnings(unit_ifc_probe_contract)
+    add_test(NAME unit_ifc_probe_contract COMMAND unit_ifc_probe_contract)
+endif()

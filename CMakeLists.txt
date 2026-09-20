@@ -50,6 +50,25 @@ include(BimCompilerWarnings)
 include(BimSanitizers)
 
 # ------------------------------------------------------------------------------
+# BIM_ENABLE_IFC (P0-T005 - IFC Spike; Implementation Brief
+# BIM-TASK-P0-T005-CLAUDE v1.0 section 14; ACR-P0-T005-001) - default OFF,
+# unlike every other first-party module's always-on add_subdirectory() below.
+# IfcOpenShell is NOT available through the project's frozen vcpkg baseline
+# (ACR-P0-T005-001 section 1: the baseline has no `ifcopenshell` port); it
+# must be built and installed to an external prefix first via
+# scripts/dependencies/ifcopenshell/bootstrap-ifcopenshell.ps1, then supplied
+# via -DIfcOpenShell_DIR=<prefix>/lib/cmake/IfcOpenShell. Gating
+# src/interop/ifc behind this option keeps the default configure/build
+# (every engineer/CI job that has not bootstrapped IfcOpenShell) completely
+# unaffected - mirroring this task's own footprint discipline (Brief section
+# 17: minimum delta only) rather than making every existing developer's
+# build newly depend on a dependency most of them have not opted into.
+# ------------------------------------------------------------------------------
+option(BIM_ENABLE_IFC
+    "Build the P0-T005 IFC interoperability spike (src/interop/ifc); requires a pre-built external IfcOpenShell::IfcParse package - see scripts/dependencies/ifcopenshell/README.md"
+    OFF)
+
+# ------------------------------------------------------------------------------
 # First-party module composition, in dependency-safe (topological) order.
 #
 # Allowed dependency direction (Architecture Gate section 8.1 / Implementation
@@ -73,13 +92,18 @@ include(BimSanitizers)
 #   viewport        --> (nothing first-party, not even foundation) + stdlib only
 #   viewport_bgfx   --> viewport + bgfx
 #   desktop (bim_desktop_spike) --> viewport + viewport_bgfx + Qt6::Widgets
+#   interop/ifc (bim_ifc) --> foundation + IfcOpenShell::IfcParse (external
+#                              prefix, NOT vcpkg - see BIM_ENABLE_IFC above)
 #
 # viewport/viewport_bgfx/desktop are added as of P0-T003 - Desktop +
 # Viewport Spike (previously boundary-README-only placeholder directories
 # through P0-T001/P0-T002, per the prior revision of this comment block).
-# Remaining future modules (interop/ifc, interop/dwg, interop/rvt,
-# documentation) are still NOT added here - they still contain only a
-# boundary README.md (Implementation Brief Phase G).
+# src/interop/ifc is added as of P0-T005 - IFC Spike, but ONLY when
+# BIM_ENABLE_IFC is ON (see that option's own comment above) - unlike every
+# other module here, it is not unconditionally added, since its third-party
+# dependency is not available by default. Remaining future modules
+# (interop/dwg, interop/rvt, documentation) are still NOT added here - they
+# still contain only a boundary README.md (Implementation Brief Phase G).
 # ------------------------------------------------------------------------------
 add_subdirectory(src/foundation)
 add_subdirectory(src/geometry/api)
@@ -93,6 +117,10 @@ add_subdirectory(src/persistence)
 add_subdirectory(src/viewport)
 add_subdirectory(src/viewport/bgfx)
 add_subdirectory(src/desktop)
+
+if(BIM_ENABLE_IFC)
+    add_subdirectory(src/interop/ifc)
+endif()
 
 if(BUILD_TESTING)
     add_subdirectory(tests)
