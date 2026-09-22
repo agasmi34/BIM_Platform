@@ -635,3 +635,26 @@ This governance release does not authorize Claude implementation.
 Next is Architecture Authority inspection followed by a governance-only
 materialization commit. Separate Implementation Authorization will then bind
 to that exact commit/tree.
+
+## 2026-09-22 - P0-T006 Implementation Authorization Approved for Materialization
+
+Architecture Authority approved:
+
+`BIM-AUTH-P0-T006-CLAUDE v1.0`
+
+The Authorization is bound to the materialized Implementation Brief release:
+
+- HEAD `6afb2462a3dddc1c4f0e7780f857acae5733d3fc`
+- TREE `682e1e48ea56a755cab9904b4d6bebf400e3a8dd`
+
+C3A authoring alone does not activate implementation.
+
+The Authorization becomes effective only after a governance-only C3 commit is
+materialized and Architecture Authority records the resulting exact clean
+post-C3 HEAD/TREE as Claude's execution-start state.
+
+Kimi remains NOT AUTHORIZED.
+
+Candidate commit, main integration and push remain NOT AUTHORIZED.
+
+ACR remains NONE.

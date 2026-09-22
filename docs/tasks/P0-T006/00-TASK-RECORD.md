@@ -2,95 +2,68 @@
 
 **Task:** P0-T006 - DWG / ODA Evaluation
 
-**State:** ARCHITECTURE GATE FROZEN / IMPLEMENTATION BRIEF RELEASED /
-IMPLEMENTATION NOT AUTHORIZED
+**State:** IMPLEMENTATION AUTHORIZATION APPROVED /
+EFFECTIVE AFTER C3 MATERIALIZATION AND AA START LOCK
 
 **Architecture Gate:** BIM-AG-P0-T006 v1.0
 
-**Gate decision date:** 2026-09-22
+**Implementation Brief:** BIM-TASK-P0-T006-CLAUDE v1.0
+
+**Implementation Authorization:** BIM-AUTH-P0-T006-CLAUDE v1.0
 
 **Architecture Authority:** Product Authority + ChatGPT
 
 **Implementation Engineer:** Claude
 
-**Independent Reviewer:** Kimi
+**Independent Reviewer:** Kimi - NOT AUTHORIZED
 
 **Architecture Change Record:** NONE
 
-## Repository identity
-
-Pre-governance-release parent:
+## Frozen Implementation Brief release baseline
 
 ```text
-Base branch:
-main
-
-Main HEAD:
-fe2dfa813070df0875eaff93ad40cd2af2ec1dad
-
-Task branch:
+branch:
 task/P0-T006-dwg-oda-spike
 
-Task HEAD:
+HEAD:
+6afb2462a3dddc1c4f0e7780f857acae5733d3fc
+
+TREE:
+682e1e48ea56a755cab9904b4d6bebf400e3a8dd
+
+PARENT:
 fe2dfa813070df0875eaff93ad40cd2af2ec1dad
-
-Task tree:
-611728d8acc14dfd7b46187b1a1d82f3d1925196
-
-Task worktree:
-D:\Projects\BIM-Platform-WT-P0-T006
 ```
-
-The exact Implementation Brief release baseline is intentionally not
-self-referenced.
-
-It is the governance-only commit/tree that first materializes the P0-T006
-Gate, Task Record and Implementation Brief.
-
-Architecture Authority will bind that exact post-C2 commit/tree in the
-separate Implementation Authorization.
-
-## Objective
-
-Prove a vendor-neutral first-party DWG interoperability boundary using the
-externally supplied proprietary ODA Drawings SDK, including controlled AC1018
-same-version round trip and semantic-fidelity verification, without building
-an in-house DWG parser or leaking ODA types outside the adapter.
 
 ## Frozen evaluation disposition
 
 ```text
-ODA Drawings 27.7.0.0              = ACCEPTED TECHNICAL DIRECTION
-Windows x64                        = ACCEPTED
+ODA Drawings 27.7.0.0              = ACCEPTED
 VS2022/v143 compatibility          = PROVEN
 DWG read                           = PROVEN
 DWG write                          = PROVEN
 AC1018 same-version write          = PROVEN
-B10 semantic investigation         = CLOSED / PASS
-Native object deletion observed    = NO
-User-visible MText loss observed   = NO
-ODA defect established             = NO
-ACR                                = NONE
+B10 semantic fidelity             = CLOSED / PASS
+Architecture Gate                 = FROZEN / APPROVED
+ACR                               = NONE
 ```
 
-## Current authority state
+## Authorization state
 
 ```text
-Architecture Gate             = FROZEN / APPROVED
-Implementation Brief          = RELEASED
-Implementation Authorization  = NOT ISSUED
-Claude implementation         = NOT AUTHORIZED
-Candidate staging             = NOT AUTHORIZED
-Candidate commit              = NOT AUTHORIZED
-Kimi review                   = NOT AUTHORIZED
-Main integration              = NOT AUTHORIZED
-Push                          = NOT AUTHORIZED
+Implementation Authorization      = APPROVED
+C3 governance materialization      = PENDING
+Claude execution                   = NOT YET ACTIVE
+Kimi                               = NOT AUTHORIZED
+Candidate commit                   = NOT AUTHORIZED
+Main integration                   = NOT AUTHORIZED
+Push                               = NOT AUTHORIZED
 ```
 
-## Next gate
+C3A authoring alone does not activate Claude.
 
-Materialize this governance delta as a docs-only commit after Architecture
-Authority inspection.
+The next gate is the governance-only C3 materialization commit, followed by
+Architecture Authority verification of its exact HEAD/TREE.
 
-Then issue a separate P0-T006 Implementation Authorization bound to that
-exact resulting commit/tree.
+That resulting clean post-C3 commit/tree becomes the Claude execution-start
+state.

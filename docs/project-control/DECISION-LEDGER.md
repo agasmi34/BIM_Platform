@@ -640,3 +640,27 @@ Execution Packet v1.0 is withdrawn for execution.
 
 Implementation remains NOT AUTHORIZED until separate authorization is issued
 against the exact governance-release commit/tree.
+
+## P0-T006 - Implementation Authorization decision
+
+**Decision date:** 2026-09-22
+
+**Authorization:** `BIM-AUTH-P0-T006-CLAUDE v1.0`
+
+| Item | Decision |
+|---|---|
+| Implementation Brief release HEAD | `6afb2462a3dddc1c4f0e7780f857acae5733d3fc` |
+| Implementation Brief release TREE | `682e1e48ea56a755cab9904b4d6bebf400e3a8dd` |
+| Implementation Authorization | APPROVED |
+| Effectiveness | After governance-only C3 materialization and AA post-commit start lock |
+| Claude implementation | NOT YET ACTIVE |
+| Kimi | NOT AUTHORIZED |
+| Candidate commit | NOT AUTHORIZED |
+| Main integration | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |
+| ACR | NONE |
+
+Claude's exact execution-start HEAD/TREE will be the clean post-C3
+authorization commit recorded by Architecture Authority.
+
+The authorization does not permit Claude to stage, commit, merge or push.

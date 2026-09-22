@@ -563,3 +563,22 @@ The exact Implementation Brief release baseline is the governance-only commit
 that materializes this record and the P0-T006 Gate/Brief.
 
 That commit/tree must be captured before separate Implementation Authorization.
+
+## 2026-09-22 - P0-T006 Implementation Authorization
+
+| Item | Value |
+|---|---|
+| Authorization | `BIM-AUTH-P0-T006-CLAUDE v1.0` |
+| Bound C2B HEAD | `6afb2462a3dddc1c4f0e7780f857acae5733d3fc` |
+| Bound C2B TREE | `682e1e48ea56a755cab9904b4d6bebf400e3a8dd` |
+| Authorization decision | APPROVED |
+| C3 materialization | PENDING |
+| Claude execution | NOT YET ACTIVE |
+| Kimi | NOT AUTHORIZED |
+| Candidate commit | NOT AUTHORIZED |
+| Main integration | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |
+| ACR | NONE |
+
+The exact execution-start state will be the clean governance-only C3 commit
+whose parent is the bound C2B HEAD.

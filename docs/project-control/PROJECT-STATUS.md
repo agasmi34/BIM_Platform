@@ -343,3 +343,34 @@ exact release HEAD/TREE capture
     ->
 separate P0-T006 Implementation Authorization
 ```
+
+## Current - P0-T006 Implementation Authorization (2026-09-22)
+
+```text
+Architecture Gate                 = FROZEN / APPROVED
+Implementation Brief              = RELEASED / MATERIALIZED
+
+C2B HEAD                          = 6afb2462a3dddc1c4f0e7780f857acae5733d3fc
+C2B TREE                          = 682e1e48ea56a755cab9904b4d6bebf400e3a8dd
+
+Implementation Authorization      = APPROVED
+C3 materialization                = PENDING
+Claude execution                  = NOT YET ACTIVE
+
+Kimi                              = NOT AUTHORIZED
+Candidate commit                  = NOT AUTHORIZED
+Main integration                  = NOT AUTHORIZED
+Push                              = NOT AUTHORIZED
+
+ACR                               = NONE
+```
+
+Next:
+
+```text
+C3 governance-only materialization commit
+    ->
+record exact clean post-C3 HEAD/TREE
+    ->
+activate Claude implementation from that state
+```
