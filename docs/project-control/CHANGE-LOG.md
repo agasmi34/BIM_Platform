@@ -602,3 +602,36 @@ exists yet); once Phase P commits land, this log should be read alongside
   documents used conflicting baseline-start wording.
 - Implementation authorization remains issued, but Claude execution is paused
   until Execution Packet v1.1 names the exact post-clarification baseline.
+
+## 2026-09-22 - P0-T006 DWG / ODA Architecture Gate and Implementation Brief Release
+
+P0-T006 evaluation and B10 semantic-fidelity investigation closed PASS.
+
+**Architecture Gate:** `BIM-AG-P0-T006 v1.0`
+
+**Gate status:** FROZEN / APPROVED
+
+**Implementation Brief:** `BIM-TASK-P0-T006-CLAUDE v1.0`
+
+**Brief status:** RELEASED - IMPLEMENTATION NOT AUTHORIZED
+
+Frozen decisions include:
+
+- retain AG-011: no in-house DWG parser;
+- use ODA Drawings 27.7.0.0 through an external proprietary SDK root;
+- keep all ODA API ownership under `src/interop/dwg/**`;
+- keep the public `bim::dwg` API vendor-neutral;
+- use `BIM_ENABLE_DWG=OFF` by default;
+- preserve controlled AC1018 explicitly with ODA vAC18;
+- do not use handles, binary equality or object-count equality as
+  application-level fidelity contracts;
+- require semantic fidelity tests;
+- add R16/R17 architecture enforcement during implementation;
+- keep ODA SDK/runtime/activation material outside Git;
+- keep ACR = NONE.
+
+This governance release does not authorize Claude implementation.
+
+Next is Architecture Authority inspection followed by a governance-only
+materialization commit. Separate Implementation Authorization will then bind
+to that exact commit/tree.

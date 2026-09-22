@@ -609,3 +609,34 @@ The exact execution baseline shall be the post-clarification task commit/tree
 named by Architecture Authority in Execution Packet v1.1.
 
 Execution Packet v1.0 is withdrawn for execution.
+
+## P0-T006 - DWG / ODA architecture decisions
+
+**Decision date:** 2026-09-22
+
+**Architecture Gate:** `BIM-AG-P0-T006 v1.0`
+
+**Status:** FROZEN / APPROVED
+
+| ID | Decision | Status |
+|---|---|---|
+| P0T6-D01 | Retain AG-011: no in-house DWG parser | LOCKED |
+| P0T6-D02 | ODA Drawings 27.7.0.0 is the accepted Phase-0 DWG technical direction | LOCKED |
+| P0T6-D03 | ODA SDK/runtime remains external and proprietary | LOCKED |
+| P0T6-D04 | Sole ODA production owner is `src/interop/dwg/**` | LOCKED |
+| P0T6-D05 | Public `bim::dwg` API remains vendor-neutral | LOCKED |
+| P0T6-D06 | `BIM_ENABLE_DWG` is explicit opt-in and default OFF | LOCKED |
+| P0T6-D07 | Same-version path is AC1018 -> ODA vAC18 -> AC1018 | LOCKED |
+| P0T6-D08 | `kDHL_CURRENT` is not a preserve-source-version contract | LOCKED |
+| P0T6-D09 | Binary, handle and object-count equality are not fidelity contracts | LOCKED |
+| P0T6-D10 | Controlled user-visible semantic invariants are the fidelity basis | LOCKED |
+| P0T6-D11 | ODA handles are not persistent BIM Platform identities | LOCKED |
+| P0T6-D12 | Add R16 sole-owner and R17 public-neutral enforcement | LOCKED |
+| P0T6-D13 | Trial evidence does not establish commercial redistribution rights | LOCKED |
+| P0T6-D14 | RVT/BimRv/Civil/Mechanical/Map/Web remain out of scope | LOCKED |
+| P0T6-D15 | Architecture Change Record | NONE |
+
+**Implementation Brief:** `BIM-TASK-P0-T006-CLAUDE v1.0`
+
+Implementation remains NOT AUTHORIZED until separate authorization is issued
+against the exact governance-release commit/tree.

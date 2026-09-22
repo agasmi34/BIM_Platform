@@ -18,3 +18,13 @@ not silently downgrade or resolve a risk by recording it; each row's
 
 None. No risk row above has been marked resolved; several are contingent on
 Verification Runbook B's actual execution, which has not happened yet.
+
+## P0-T006 DWG / ODA controlled risks - 2026-09-22
+
+| ID | Risk | Impact | State | Control |
+|---|---|---|---|---|
+| P0T6-R01 | ODA Drawings SDK is proprietary and external to Git | Build/test cannot assume SDK availability | CONTROLLED / OPEN | `BIM_ENABLE_DWG=OFF` by default; explicit `BIM_ODA_DRAWINGS_ROOT` required |
+| P0T6-R02 | Trial evidence does not prove commercial redistribution rights | Commercial deployment could violate licensing if assumed | OPEN / BUSINESS-LEGAL GATE | No redistribution claim; production licensing established separately |
+| P0T6-R03 | ODA write may materialize defaults and change handles/object population | Binary/object identity comparisons can produce false fidelity failures | MITIGATED | Semantic fidelity contract; handles/object count non-authoritative |
+| P0T6-R04 | ODA handles are unstable across write/reopen | Persistent identity corruption if reused as BIM IDs | MITIGATED | Handles explicitly prohibited as persistent platform identity |
+| P0T6-R05 | External SDK/runtime packaging may differ between machines | Configure/runtime failure | CONTROLLED | Explicit root, accepted version, clear failure, no global fallback |

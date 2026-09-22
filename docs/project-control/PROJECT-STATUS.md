@@ -293,3 +293,53 @@ Independent Review           = NOT AUTHORIZED
 Main integration             = NOT AUTHORIZED
 Push                         = NOT AUTHORIZED
 ```
+
+## Current - P0-T006 DWG / ODA Evaluation (2026-09-22)
+
+Current active Phase-0 task:
+
+```text
+P0-T006 - DWG / ODA Evaluation
+```
+
+Lifecycle:
+
+```text
+Discovery / evaluation            = CLOSED / PASS
+B10 semantic fidelity             = CLOSED / PASS
+Architecture Gate                 = FROZEN / APPROVED
+Implementation Brief              = RELEASED
+Implementation Authorization      = NOT ISSUED
+Claude implementation             = NOT AUTHORIZED
+Candidate staging                 = NOT AUTHORIZED
+Candidate commit                  = NOT AUTHORIZED
+Independent Review                = NOT AUTHORIZED
+Main integration                  = NOT AUTHORIZED
+Push                              = NOT AUTHORIZED
+ACR                               = NONE
+```
+
+Frozen architecture:
+
+```text
+ODA Drawings direction            = ACCEPTED
+No in-house DWG parser            = LOCKED
+ODA sole owner                    = src/interop/dwg/**
+Public API                        = vendor-neutral
+ODA dependency                    = external / proprietary
+DWG build                         = opt-in / default OFF
+Controlled round trip             = AC1018 -> vAC18 -> AC1018
+Fidelity basis                    = semantic, not binary/handle equality
+```
+
+Next gate:
+
+```text
+Architecture Authority inspection
+    ->
+governance-only materialization commit
+    ->
+exact release HEAD/TREE capture
+    ->
+separate P0-T006 Implementation Authorization
+```

@@ -537,3 +537,29 @@ No production-code implementation is authorized by the architecture-record commi
 | Independent review | NOT AUTHORIZED |
 | Main integration | NOT AUTHORIZED |
 | Push | NOT AUTHORIZED |
+
+## 2026-09-22 - P0-T006 DWG / ODA Gate + Brief Release
+
+| Item | Value |
+|---|---|
+| Task | P0-T006 - DWG / ODA Evaluation |
+| Task branch | `task/P0-T006-dwg-oda-spike` |
+| Task worktree | `D:\Projects\BIM-Platform-WT-P0-T006` |
+| Pre-release parent HEAD | `fe2dfa813070df0875eaff93ad40cd2af2ec1dad` |
+| Pre-release parent tree | `611728d8acc14dfd7b46187b1a1d82f3d1925196` |
+| Architecture Gate | `BIM-AG-P0-T006 v1.0` |
+| Architecture Gate status | FROZEN / APPROVED |
+| Implementation Brief | `BIM-TASK-P0-T006-CLAUDE v1.0` |
+| Implementation Brief status | RELEASED |
+| ACR | NONE |
+| Implementation Authorization | NOT ISSUED |
+| Claude | NOT AUTHORIZED |
+| Kimi | NOT AUTHORIZED |
+| Candidate commit | NOT AUTHORIZED |
+| Main integration | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |
+
+The exact Implementation Brief release baseline is the governance-only commit
+that materializes this record and the P0-T006 Gate/Brief.
+
+That commit/tree must be captured before separate Implementation Authorization.
