@@ -262,3 +262,67 @@ add_test(
             -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
 )
 set_tests_properties(arch_p0_t005_ifc_public_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# --- P0-T006 DWG / ODA Evaluation additions (Architecture Enforcement) -
+# rules R16-R17 (tools/architecture_checker.cmake), each run both against
+# the real src/ tree (must PASS) and against its own deliberately-broken
+# fixture under tests/fixtures/ (the checker must FAIL there; WILL_FAIL
+# TRUE inverts that, matching the P0-T003/P0-T004/P0-T005 pattern above).
+# Registered unconditionally (not gated by BIM_ENABLE_DWG): both rules are
+# pure text scans over tools/architecture_checker.cmake and the real src/
+# tree / fixtures, requiring no compiled ODA Drawings dependency at all -
+# mirroring R14/R15's own unconditional registration exactly. Test names
+# are exactly as specified by Execution Packet BIM-AA-P0-T006 v1.0's AA
+# clarification response (arch_p0_t006_oda_owner /
+# arch_p0_t006_oda_owner_fixture_rejected / arch_p0_t006_dwg_public_neutral
+# / arch_p0_t006_dwg_public_fixture_rejected), not the arch_<rule-name>
+# style R6-R15 used, since that AA response is the authoritative source for
+# this task's required test names.
+
+# arch_p0_t006_oda_owner - R16 against the real src/ tree: no ODA Drawings
+# token appears anywhere under src/ outside src/interop/dwg/** - bim_dwg
+# remains the sole ODA Drawings owner.
+add_test(
+    NAME arch_p0_t006_oda_owner
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=ODA_DRAWINGS_ONLY_DWG_OWNER
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p0_t006_oda_owner_fixture_rejected - R16 against
+# tests/fixtures/p0_t006_bad_dwg_owner/, which deliberately puts a raw ODA
+# Drawings token under model/src/ (outside interop/dwg/**). The checker
+# must FAIL here.
+add_test(
+    NAME arch_p0_t006_oda_owner_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p0_t006_bad_dwg_owner
+            -DBIM_ARCH_CHECK_RULE=ODA_DRAWINGS_ONLY_DWG_OWNER
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p0_t006_oda_owner_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# arch_p0_t006_dwg_public_neutral - R17 against the real src/ tree: zero
+# ODA Drawings tokens under src/interop/dwg/include/** - bim::dwg's public
+# contract stays vendor-neutral.
+add_test(
+    NAME arch_p0_t006_dwg_public_neutral
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=DWG_PUBLIC_NEUTRAL
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p0_t006_dwg_public_fixture_rejected - R17 against
+# tests/fixtures/p0_t006_bad_dwg_public/, which deliberately leaks a raw
+# ODA Drawings token into a simulated interop/dwg/include/** header. The
+# checker must FAIL here.
+add_test(
+    NAME arch_p0_t006_dwg_public_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p0_t006_bad_dwg_public
+            -DBIM_ARCH_CHECK_RULE=DWG_PUBLIC_NEUTRAL
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p0_t006_dwg_public_fixture_rejected PROPERTIES WILL_FAIL TRUE)

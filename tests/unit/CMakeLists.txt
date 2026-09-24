@@ -130,3 +130,40 @@ if(BIM_ENABLE_IFC)
     bim_apply_warnings(unit_ifc_probe_contract)
     add_test(NAME unit_ifc_probe_contract COMMAND unit_ifc_probe_contract)
 endif()
+
+# --- P0-T006 DWG / ODA Evaluation (Execution Packet BIM-AA-P0-T006 v1.0
+# sections 6, 10; AA CP2B-H3 clarification's "unit_dwg_probe_contract").
+# Links bim::dwg, which is only defined when BIM_ENABLE_DWG is ON (root
+# CMakeLists.txt) - see src/interop/dwg/CMakeLists.txt's own comment on why
+# this module, like bim::ifc above, is not always available.
+if(BIM_ENABLE_DWG)
+    add_executable(unit_dwg_probe_contract
+        unit_dwg_probe_contract.cpp
+    )
+    target_link_libraries(unit_dwg_probe_contract
+        PRIVATE
+            bim::dwg
+            Catch2::Catch2WithMain
+    )
+    target_compile_features(unit_dwg_probe_contract PRIVATE cxx_std_20)
+    bim_apply_warnings(unit_dwg_probe_contract)
+    add_test(NAME unit_dwg_probe_contract COMMAND unit_dwg_probe_contract)
+
+    # [CP3-H4 minimum-delta correction] Stage the AA-authorized 21-module
+    # controlled Phase-0 sufficient ODA runtime set beside this executable's
+    # own build output. bim_dwg is STATIC, so the Windows loader resolves
+    # these PE modules from the executable's own runtime directory, not
+    # from beside a static archive (AA CP3-H4 section 9). The file list is
+    # resolved/validated once in src/interop/dwg/CMakeLists.txt and
+    # published via a GLOBAL PROPERTY, read back here rather than
+    # rediscovered - one place names the 21 filenames. No wildcard/glob
+    # copy; only this one DWG executable in this file receives it.
+    get_property(_bim_p0_t006_dwg_runtime_files GLOBAL PROPERTY BIM_P0_T006_DWG_RUNTIME_FILES)
+    add_custom_command(TARGET unit_dwg_probe_contract POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${_bim_p0_t006_dwg_runtime_files}
+            "$<TARGET_FILE_DIR:unit_dwg_probe_contract>"
+        COMMENT "Staging the AA CP3-H4 controlled 21-module ODA runtime set beside unit_dwg_probe_contract"
+        VERBATIM
+    )
+endif()

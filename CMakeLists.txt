@@ -69,6 +69,25 @@ option(BIM_ENABLE_IFC
     OFF)
 
 # ------------------------------------------------------------------------------
+# BIM_ENABLE_DWG (P0-T006 - DWG / ODA Evaluation; Execution Packet
+# BIM-AA-P0-T006 v1.0 sections 3, 14) - default OFF, mirroring BIM_ENABLE_IFC
+# immediately above for the same reason: the locked ODA Drawings 27.7.0.0
+# vc16_amd64dll trial SDK is an operator-supplied external tree, not
+# available through the project's frozen vcpkg baseline and not installed
+# by default. Unlike IfcOpenShell, this SDK ships no CMake package/config of
+# any kind (Packet section 3), so there is no find_package()/*_DIR variable
+# to point at an installed prefix - the caller instead supplies
+# BIM_ODA_DRAWINGS_ROOT directly as the SDK tree's root directory (see
+# src/interop/dwg/CMakeLists.txt for the exact required layout). Gating
+# src/interop/dwg behind this option keeps the default configure/build
+# (every engineer/CI job that has not been granted this locked trial SDK)
+# completely unaffected, exactly as BIM_ENABLE_IFC does for IfcOpenShell.
+# ------------------------------------------------------------------------------
+option(BIM_ENABLE_DWG
+    "Build the P0-T006 DWG / ODA evaluation spike (src/interop/dwg); requires BIM_ODA_DRAWINGS_ROOT pointing at a locked ODA Drawings 27.7.0.0 vc16_amd64dll SDK tree - see src/interop/dwg/CMakeLists.txt"
+    OFF)
+
+# ------------------------------------------------------------------------------
 # First-party module composition, in dependency-safe (topological) order.
 #
 # Allowed dependency direction (Architecture Gate section 8.1 / Implementation
@@ -94,6 +113,10 @@ option(BIM_ENABLE_IFC
 #   desktop (bim_desktop_spike) --> viewport + viewport_bgfx + Qt6::Widgets
 #   interop/ifc (bim_ifc) --> foundation + IfcOpenShell::IfcParse (external
 #                              prefix, NOT vcpkg - see BIM_ENABLE_IFC above)
+#   interop/dwg (bim_dwg) --> foundation + locked ODA Drawings SDK (raw
+#                              operator-supplied tree via
+#                              BIM_ODA_DRAWINGS_ROOT, NOT vcpkg, NOT a CMake
+#                              package - see BIM_ENABLE_DWG above)
 #
 # viewport/viewport_bgfx/desktop are added as of P0-T003 - Desktop +
 # Viewport Spike (previously boundary-README-only placeholder directories
@@ -101,9 +124,11 @@ option(BIM_ENABLE_IFC
 # src/interop/ifc is added as of P0-T005 - IFC Spike, but ONLY when
 # BIM_ENABLE_IFC is ON (see that option's own comment above) - unlike every
 # other module here, it is not unconditionally added, since its third-party
-# dependency is not available by default. Remaining future modules
-# (interop/dwg, interop/rvt, documentation) are still NOT added here - they
-# still contain only a boundary README.md (Implementation Brief Phase G).
+# dependency is not available by default. src/interop/dwg is added as of
+# P0-T006 - DWG / ODA Evaluation, but ONLY when BIM_ENABLE_DWG is ON (see
+# that option's own comment above), for the same reason. Remaining future
+# modules (interop/rvt, documentation) are still NOT added here - they still
+# contain only a boundary README.md (Implementation Brief Phase G).
 # ------------------------------------------------------------------------------
 add_subdirectory(src/foundation)
 add_subdirectory(src/geometry/api)
@@ -120,6 +145,10 @@ add_subdirectory(src/desktop)
 
 if(BIM_ENABLE_IFC)
     add_subdirectory(src/interop/ifc)
+endif()
+
+if(BIM_ENABLE_DWG)
+    add_subdirectory(src/interop/dwg)
 endif()
 
 if(BUILD_TESTING)

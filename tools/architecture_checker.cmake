@@ -20,9 +20,9 @@
 # rejects the fixture).
 #
 # BIM_ARCH_CHECK_RULE (added P0-T002 Phase C-M, Amendment 01 AA-C09; extended
-# P0-T003; extended P0-T004 Phase F; extended P0-T005) selects which rule
-# group to run:
-#   ALL                          (default) - every rule below (R1-R15)
+# P0-T003; extended P0-T004 Phase F; extended P0-T005; extended P0-T006)
+# selects which rule group to run:
+#   ALL                          (default) - every rule below (R1-R17)
 #   GEOMETRY_API_NO_OCCT_LEAK    - only R6
 #   GEOMETRY_OCCT_ONLY_KERNEL_OWNER - only R7
 #   VIEWPORT_PUBLIC_NEUTRAL      - only R8  (P0-T003)
@@ -33,12 +33,15 @@
 #   PERSISTENCE_PUBLIC_NEUTRAL   - only R13 (P0-T004 Phase F)
 #   IFC_OPEN_SHELL_ONLY_IFC_OWNER - only R14 (P0-T005)
 #   IFC_PUBLIC_NEUTRAL           - only R15 (P0-T005)
+#   ODA_DRAWINGS_ONLY_DWG_OWNER  - only R16 (P0-T006)
+#   DWG_PUBLIC_NEUTRAL           - only R17 (P0-T006)
 # This selector exists so each single-rule CTest test (arch_geometry_api_no_occt_leak,
 # arch_geometry_occt_only_kernel_owner, and, as of P0-T003,
 # arch_viewport_public_neutral / arch_qt_desktop_only / arch_bgfx_viewport_owner /
 # arch_no_direct_d3d, and, as of P0-T004 Phase F,
 # arch_sqlite_persistence_only / arch_persistence_public_neutral, and, as of
-# P0-T005, arch_ifc_openshell_only_ifc_owner / arch_ifc_public_neutral -
+# P0-T005, arch_ifc_openshell_only_ifc_owner / arch_ifc_public_neutral, and,
+# as of P0-T006, arch_p0_t006_oda_owner / arch_p0_t006_dwg_public_neutral -
 # tests/architecture/CMakeLists.txt) can each exercise exactly one rule,
 # while arch_repository_boundaries and arch_checker_detects_violation
 # continue to omit BIM_ARCH_CHECK_RULE entirely and so continue to run
@@ -125,6 +128,26 @@
 #        R6/R8/R13's own precedent, since a public-header file set is small
 #        and entirely first-party-authored, unlike R14's repository-wide
 #        scan.
+#   R16 - (P0-T006) ODA_DRAWINGS_ONLY_DWG_OWNER: ODA Drawings-specific
+#        tokens are permitted only under <root>/interop/dwg/** (Execution
+#        Packet BIM-AA-P0-T006 v1.0 section 3). Mirrors R7/R9/R10/R12's
+#        ownership-partition pattern AND their plain-substring matcher
+#        (bim_scan_files_for_tokens_ignoring_comments()) - deliberately NOT
+#        R14's boundary-aware helper, since ODA's own type/macro names
+#        (OdDb*, OdGe*, OdGi*, OdRx*, TD_*, ...) are prefix-style C++
+#        identifiers with no "::"-qualified namespace form the way
+#        IfcOpenShell::/IfcParse:: are, so they carry the same low
+#        suffix-collision risk R12/R13's own tokens do, not R7/R8/R10's
+#        "Handle("/"bgfx::" false-positive class.
+#   R17 - (P0-T006) DWG_PUBLIC_NEUTRAL: bim::dwg's public contract stays
+#        vendor-neutral - no ODA Drawings token under
+#        <root>/interop/dwg/include/** (Execution Packet BIM-AA-P0-T006 v1.0
+#        section 3). Mirrors R6/R8/R13/R15's public-header-neutrality
+#        pattern exactly, including reusing the same plain comment-aware
+#        substring helper and the same token set as R16, for the same
+#        low-false-positive-risk reason R15 gives for reusing R14's token
+#        set against a small, entirely first-party-authored public header
+#        set.
 #
 # ==============================================================================
 # P0-T004 PHASE F ADDITION NOTE - R12/SQLITE_PERSISTENCE_ONLY,
@@ -335,6 +358,41 @@
 # Phase F's R12/R13 self-validation was performed before this task's first
 # real Windows execution.
 # ==============================================================================
+# P0-T006 ADDITION NOTE - R16/ODA_DRAWINGS_ONLY_DWG_OWNER,
+# R17/DWG_PUBLIC_NEUTRAL
+#
+# Added to mechanically enforce the ODA Drawings sole-ownership and
+# public-neutrality boundaries established by Execution Packet
+# BIM-AA-P0-T006 v1.0 sections 3, 6, 9-11 and its AA clarification response
+# (fixture-footprint correction; TEIGHA_TRIAL private-define authorization).
+# R16 mirrors R7/R9/R10/R12's ownership-partition pattern AND their plain
+# comment-aware substring matcher (bim_scan_files_for_tokens_ignoring_comments()),
+# a deliberate divergence from R14's own precedent: R14 was told explicitly
+# to use the boundary-aware helper because IfcOpenShell::/IfcParse:: are
+# "::"-namespace-qualified tokens vulnerable to the specific suffix-collision
+# class RD1-05 fixed (a real identifier merely ENDING in the raw substring).
+# ODA's own tokens (OdDb*, OdGe*, OdGi*, OdRx*, TD_*, ...) are prefix-style
+# C++ identifiers with no namespace-qualified form - the same token shape
+# R12/R13's own SQLite tokens ("sqlite3_", "SQLITE_", ...) already have -
+# so R16/R17 follow R12/R13's plain-substring precedent instead, not R14's.
+# R17 reuses R16's exact same token set against only
+# <root>/interop/dwg/include/**, mirroring R15's own reuse of R14's token
+# set for the identical reason: a small, entirely first-party-authored
+# public header set carries the same low false-positive risk R6/R8/R13/R15
+# already accepted.
+#
+# This addition was authored without a live command-execution channel
+# against the real ODA Drawings SDK in this session (no device_bash on the
+# Windows worktree at authoring time; this checker is dependency-free by
+# design - a bare `cmake` binary is sufficient - so, exactly as for R14/R15,
+# it WAS self-validated locally in this session's own cloud sandbox by
+# running `cmake -P` against a local mirror of the real src/ tree plus both
+# new P0-T006 negative fixtures before delivery; see this task's own
+# implementation report for that run's actual output). The Windows
+# Execution Operator's own real `ctest -R "^arch_"` run against R16/R17 is
+# this addition's first execution against the real, locked ODA Drawings SDK
+# tree itself.
+# ==============================================================================
 # On the first pass through the selected rule(s), every violation found is
 # collected; if any exist, this script calls message(FATAL_ERROR ...), which
 # makes `cmake -P` exit non-zero. On a clean pass it prints
@@ -367,6 +425,8 @@ set(_bim_valid_rules
     "PERSISTENCE_PUBLIC_NEUTRAL"
     "IFC_OPEN_SHELL_ONLY_IFC_OWNER"
     "IFC_PUBLIC_NEUTRAL"
+    "ODA_DRAWINGS_ONLY_DWG_OWNER"
+    "DWG_PUBLIC_NEUTRAL"
 )
 list(FIND _bim_valid_rules "${BIM_ARCH_CHECK_RULE}" _bim_rule_idx)
 if(_bim_rule_idx EQUAL -1)
@@ -1105,6 +1165,70 @@ if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "IFC_PUBLI
         "IfcOpenShell" "IfcParse" "IfcUtil" "Ifc4"
     )
     bim_scan_files_for_tokens_ignoring_comments("${_ifc_public_headers}" "${_r15_tokens}" "R15-ifc-public-openshell-leak")
+endif()
+
+# ------------------------------------------------------------------------------
+# R16 - raw ODA Drawings API ownership belongs only to src/interop/dwg
+# (ODA_DRAWINGS_ONLY_DWG_OWNER, P0-T006). Mirrors R7/R9/R10/R12's
+# ownership-partition pattern (partition all first-party files by whether
+# they live under <root>/interop/dwg/**, then scan only the outside-owner
+# subset), using the SAME plain comment-aware substring helper R12/R13 use
+# (not R14's boundary-aware helper) - see this file's own P0-T006 ADDITION
+# NOTE above for why. Every token here is grounded in a real symbol/macro
+# actually used by src/interop/dwg/src/detail/oda_adapter.hpp/.cpp.
+# Selectable alone via BIM_ARCH_CHECK_RULE=ODA_DRAWINGS_ONLY_DWG_OWNER.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "ODA_DRAWINGS_ONLY_DWG_OWNER")
+    file(GLOB_RECURSE _all_source_files_r16
+        "${BIM_ARCH_CHECK_ROOT}/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/*.hxx"
+        "${BIM_ARCH_CHECK_ROOT}/*.cpp"
+        "${BIM_ARCH_CHECK_ROOT}/*.cc"
+    )
+    set(_interop_dwg_dir "${BIM_ARCH_CHECK_ROOT}/interop/dwg/")
+    set(_non_dwg_owner_files "")
+    foreach(f IN LISTS _all_source_files_r16)
+        string(FIND "${f}" "${_interop_dwg_dir}" _owner_idx)
+        if(_owner_idx EQUAL -1)
+            list(APPEND _non_dwg_owner_files "${f}")
+        endif()
+    endforeach()
+    set(_r16_tokens
+        "OdDb" "OdGe" "OdGi" "OdRx" "OdString" "OdError" "OdAnsiString"
+        "OdStaticRxObject" "OdWrFileBuf" "OdFileBuf"
+        "ExSystemServices" "ExHostAppServices"
+        "odInitialize" "odUninitialize" "TEIGHA_TRIAL"
+        "TD_Db" "TD_Ge" "TD_Gi" "TD_Root" "TD_Key" "TD_Alloc"
+    )
+    bim_scan_files_for_tokens_ignoring_comments("${_non_dwg_owner_files}" "${_r16_tokens}" "R16-oda-drawings-outside-dwg-owner")
+endif()
+
+# ------------------------------------------------------------------------------
+# R17 - bim::dwg's public contract stays vendor-neutral (DWG_PUBLIC_NEUTRAL,
+# P0-T006): no ODA Drawings token under <root>/interop/dwg/include/**.
+# Mirrors R6/R8/R13/R15's public-header-neutrality pattern exactly,
+# including reusing the same plain comment-aware substring helper and the
+# same R16 token set. Selectable alone via
+# BIM_ARCH_CHECK_RULE=DWG_PUBLIC_NEUTRAL. R17 is specifically the
+# public-boundary rule; R16 above is the ownership rule.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "DWG_PUBLIC_NEUTRAL")
+    file(GLOB_RECURSE _dwg_public_headers
+        "${BIM_ARCH_CHECK_ROOT}/interop/dwg/include/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/interop/dwg/include/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/interop/dwg/include/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/interop/dwg/include/*.hxx"
+    )
+    set(_r17_tokens
+        "OdDb" "OdGe" "OdGi" "OdRx" "OdString" "OdError" "OdAnsiString"
+        "OdStaticRxObject" "OdWrFileBuf" "OdFileBuf"
+        "ExSystemServices" "ExHostAppServices"
+        "odInitialize" "odUninitialize" "TEIGHA_TRIAL"
+        "TD_Db" "TD_Ge" "TD_Gi" "TD_Root" "TD_Key" "TD_Alloc"
+    )
+    bim_scan_files_for_tokens_ignoring_comments("${_dwg_public_headers}" "${_r17_tokens}" "R17-dwg-public-oda-leak")
 endif()
 
 # ------------------------------------------------------------------------------

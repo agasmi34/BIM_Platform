@@ -406,3 +406,151 @@ if(BIM_ENABLE_IFC)
         COMMAND p0_t005_ifc_evidence --json ${CMAKE_BINARY_DIR}/evidence/P0-T005/p0_t005_ifc_evidence.ctest.json
     )
 endif()
+
+# --- P0-T006 DWG / ODA Evaluation (Execution Packet BIM-AA-P0-T006 v1.0
+# sections 6-11; AA CP2B-H3 clarification's required test list). Every
+# target below links bim::dwg, which is only defined when BIM_ENABLE_DWG is
+# ON (root CMakeLists.txt) - see src/interop/dwg/CMakeLists.txt's own
+# comment. dwg_test_support.hpp is a shared, non-executable header (no
+# add_executable of its own) included directly by every target below via a
+# same-directory quote-include, following the existing
+# ifc_test_support.hpp convention above exactly.
+#
+# BIM_P0_T006_DWG_FIXTURE is the absolute path to the locked, vendor
+# -supplied AC1018 controlled fixture ("OdWriteEx XRef.dwg", shipped inside
+# the ODA Drawings SDK's own Drawing/Examples/OdWriteEx/ tree - Execution
+# Packet section 8's "Controlled fixture" / "Repository/config interfaces
+# remain: BIM_ODA_DRAWINGS_ROOT, BIM_P0_T006_DWG_FIXTURE"). Unlike
+# BIM_P0_T005_IFC_FIXTURES_DIR (first-party-authored fixtures living inside
+# this repository's own tests/fixtures/), this fixture is third-party
+# vendor example content under the locked trial SDK's own license and is
+# never copied into this repository - so its absolute path must be supplied
+# explicitly by the Windows Execution Operator (e.g.
+# -DBIM_P0_T006_DWG_FIXTURE="D:/Dependencies/ODA/.../OdWriteEx XRef.dwg"),
+# and this build fails clearly (FATAL_ERROR) rather than silently
+# proceeding if BIM_ENABLE_DWG is ON but this variable was left unset.
+# Injected at compile time via add_compile_definitions() (directory scope,
+# applies only to the targets added below this point in this file), exactly
+# mirroring BIM_P0_T005_IFC_FIXTURES_DIR's own injection pattern.
+if(BIM_ENABLE_DWG)
+    if(NOT DEFINED BIM_P0_T006_DWG_FIXTURE OR BIM_P0_T006_DWG_FIXTURE STREQUAL "")
+        message(FATAL_ERROR
+            "tests/integration: BIM_ENABLE_DWG is ON but BIM_P0_T006_DWG_FIXTURE "
+            "is not set. Set it to the absolute path of the locked vendor AC1018 "
+            "fixture 'OdWriteEx XRef.dwg' (Execution Packet BIM-AA-P0-T006 v1.0 "
+            "section 8), for example:\n"
+            "  cmake --preset <preset> -DBIM_ENABLE_DWG=ON "
+            "-DBIM_ODA_DRAWINGS_ROOT=<path> "
+            "-DBIM_P0_T006_DWG_FIXTURE=\"<path>/Drawing/Examples/OdWriteEx/OdWriteEx XRef.dwg\"")
+    endif()
+    # [CP3-H1 minimum-delta correction] BIM_P0_T006_DWG_FIXTURE arrives from
+    # the operator as a native Windows path (backslash-separated). Injecting
+    # that raw value into a C++ string literal via add_compile_definitions()
+    # makes MSVC interpret "\D", "\O", "\E" etc. as (invalid) escape
+    # sequences - C4129, promoted to C2220 under /WX. Normalize to
+    # forward slashes first (CMake accepts '/' on Windows) and inject the
+    # normalized variable instead. One normalized variable, reused below by
+    # every P0-T006 integration/evidence target via this same directory-scope
+    # add_compile_definitions() call - no other target/target-registration
+    # structure in this file changes.
+    string(REPLACE "\\" "/" _bim_p0_t006_dwg_fixture_cpp "${BIM_P0_T006_DWG_FIXTURE}")
+    add_compile_definitions(BIM_P0_T006_DWG_FIXTURE="${_bim_p0_t006_dwg_fixture_cpp}")
+
+    add_executable(integration_dwg_missing_file
+        integration_dwg_missing_file.cpp
+    )
+    target_link_libraries(integration_dwg_missing_file
+        PRIVATE
+            bim::dwg
+            Catch2::Catch2WithMain
+    )
+    target_compile_features(integration_dwg_missing_file PRIVATE cxx_std_20)
+    bim_apply_warnings(integration_dwg_missing_file)
+    add_test(NAME integration_dwg_missing_file COMMAND integration_dwg_missing_file)
+
+    add_executable(integration_dwg_same_path_rejected
+        integration_dwg_same_path_rejected.cpp
+    )
+    target_link_libraries(integration_dwg_same_path_rejected
+        PRIVATE
+            bim::dwg
+            Catch2::Catch2WithMain
+    )
+    target_compile_features(integration_dwg_same_path_rejected PRIVATE cxx_std_20)
+    bim_apply_warnings(integration_dwg_same_path_rejected)
+    add_test(NAME integration_dwg_same_path_rejected COMMAND integration_dwg_same_path_rejected)
+
+    add_executable(integration_dwg_vendor_fixture_read
+        integration_dwg_vendor_fixture_read.cpp
+    )
+    target_link_libraries(integration_dwg_vendor_fixture_read
+        PRIVATE
+            bim::dwg
+            Catch2::Catch2WithMain
+    )
+    target_compile_features(integration_dwg_vendor_fixture_read PRIVATE cxx_std_20)
+    bim_apply_warnings(integration_dwg_vendor_fixture_read)
+    add_test(NAME integration_dwg_vendor_fixture_read COMMAND integration_dwg_vendor_fixture_read)
+
+    add_executable(integration_dwg_same_version_round_trip
+        integration_dwg_same_version_round_trip.cpp
+    )
+    target_link_libraries(integration_dwg_same_version_round_trip
+        PRIVATE
+            bim::dwg
+            Catch2::Catch2WithMain
+    )
+    target_compile_features(integration_dwg_same_version_round_trip PRIVATE cxx_std_20)
+    bim_apply_warnings(integration_dwg_same_version_round_trip)
+    add_test(NAME integration_dwg_same_version_round_trip COMMAND integration_dwg_same_version_round_trip)
+
+    # Standalone evidence executable (AA CP2B-H3 clarification's
+    # "integration_dwg_evidence") - mirrors p0_t005_ifc_evidence.cpp exactly:
+    # not a Catch2 target, has its own main(), links the SAME production
+    # bim::dwg implementation exercised by the Catch2 targets above (never a
+    # separate copy).
+    add_executable(p0_t006_dwg_evidence
+        p0_t006_dwg_evidence.cpp
+    )
+    target_link_libraries(p0_t006_dwg_evidence
+        PRIVATE
+            bim::dwg
+    )
+    target_compile_features(p0_t006_dwg_evidence PRIVATE cxx_std_20)
+    bim_apply_warnings(p0_t006_dwg_evidence)
+
+    add_test(
+        NAME integration_dwg_evidence
+        COMMAND p0_t006_dwg_evidence --json ${CMAKE_BINARY_DIR}/evidence/P0-T006/p0_t006_dwg_evidence.ctest.json
+    )
+
+    # [CP3-H4 minimum-delta correction] Stage the AA-authorized 21-module
+    # controlled Phase-0 sufficient ODA runtime set beside each of these
+    # five DWG executables' own build output. bim_dwg is STATIC, so the
+    # Windows loader resolves these PE modules from each executable's own
+    # runtime directory, not from beside a static archive (AA CP3-H4
+    # section 9). The file list is resolved/validated once in
+    # src/interop/dwg/CMakeLists.txt and published via a GLOBAL PROPERTY,
+    # read back here rather than rediscovered - one place names the 21
+    # filenames. No wildcard/glob copy; only these five DWG executables in
+    # this file receive it (integration_dwg_same_path_rejected and
+    # integration_dwg_missing_file never actually reach ODA - they are
+    # rejected/fail before any ODA call - but they still link bim::dwg and
+    # therefore still need these modules resolvable at process load time).
+    get_property(_bim_p0_t006_dwg_runtime_files GLOBAL PROPERTY BIM_P0_T006_DWG_RUNTIME_FILES)
+    foreach(_bim_p0_t006_dwg_runtime_target IN ITEMS
+        integration_dwg_missing_file
+        integration_dwg_same_path_rejected
+        integration_dwg_vendor_fixture_read
+        integration_dwg_same_version_round_trip
+        p0_t006_dwg_evidence
+    )
+        add_custom_command(TARGET ${_bim_p0_t006_dwg_runtime_target} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                ${_bim_p0_t006_dwg_runtime_files}
+                "$<TARGET_FILE_DIR:${_bim_p0_t006_dwg_runtime_target}>"
+            COMMENT "Staging the AA CP3-H4 controlled 21-module ODA runtime set beside ${_bim_p0_t006_dwg_runtime_target}"
+            VERBATIM
+        )
+    endforeach()
+endif()
