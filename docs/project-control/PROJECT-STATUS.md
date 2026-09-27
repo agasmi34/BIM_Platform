@@ -4,7 +4,7 @@
 
 **System of record:** Git
 
-**Current active task:** P0-T005 ΓÇö IFC Spike
+**Current active task:** P0-T007 - RVT / BimRv Evaluation
 
 ## P0-T001
 
@@ -201,7 +201,7 @@ proceeds through the released brief using minimum necessary delta.
 After implementation verification and candidate freeze, control returns to
 Architecture Authority before independent review or any implementation commit.
 
-## P0-T005 ΓÇö IFC Spike
+## P0-T005 — IFC Spike
 
 Architecture Gate:
 
@@ -239,7 +239,7 @@ Current ACR:
 
 ```text
 ACR-P0-T005-001               = APPROVED
-IfcOpenShell vcpkg resolution = FAILED ΓÇö PORT ABSENT
+IfcOpenShell vcpkg resolution = FAILED — PORT ABSENT
 vcpkg baseline                = UNCHANGED
 Approved dependency route     = PINNED UPSTREAM SOURCE / EXTERNAL PREFIX
 Release line                  = 0.8.5
