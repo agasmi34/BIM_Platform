@@ -4,7 +4,7 @@
 
 **System of record:** Git
 
-**Current active task:** P0-T005 — IFC Spike
+**Current active task:** P0-T005 ΓÇö IFC Spike
 
 ## P0-T001
 
@@ -201,7 +201,7 @@ proceeds through the released brief using minimum necessary delta.
 After implementation verification and candidate freeze, control returns to
 Architecture Authority before independent review or any implementation commit.
 
-## P0-T005 — IFC Spike
+## P0-T005 ΓÇö IFC Spike
 
 Architecture Gate:
 
@@ -239,7 +239,7 @@ Current ACR:
 
 ```text
 ACR-P0-T005-001               = APPROVED
-IfcOpenShell vcpkg resolution = FAILED — PORT ABSENT
+IfcOpenShell vcpkg resolution = FAILED ΓÇö PORT ABSENT
 vcpkg baseline                = UNCHANGED
 Approved dependency route     = PINNED UPSTREAM SOURCE / EXTERNAL PREFIX
 Release line                  = 0.8.5
@@ -374,3 +374,28 @@ record exact clean post-C3 HEAD/TREE
     ->
 activate Claude implementation from that state
 ```
+
+## Current - P0-T007 RVT / BimRv Evaluation Closure (2026-09-26)
+
+~~~text
+P0-T007 - RVT / BimRv Evaluation
+
+Technical evaluation        = CLOSED / PASS
+Read capability matrix      = ESTABLISHED
+Controlled RVT open         = PASS
+Vectorization runtime       = PASS
+Geometry extraction         = PASS
+RVT writer                  = PROHIBITED
+Product integration         = NOT AUTHORIZED
+Repository RVT code         = NONE
+ACR                         = NONE
+
+Current lifecycle gate:
+documentation materialization -> Architecture Authority diff/path-set review
+
+Claude                      = NOT AUTHORIZED
+Kimi                        = NOT AUTHORIZED
+Candidate commit            = NOT AUTHORIZED
+Main integration            = NOT AUTHORIZED
+Push                        = NOT AUTHORIZED
+~~~

@@ -17,15 +17,15 @@ exists yet); once Phase P commits land, this log should be read alongside
 - ACR-P0T001-001 raised and resolved (Option B: controlled Windows
   Execution Operator execution; repository/worktree paths set to
   `D:\Projects\BIM-Platform` / `D:\Projects\BIM-Platform-WT-P0-T001`).
-- Bootstrap Runbook A authored, reviewed, and revised through v1.0 → v1.1 →
-  v1.2 → v1.3 across three architecture-review rounds (see
+- Bootstrap Runbook A authored, reviewed, and revised through v1.0 ΓåÆ v1.1 ΓåÆ
+  v1.2 ΓåÆ v1.3 across three architecture-review rounds (see
   `TASK-LEDGER.md` rows 5-9 for the specific defect found and fixed at each
   step).
 - Bootstrap Runbook A v1.3 reported executed successfully: bootstrap commit
   `4b339248dd8b050e7b603ef0b5707440e582c315` on `main`; task worktree
   created at `D:\Projects\BIM-Platform-WT-P0-T001` on branch
   `task/P0-T001-repo-toolchain-scaffold`. (Reported, not independently
-  verified by Claude — see `06-BOOTSTRAP-EVIDENCE.md`.)
+  verified by Claude ΓÇö see `06-BOOTSTRAP-EVIDENCE.md`.)
 - Phase C resumed. vcpkg registry baseline researched and resolved to
   commit `f89a4a1da4e3176a8d1a14c1825b9b2f98e48843` (OCCT 8.0.1,
   port-version 0).
@@ -46,8 +46,8 @@ exists yet); once Phase P commits land, this log should be read alongside
   `docs/project-control/` (this file and its four siblings) and
   `docs/tasks/P0-T001/` (13 files) authored and transferred into the
   isolated worktree only. **No commit made.** `main` untouched.
-- "P0-T001 A1 — WINDOWS VERIFICATION CONFIRMED" received: Architecture
-  Authority attested (with a stated provenance model — see
+- "P0-T001 A1 ΓÇö WINDOWS VERIFICATION CONFIRMED" received: Architecture
+  Authority attested (with a stated provenance model ΓÇö see
   `TASK-LEDGER.md`, "Windows verification attestation") that a raw
   PowerShell transcript from the Windows Execution Operator confirms the
   worktree's current file count (81), `docs/project-control`/`docs/tasks`
@@ -61,7 +61,7 @@ exists yet); once Phase P commits land, this log should be read alongside
 
 ## 2026-08-30
 
-- "P0-T001 Architecture Review — Verification Runbook B: REVISION REQUIRED"
+- "P0-T001 Architecture Review ΓÇö Verification Runbook B: REVISION REQUIRED"
   received. Two categories of change:
   - **Traceability correction:** Architecture Authority states it
     possesses and has reviewed actual raw PowerShell console transcripts
@@ -75,7 +75,7 @@ exists yet); once Phase P commits land, this log should be read alongside
     evidence form raw PowerShell console transcript; Architecture Authority
     verification VERIFIED; Claude reproduction NOT AVAILABLE (Windows
     command channel unavailable); independent reviewer verification
-    PENDING (Kimi). No underlying fact was changed — only the evidentiary
+    PENDING (Kimi). No underlying fact was changed ΓÇö only the evidentiary
     label. Claude has still not seen either transcript; none of its
     content was invented. The raw transcript files themselves do not yet
     exist in this worktree; Architecture Authority states they will be
@@ -95,11 +95,11 @@ exists yet); once Phase P commits land, this log should be read alongside
 - "ARCHITECTURE AUTHORITY DISPOSITION" received, three items:
   1. vcpkg schema clarification (`default-registry.baseline` vs
      `builtin-baseline`) accepted as correct for P0-T001/IC-002; no change
-     made — the field stays as `default-registry.baseline`.
+     made ΓÇö the field stays as `default-registry.baseline`.
   2. Governing-document conflict resolved: Master Engineering Constitution
      v0.2 `D-028` (GoogleTest LOCKED) vs. the approved P0-T001 Architecture
      Gate/Implementation Brief (Catch2 v3). `docs/architecture/adr/ADR-0001-phase0-test-framework-baseline.md`
-     (authoritative location — see the placement-correction entry below)
+     (authoritative location ΓÇö see the placement-correction entry below)
      authored: Catch2 v3 + CTest approved for all Phase 0 tasks, explicitly
      superseding `D-028` for Phase 0 only; Phase 1+ framework choice left
      PROVISIONAL; no replacement of the existing Catch2 implementation.
@@ -121,11 +121,11 @@ exists yet); once Phase P commits land, this log should be read alongside
   point to `docs/architecture/adr/`. `DECISION-LEDGER.md` and this file's
   prior entry updated to reference the new path. No build. No commit.
 
-- "P0-T001 Architecture Review — Verification Runbook B v1.3" received:
-  REVISION REQUIRED, producing v1.4. All v1.0→v1.3 findings not listed
+- "P0-T001 Architecture Review ΓÇö Verification Runbook B v1.3" received:
+  REVISION REQUIRED, producing v1.4. All v1.0ΓåÆv1.3 findings not listed
   below unchanged/not regressed. Five fixes:
   1. **BLOCKER (`CMakePresets.json`):** removed the `$comment` field
-     (invalid at the declared presets schema version 3 — `$comment` is a
+     (invalid at the declared presets schema version 3 ΓÇö `$comment` is a
      version-10 feature); presets schema version kept at 3 as intentional
      policy (earlier-maintained-CMake compatibility), not raised merely to
      keep a comment. `ci-win-msvc` preset semantics unchanged. The
@@ -133,7 +133,7 @@ exists yet); once Phase P commits land, this log should be read alongside
      documented in `CMakeLists.txt`'s own header comment and the
      Architecture Gate.
   2. **BLOCKER (`.clang-tidy`):** `WarningsAsErrors` changed `'' -> '*'`
-     per explicit Architecture Authority disposition — enabled clang-tidy
+     per explicit Architecture Authority disposition ΓÇö enabled clang-tidy
      findings are now CI-gating. Recorded as `DECISION-LEDGER.md` row
      D-005. Curated `Checks` list unchanged. `scripts/ci/static-analysis.ps1`
      logic unchanged (still report-only, still no `-fix`); its header
@@ -158,29 +158,29 @@ exists yet); once Phase P commits land, this log should be read alongside
      PASSED"; its Usage section names the actual `Verification-RunbookB-v1.4.ps1`
      script; `format.ps1`/`configure-build-test.ps1`/`architecture.ps1`/
      `license-inventory.ps1` header comments updated from the historical
-     "logical job N of 4" to "N of 5" (1, 2, 4, 5 respectively —
+     "logical job N of 4" to "N of 5" (1, 2, 4, 5 respectively ΓÇö
      `static-analysis.ps1` was already correctly "3 of 5").
   Verification Runbook B v1.4 produced. **Not executed.** No
   CMake/vcpkg/MSVC/CTest/clang-format/clang-tidy run. No commit made.
 
-- "P0-T001 Architecture Review — Verification Candidate v1.4" received: ONE
-  FINAL BLOCKER, producing v1.5. All v1.0→v1.4 findings CLOSED and
+- "P0-T001 Architecture Review ΓÇö Verification Candidate v1.4" received: ONE
+  FINAL BLOCKER, producing v1.5. All v1.0ΓåÆv1.4 findings CLOSED and
   unregressed. `scripts/ci/architecture.ps1`'s single broad
   `ctest -R "^arch_"` invocation did not prove both required tests
   (`arch_repository_boundaries`, `arch_checker_detects_violation`) were
   actually registered and executed. Replaced with two explicit,
-  exact-name-anchored invocations —
+  exact-name-anchored invocations ΓÇö
   `ctest -R "^arch_repository_boundaries$" --output-on-failure --no-tests=error`
   then `ctest -R "^arch_checker_detects_violation$" --output-on-failure --no-tests=error`
-  — both through `Invoke-Native` without `-AllowFailure`, so a missing OR
+  ΓÇö both through `Invoke-Native` without `-AllowFailure`, so a missing OR
   a failing required test both fail the job; only both found-and-passing
   reaches `ARCHITECTURE CHECK JOB PASSED`. Verification Runbook B v1.5
-  produced — no change to Runbook B's own verification logic, only its
+  produced ΓÇö no change to Runbook B's own verification logic, only its
   revision history/version binding to the corrected architecture.ps1 (see
   the script's own header comment for the full before/after behavior).
   **Not executed.** No build. No stage or commit. `main` untouched.
 
-- "P0-T001 — Verification Runbook B v1.5 First Execution Disposition"
+- "P0-T001 ΓÇö Verification Runbook B v1.5 First Execution Disposition"
   received. **First real Windows execution of any Verification Runbook B
   version in this task.** Findings:
   - Runbook v1.5 passed Step 0 (pre-mutation preflight) and entered
@@ -207,7 +207,7 @@ exists yet); once Phase P commits land, this log should be read alongside
     `[Parameter(Mandatory)][AllowEmptyCollection()][string[]]$CmdArgs`.
     The compiler-banner probe call itself is unchanged (same arguments,
     same `-AllowFailure`, same semantics). `scripts/ci/_common.ps1` was
-    **not** modified — no child CI job currently calls `Invoke-Native`
+    **not** modified ΓÇö no child CI job currently calls `Invoke-Native`
     with an empty argument array. Diffed against v1.5: only the version
     header/changelog block, the `Usage` line, and this single
     `AllowEmptyCollection()` addition changed; every other line of
@@ -215,11 +215,11 @@ exists yet); once Phase P commits land, this log should be read alongside
   **Not executed.** No build. No child CI script modified. No stage or
   commit. `main` untouched.
 
-- "P0-T001 — Verification v1.6 Failure Disposition" received. **First
+- "P0-T001 ΓÇö Verification v1.6 Failure Disposition" received. **First
   complete Windows verification execution of Verification Runbook B (v1.6)
-  in this task** — Step 0/Step 2 passed as before, and this run proceeded
+  in this task** ΓÇö Step 0/Step 2 passed as before, and this run proceeded
   into the CI job sequence rather than aborting in the harness itself.
-  **Classification: IMPLEMENTATION CORRECTION REQUIRED — no longer a
+  **Classification: IMPLEMENTATION CORRECTION REQUIRED ΓÇö no longer a
   verification-harness defect.** Two confirmed independent failures:
   1. **Formatting:** `scripts/ci/format.ps1` (clang-format 19.1.5, the
      Windows-side authoritative gate) rejected exactly 3 of the 16
@@ -228,7 +228,7 @@ exists yet); once Phase P commits land, this log should be read alongside
      `tests/integration/integration_persistence_sqlite_memory.cpp`.
      Independently corroborated locally with clang-format 18.1.3 against
      the repository's `.clang-format` (a version delta from the
-     authoritative 19.1.5 exists and is noted, not reconciled) — same 3
+     authoritative 19.1.5 exists and is noted, not reconciled) ΓÇö same 3
      files flagged, same other 13 clean.
   2. **vcpkg / Catch2:** configure failed loading `catch2@3.0.0` (`"3.0.0"
      is not a valid version-database entry`). Root cause: `vcpkg.json`'s
@@ -241,7 +241,7 @@ exists yet); once Phase P commits land, this log should be read alongside
      row D-002). The locked contract requires Catch2 major version 3, not
      the literal string `3.0.0`.
   - **Downstream jobs** (`static-analysis`, `architecture`,
-    `license-inventory`) did not produce independent evidence this run —
+    `license-inventory`) did not produce independent evidence this run ΓÇö
     classified as **cascade failures** of the vcpkg/Catch2 configure
     failure (configure did not succeed, so no build directory, no compile
     database, and no `vcpkg_installed` tree existed for those jobs to
@@ -258,7 +258,7 @@ exists yet); once Phase P commits land, this log should be read alongside
       `sqlite3`/`fmt`/`spdlog`. No other dependency, ordering (beyond what
       the replacement itself required), registry configuration, baseline
       SHA, or the `opencascade` entry was touched. The frozen baseline now
-      resolves catch2 to `3.15.3` — major version 3, satisfying
+      resolves catch2 to `3.15.3` ΓÇö major version 3, satisfying
       `DECISION-LEDGER.md` row D-003 / ADR-0001.
     - The 3 flagged files reformatted to `.clang-format` conformance:
       purely mechanical whitespace/continuation-layout and
@@ -278,32 +278,32 @@ exists yet); once Phase P commits land, this log should be read alongside
   OCCT 8.0.1 successfully built and installed via vcpkg) and proceeded
   substantially further than any prior Windows execution of this task.
   Two confirmed independent defects surfaced by that run:
-  - **F-01 (OCCT source defect):** `configure-build-test` failed — and
-    `static-analysis` failed from the same underlying cause — because
+  - **F-01 (OCCT source defect):** `configure-build-test` failed ΓÇö and
+    `static-analysis` failed from the same underlying cause ΓÇö because
     `src/geometry/occt/src/geometry_occt_probe.cpp` called
     `Standard_Failure::GetMessageString()`, which OCCT 8.0.1 marks
     deprecated in favor of `what()`; the authoritative Windows build
     treats warnings as errors, so the deprecation warning failed the
     build. **Correction applied:** the single line changed to
     `failure.what()`, preserving the existing null fallback and all
-    surrounding behavior — no other geometry behavior changed.
+    surrounding behavior ΓÇö no other geometry behavior changed.
   - **F-02 (effective compiler baseline enforcement gap):** the same run
     additionally revealed, via evidence this task had not previously had
-    access to, that CMake — under the Ninja generator — actually selected
+    access to, that CMake ΓÇö under the Ninja generator ΓÇö actually selected
     `CMAKE_CXX_COMPILER_ID = Clang` / `CMAKE_CXX_COMPILER_VERSION = 19.1.5`
     / `CMAKE_CXX_SIMULATE_ID = MSVC` (a clang-cl/clang++ compiler
     simulating MSVC), despite running inside a correctly verified x64 VS
     2022 17.14 v143 developer shell with `cl.exe` resolving correctly.
     Neither `CMakePresets.json` nor `scripts/ci/configure-build-test.ps1`
     previously forced or independently verified that CMake's *effective*
-    compiler was the real MSVC compiler — only that a command named
+    compiler was the real MSVC compiler ΓÇö only that a command named
     `cl.exe` existed on PATH. **Classified as a compiler-baseline
     enforcement gap** (enforcement of the already-locked MSVC v143
     baseline, not an architecture change), not a new locked decision.
     **Correction applied:**
     - `CMakePresets.json`: `conf-common`'s `cacheVariables` now pins
       `CMAKE_C_COMPILER`/`CMAKE_CXX_COMPILER` to the literal command name
-      `"cl"` (resolved via PATH inside the active developer shell — not a
+      `"cl"` (resolved via PATH inside the active developer shell ΓÇö not a
       hard-coded absolute path), so CMake's own auto-detection can no
       longer resolve to an earlier-on-PATH clang-cl/clang++.
     - `scripts/ci/configure-build-test.ps1`: after a reported-successful
@@ -321,7 +321,7 @@ exists yet); once Phase P commits land, this log should be read alongside
       independently: `CMAKE_CXX_COMPILER_ID` exactly `MSVC`, AND the
       effective `CMAKE_CXX_COMPILER` path, normalized and compared
       case-insensitively, is the same executable as the already-validated
-      `cl.exe` resolved earlier in the same script — a compiler reporting
+      `cl.exe` resolved earlier in the same script ΓÇö a compiler reporting
       `CMAKE_CXX_SIMULATE_ID=MSVC` does not satisfy either check.
     - `Verification-RunbookB-v1.7.ps1` produced (v1.6 is **not** modified
       in place). Adds an independent second check of the same
@@ -342,7 +342,7 @@ exists yet); once Phase P commits land, this log should be read alongside
     warnings-as-error policy, the test-framework decision, `main`, the
     task HEAD commit, and any source file other than the single F-01
     line. The pre-existing `SQLite::SQLite3` deprecation warning noted in
-    evidence was **not** fixed this round per explicit instruction —
+    evidence was **not** fixed this round per explicit instruction ΓÇö
     recorded here as the suitable place to defer it; it remains open for
     a future round.
   - **Not executed.** No CMake/vcpkg/MSVC/CTest/clang-format/clang-tidy
@@ -545,10 +545,10 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Remote push remains NOT AUTHORIZED.
 - ACR remains NONE.
 
-## 2026-09-16 — P0-T005 IFC Architecture Gate
+## 2026-09-16 ΓÇö P0-T005 IFC Architecture Gate
 
 - Recorded P0-T004 as locally closed and integrated to `main`.
-- Started P0-T005 — IFC Spike from accepted main baseline
+- Started P0-T005 ΓÇö IFC Spike from accepted main baseline
   `2c2b89f73651f7d5981d42546cbc0e321d6bb055`.
 - Approved `BIM-AG-P0-T005 v1.0`.
 - Locked `src/interop/ifc/**` as the future sole IfcOpenShell owner.
@@ -562,7 +562,7 @@ exists yet); once Phase P commits land, this log should be read alongside
 - No production source, CMake, dependency, or test implementation is modified
   by this architecture-record commit.
 
-## 2026-09-16 — P0-T005 ACR-P0-T005-001
+## 2026-09-16 ΓÇö P0-T005 ACR-P0-T005-001
 
 - Approved scoped IfcOpenShell pinned-source dependency exception.
 - Kept the existing vcpkg baseline unchanged.
@@ -573,7 +573,7 @@ exists yet); once Phase P commits land, this log should be read alongside
   governance materialization.
 - Production implementation remains NOT AUTHORIZED.
 
-## 2026-09-17 — P0-T005 Implementation Brief released
+## 2026-09-17 ΓÇö P0-T005 Implementation Brief released
 
 - Closed Dependency Resolution Phase C as PASS.
 - Froze IfcOpenShell 0.8.5 commit `16723d11cab9bc8a13b4e025a00d39445ccc462e`.
@@ -584,7 +584,7 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Production implementation remains NOT AUTHORIZED pending a separate
   Architecture Authority authorization.
 
-## 2026-09-17 — P0-T005 implementation authorized
+## 2026-09-17 ΓÇö P0-T005 implementation authorized
 
 - Issued `BIM-AUTH-P0-T005-IMPLEMENTATION v1.0`.
 - Authorized Claude to implement from task commit
@@ -593,7 +593,7 @@ exists yet); once Phase P commits land, this log should be read alongside
 - Candidate staging/commit, Kimi review, main integration, and push remain NOT
   AUTHORIZED.
 
-## 2026-09-17 — P0-T005 implementation baseline conflict clarified
+## 2026-09-17 ΓÇö P0-T005 implementation baseline conflict clarified
 
 - Classified `d6d84632... / 70721dbd...` as the pre-authorization parent.
 - Classified `3eb6fed9... / 6f52d12f...` as the authorization materialization
@@ -658,3 +658,20 @@ Kimi remains NOT AUTHORIZED.
 Candidate commit, main integration and push remain NOT AUTHORIZED.
 
 ACR remains NONE.
+
+## 2026-09-26 - P0-T007 RVT / BimRv Evaluation Closure Package
+
+Materialized the P0-T007 evaluation-only governance package:
+
+- `docs/tasks/P0-T007/00-TASK-RECORD.md`;
+- `docs/tasks/P0-T007/01-ARCHITECTURE-GATE.md`;
+- `docs/tasks/P0-T007/02-CAPABILITY-MATRIX.md`.
+
+The controlled evaluation established read-only RVT feasibility on a public
+Autodesk Revit 2017 sample, including successful database open, vectorization
+execution and selected-element geometry extraction.
+
+No RVT writer, product adapter, CMake integration, vendor binary/header/library,
+Implementation Brief or Implementation Authorization was added.
+
+Product integration remains NOT AUTHORIZED. ACR remains NONE.

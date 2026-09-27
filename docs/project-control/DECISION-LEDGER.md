@@ -5,7 +5,7 @@ Mirrors and extends the locked-decisions register in
 release clarifications (IC-001..IC-004) from
 `docs/tasks/P0-T001_Implementation_Brief_Claude_v1.0.md` section 4, plus
 decisions made during this task's execution. This file does not itself lock
-or unlock anything — it records what is locked, by which document, and any
+or unlock anything ΓÇö it records what is locked, by which document, and any
 addenda issued since.
 
 ## Architecture Gate locked decisions (AG-001..AG-018)
@@ -26,17 +26,17 @@ changed by Phase C implementation work.
 
 ## Implementation Brief release clarifications (IC-001..IC-004)
 
-- **IC-001** — Empty repository bootstrap exception (one empty commit only,
+- **IC-001** ΓÇö Empty repository bootstrap exception (one empty commit only,
   `chore: initialize repository`, if and only if STATE B). Exercised via
   Bootstrap Runbook A v1.3 (reported).
-- **IC-002** — vcpkg baseline syntax: use current vcpkg-supported syntax
+- **IC-002** ΓÇö vcpkg baseline syntax: use current vcpkg-supported syntax
   rather than an obsolete field. Applied: `builtin-baseline` placed in
   `vcpkg-configuration.json` (`default-registry.baseline`), not duplicated
   in `vcpkg.json`.
-- **IC-003** — CI provider neutrality: no hosted CI provider existed, so
+- **IC-003** ΓÇö CI provider neutrality: no hosted CI provider existed, so
   `scripts/ci/` contains only provider-neutral scripts; hosted-runner
   integration recorded as operationally deferred (see `scripts/ci/README.md`).
-- **IC-004** — No fake public APIs for empty modules: applied via private
+- **IC-004** ΓÇö No fake public APIs for empty modules: applied via private
   compilation anchors for `model`, `dependency_graph`, `transactions`,
   `commands`, `query`.
 
@@ -48,7 +48,7 @@ changed by Phase C implementation work.
 | D-002 | vcpkg registry baseline frozen at commit `f89a4a1da4e3176a8d1a14c1825b9b2f98e48843` (resolves `opencascade` to exactly `8.0.1`, port-version 0) | Claude, per IC-002/AG-005 | Resolved via live research (GitHub commits API + commit diff), not fabricated. See `vcpkg-configuration.json` and `LICENSES.md` for the full citation. |
 | D-003 | Test registration uses plain `add_test()` per Catch2 executable rather than `catch_discover_tests()`/`include(Catch)` | Claude | Avoids an untested dependency on locating Catch2's bundled CMake module inside the vcpkg install tree; still satisfies "registered in CTest" (Architecture Gate section 12.1). |
 | D-004 | Architecture-boundary checker implemented as a dependency-free `cmake -P` script (`tools/architecture_checker.cmake`) rather than Python | Claude, per Implementation Brief Phase J | Explicit brief instruction: "Do not add Python only for this checker in P0-T001." |
-| D-005 | Enabled clang-tidy findings from the curated `.clang-tidy` `Checks` list are CI-gating: `WarningsAsErrors` changed from `''` (none) to `'*'` (all enabled checks) | Architecture Authority, per "P0-T001 Architecture Review — Verification Runbook B v1.3" finding BLOCKER 2 | Explicit disposition: the prior `WarningsAsErrors: ''` allowed `scripts/ci/static-analysis.ps1` to report `STATIC ANALYSIS PASSED` (clang-tidy exit 0) even with live findings, which Architecture Authority judged misleading. The curated `Checks` list itself is unchanged — only whether a finding is allowed to coexist with a zero exit code changed. `static-analysis.ps1` remains report-only (`-fix` is not and has never been used). No ADR required per the instruction. |
+| D-005 | Enabled clang-tidy findings from the curated `.clang-tidy` `Checks` list are CI-gating: `WarningsAsErrors` changed from `''` (none) to `'*'` (all enabled checks) | Architecture Authority, per "P0-T001 Architecture Review ΓÇö Verification Runbook B v1.3" finding BLOCKER 2 | Explicit disposition: the prior `WarningsAsErrors: ''` allowed `scripts/ci/static-analysis.ps1` to report `STATIC ANALYSIS PASSED` (clang-tidy exit 0) even with live findings, which Architecture Authority judged misleading. The curated `Checks` list itself is unchanged ΓÇö only whether a finding is allowed to coexist with a zero exit code changed. `static-analysis.ps1` remains report-only (`-fix` is not and has never been used). No ADR required per the instruction. |
 
 ## Addenda issued since gate approval
 
@@ -65,10 +65,10 @@ silently.
 
 | ID | Title | Decision | Supersedes | Scope | Status |
 |---|---|---|---|---|---|
-| ADR-0001 | Phase 0 C++ Test Framework Baseline | Catch2 v3 + CTest is the approved testing baseline for all Phase 0 tasks. | `D-028` (Master Engineering Constitution v0.2 — GoogleTest LOCKED) | **Phase 0 only.** Phase 1+ framework choice is explicitly PROVISIONAL, to be re-evaluated before Phase 1 implementation. | ACCEPTED. See `docs/architecture/adr/ADR-0001-phase0-test-framework-baseline.md` (authoritative location per Master Engineering Constitution v0.2 — relocated from `docs/adr/` by "P0-T001 Architecture Record Placement Correction"; content unchanged by the move) for full context, including the evidentiary-basis note (Claude has not read the Master Engineering Constitution v0.2's own text — see below). No code change required: P0-T001 already implements Catch2 v3 exclusively (row D-003 above). |
+| ADR-0001 | Phase 0 C++ Test Framework Baseline | Catch2 v3 + CTest is the approved testing baseline for all Phase 0 tasks. | `D-028` (Master Engineering Constitution v0.2 ΓÇö GoogleTest LOCKED) | **Phase 0 only.** Phase 1+ framework choice is explicitly PROVISIONAL, to be re-evaluated before Phase 1 implementation. | ACCEPTED. See `docs/architecture/adr/ADR-0001-phase0-test-framework-baseline.md` (authoritative location per Master Engineering Constitution v0.2 ΓÇö relocated from `docs/adr/` by "P0-T001 Architecture Record Placement Correction"; content unchanged by the move) for full context, including the evidentiary-basis note (Claude has not read the Master Engineering Constitution v0.2's own text ΓÇö see below). No code change required: P0-T001 already implements Catch2 v3 exclusively (row D-003 above). |
 
 **Non-destructive supersession note:** `D-028` is superseded for Phase 0
-only, by Architecture Authority's own decision (ADR-0001) — this ledger and
+only, by Architecture Authority's own decision (ADR-0001) ΓÇö this ledger and
 the ADR record that supersession; neither this repository nor this task
 edits, holds, or rewrites the Master Engineering Constitution v0.2 itself,
 which has not been supplied to this repository (`docs/constitution/README.md`,
@@ -77,7 +77,7 @@ is Architecture Authority's chat instruction, not independent verification
 against the Constitution's literal `D-028` text.
 
 P0-T002 architecture decisions
-ADR-0002 — Phase 0 Task Sequence Reconciliation
+ADR-0002 ΓÇö Phase 0 Task Sequence Reconciliation
 
 Status: ACCEPTED
 Date: 2026-09-02
@@ -548,7 +548,7 @@ the post-materialization dependency-resolution preflight.
 Implementation remains blocked until the Implementation Brief is separately
 released and implementation is separately authorized.
 
-## ACR-P0-T005-001 — IfcOpenShell dependency delivery
+## ACR-P0-T005-001 ΓÇö IfcOpenShell dependency delivery
 
 **Status:** APPROVED
 
@@ -565,7 +565,7 @@ parse/write core and must not silently introduce a second OCCT runtime.
 
 Exact upstream commit/build options remain pending dependency evidence.
 
-## P0-T005 — Implementation Brief dependency boundary
+## P0-T005 ΓÇö Implementation Brief dependency boundary
 
 **Date:** 2026-09-17
 **Status:** FROZEN FOR IMPLEMENTATION BRIEF
@@ -581,7 +581,7 @@ The project vcpkg baseline remains unchanged.
 
 Implementation is not authorized by this decision.
 
-## P0-T005 — Implementation Authorization
+## P0-T005 ΓÇö Implementation Authorization
 
 **Date:** 2026-09-17
 **Status:** ISSUED
@@ -596,7 +596,7 @@ P0-T005 task worktree.
 Candidate staging/commit, independent review, main integration, and push remain
 separate gates and are not authorized.
 
-## P0-T005 — Implementation execution baseline semantics
+## P0-T005 ΓÇö Implementation execution baseline semantics
 
 **Date:** 2026-09-17
 **Status:** CLARIFIED
@@ -664,3 +664,23 @@ Claude's exact execution-start HEAD/TREE will be the clean post-C3
 authorization commit recorded by Architecture Authority.
 
 The authorization does not permit Claude to stage, commit, merge or push.
+
+## P0-T007 - RVT / BimRv evaluation decisions
+
+**Decision date:** 2026-09-26
+**Architecture Gate:** `BIM-AG-P0-T007 v1.0`
+**Status:** EVALUATION CLOSED / PASS
+
+| ID | Decision | Status |
+|---|---|---|
+| P0T7-D01 | P0-T007 is read-evaluation only under AG-012 | LOCKED |
+| P0T7-D02 | RVT writer / Save / Save As / write-path evaluation is outside scope | LOCKED |
+| P0T7-D03 | ODA BimRv remains proprietary external evaluation material and is not a repository dependency | LOCKED |
+| P0T7-D04 | Controlled runtime fixture is the locked public Revit 2017 sample with SHA256 `A1D3D0775AE0937E3F4C8FB97015B6E0884ACEFAE52435D9CACD27D008F5FEFB` | LOCKED |
+| P0T7-D05 | Runtime geometry proof is bounded to the controlled fixture and selected `SWall`; broader capabilities remain classified by evidence level | LOCKED |
+| P0T7-D06 | RFA/RTE runtime support and BimRv 27.7 package-specific maximum Revit version are not established | LOCKED |
+| P0T7-D07 | No product adapter, CMake integration, Implementation Brief or Implementation Authorization is released by P0-T007 | LOCKED |
+| P0T7-D08 | Architecture Change Record | NONE |
+
+Candidate commit, independent review, main integration and push remain separate
+Architecture Authority gates.
