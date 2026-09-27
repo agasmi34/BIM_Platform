@@ -4,7 +4,7 @@
 
 **System of record:** Git
 
-**Current active task:** P0-T007 - RVT / BimRv Evaluation
+**Current active task:** P0-T008 - Topological Reference Spike
 
 ## P0-T001
 
@@ -399,3 +399,44 @@ Candidate commit            = NOT AUTHORIZED
 Main integration            = NOT AUTHORIZED
 Push                        = NOT AUTHORIZED
 ~~~
+
+## Current - P0-T008 Topological Reference Spike Architecture Gate (2026-09-27)
+
+```text
+P0-T008 - Topological Reference Spike
+
+Phase A bootstrap                 = CLOSED / PASS
+Phase B1 authority extraction     = CLOSED / PASS
+Phase B2 architecture contract    = AA FROZEN
+Phase B3 schema discovery         = CLOSED / PASS
+Architecture Gate                 = FROZEN / APPROVED
+Product Authority approval       = APPROVED
+
+Primary objective:
+semantic reference / persistent naming proof
+
+Persistent face references        = IN SCOPE
+Edge/vertex persistent refs       = OUT OF SCOPE
+Raw OCCT topology identity        = PROHIBITED
+Enumeration-index identity        = PROHIBITED
+Dependency graph                  = P0-T009 / OUT OF SCOPE
+Phase-1 BIM features              = BLOCKED
+Implementation Brief              = NOT RELEASED
+Implementation Authorization      = NOT ISSUED
+Claude                            = NOT AUTHORIZED
+Kimi                              = NOT AUTHORIZED
+Candidate commit                  = NOT AUTHORIZED
+Main integration                  = NOT AUTHORIZED
+Push                              = NOT AUTHORIZED
+ACR                               = NONE
+```
+
+Next lifecycle gate:
+
+```text
+Architecture Authority inspection of approved seven-path governance delta
+    ->
+governance-only candidate commit authorization
+    ->
+candidate commit only if separately authorized
+```

@@ -675,3 +675,36 @@ No RVT writer, product adapter, CMake integration, vendor binary/header/library,
 Implementation Brief or Implementation Authorization was added.
 
 Product integration remains NOT AUTHORIZED. ACR remains NONE.
+
+## 2026-09-27 - P0-T008 Topological Reference Architecture Gate Draft
+
+- Opened P0-T008 as the Phase-0 Topological Reference Spike.
+- Froze the objective as semantic-reference / persistent-naming proof.
+- Preserved the prohibition on raw OCCT topology, traversal ordinal and kernel-handle identity as durable BIM references.
+- Limited the spike to persistent face-reference semantics.
+- Kept edge and vertex persistent-reference contracts out of scope.
+- Assigned semantic naming/resolution ownership above the geometry kernel.
+- Reserved OCCT Generated/Modified/IsDeleted surfaces for supporting evidence only, never as the persistent identity itself.
+- Required explicit Resolved, Missing and Ambiguous outcomes.
+- Prohibited silent retargeting when semantic continuity cannot be proven.
+- Kept dependency-graph behavior deferred to P0-T009.
+- Kept Phase-1 BIM feature implementation blocked.
+- Materialized Architecture Gate documentation only.
+- No Implementation Brief, Implementation Authorization, source, CMake, test, persistence or dependency change is authorized.
+- ACR remains NONE.
+
+## 2026-09-27 - P0-T008 Architecture Gate approved
+
+- Product Authority approved `BIM-AG-P0-T008 v1.0`.
+- Architecture Gate status is now FROZEN / APPROVED.
+- Face-only persistent-reference scope remains locked.
+- Raw OCCT identity, kernel handles and enumeration-order identity remain prohibited.
+- Ambiguous continuity must fail closed as Ambiguous; missing continuity as Missing.
+- Edge/Vertex persistent references remain deferred.
+- Dependency-graph behavior remains P0-T009.
+- Phase-1 BIM feature implementation remains blocked.
+- Implementation Brief remains NOT RELEASED.
+- Implementation Authorization remains NOT ISSUED.
+- Claude and Kimi remain NOT AUTHORIZED.
+- Candidate staging/commit, main integration and push remain separately gated.
+- ACR remains NONE.

@@ -606,3 +606,26 @@ whose parent is the bound C2B HEAD.
 
 P0-T007 materializes evaluation conclusions only. The repository RVT boundary
 remains unimplemented and BimRv remains external to Git.
+
+## 2026-09-27 - P0-T008 Topological Reference Architecture Gate Approval
+
+| Item | Value |
+|---|---|
+| Task | P0-T008 - Topological Reference Spike |
+| Task branch | `task/P0-T008-topological-reference-spike` |
+| Task worktree | `D:\Projects\BIM-Platform-WT-P0-T008` |
+| Baseline HEAD | `385e07b2a7306664d1063281ab150657dadcb154` |
+| Baseline TREE | `fe52cdb590b4aea0137d4561ea847d59a4987e99` |
+| Objective | Semantic reference / persistent naming proof |
+| Architecture Gate | `BIM-AG-P0-T008 v1.0` - FROZEN / APPROVED |
+| Product Authority approval | APPROVED |
+| Implementation Brief | NOT RELEASED |
+| Implementation Authorization | NOT ISSUED |
+| Claude | NOT AUTHORIZED |
+| Kimi | NOT AUTHORIZED |
+| Candidate commit | NOT AUTHORIZED |
+| Main integration | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |
+| ACR | NONE |
+
+P0-T008 is architecture-first. No source, test, CMake, persistence, dependency-graph or BIM-feature implementation is authorized by this Gate approval.

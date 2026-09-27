@@ -37,3 +37,14 @@ Verification Runbook B's actual execution, which has not happened yet.
 | P0T7-R02 | BimRv 27.7 package-specific maximum supported Revit version was not established | Unsupported version-range claims could be made | CONTROLLED / OPEN | Record runtime proof only for controlled Revit 2017 fixture; do not infer an upper bound |
 | P0T7-R03 | RFA and RTE were not runtime-tested | Format-wide runtime claims would exceed evidence | CONTROLLED / OPEN | Classify RFA/RTE as documented but not runtime-proven |
 | P0T7-R04 | Detailed geometry runtime proof covers one selected `SWall` in one public RVT fixture | Evidence does not prove arbitrary-element/model completeness | CONTROLLED / OPEN | Preserve explicit evidence boundary in Gate and capability matrix |
+
+## P0-T008 Topological Reference controlled risks - 2026-09-27
+
+| ID | Risk | Impact | State | Control |
+|---|---|---|---|---|
+| P0T8-R01 | Raw OCCT subshape identity changes during regeneration | Persistent references could silently retarget | CONTROLLED / OPEN | Durable identity is semantic and project-owned; raw TopoDS identity is prohibited |
+| P0T8-R02 | Face enumeration order changes while geometry remains semantically equivalent | Ordinal-based references could target the wrong face | CONTROLLED / OPEN | Enumeration order is explicitly non-authoritative |
+| P0T8-R03 | One semantic face becomes multiple plausible faces after an operation | Resolver could choose an arbitrary face | CONTROLLED / OPEN | Required outcome is Ambiguous unless uniqueness is proven |
+| P0T8-R04 | Referenced semantic face disappears | Stale reference could be misinterpreted | CONTROLLED / OPEN | Required outcome is Missing; no silent fallback |
+| P0T8-R05 | P0-T008 grows into dependency-graph or BIM-feature implementation | Phase-0 architecture boundary would be bypassed | CONTROLLED | DAG work remains P0-T009; Phase-1 features remain blocked |
+| P0T8-R06 | Spike owner token is mistaken for final platform-wide BIM UUID architecture | Temporary proof contract could ossify prematurely | CONTROLLED / OPEN | Owner identity is narrow P0-T008 proof scope only unless later AA decision expands it |

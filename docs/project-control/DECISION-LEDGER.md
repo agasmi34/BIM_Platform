@@ -684,3 +684,40 @@ The authorization does not permit Claude to stage, commit, merge or push.
 
 Candidate commit, independent review, main integration and push remain separate
 Architecture Authority gates.
+
+## P0-T008 - Topological Reference architecture decisions
+
+**Decision date:** 2026-09-27
+
+**Architecture Gate:** `BIM-AG-P0-T008 v1.0`
+
+**Status:** FROZEN / APPROVED
+
+| ID | Decision | Status |
+|---|---|---|
+| P0T8-D01 | Persistent semantic references are project-owned and live above the geometry kernel | LOCKED |
+| P0T8-D02 | Raw TopoDS identity, object address, kernel handle, traversal ordinal and enumeration order are prohibited as durable identities | LOCKED |
+| P0T8-D03 | P0-T008 persistent topology scope is Face only | LOCKED |
+| P0T8-D04 | Edge and Vertex persistent-reference contracts are deferred | LOCKED |
+| P0T8-D05 | Semantic naming/resolution ownership belongs to `bim_model` | LOCKED |
+| P0T8-D06 | Kernel-specific observations remain owned by `bim_geometry_occt` | LOCKED |
+| P0T8-D07 | Public geometry bridge remains neutral and OCCT-free | LOCKED |
+| P0T8-D08 | Resolution must fail closed with explicit Resolved/Missing/Ambiguous/error semantics | LOCKED |
+| P0T8-D09 | Ambiguity must never be resolved by raw enumeration order | LOCKED |
+| P0T8-D10 | Generated/Modified/IsDeleted may support evidence but are not persistent identity | LOCKED |
+| P0T8-D11 | Native project-schema persistence is outside P0-T008 | LOCKED |
+| P0T8-D12 | Dependency-graph propagation belongs to P0-T009 | LOCKED |
+| P0T8-D13 | Production Wall/Door/Slab/Window/Room features are outside P0-T008 | LOCKED |
+| P0T8-D14 | IFC/DWG/RVT reference integration is outside P0-T008 | LOCKED |
+| P0T8-D15 | Architecture Change Record | NONE |
+
+Architecture Gate approval, Implementation Brief release and Implementation Authorization remain separate lifecycle gates.
+
+### Product Authority approval
+
+**Date:** 2026-09-27
+**Decision:** APPROVED
+
+Product Authority approved `BIM-AG-P0-T008 v1.0` with the frozen Face-only persistent-reference scope, fail-closed resolution semantics, OCCT identity prohibitions, and P0-T009 / Phase-1 boundaries unchanged.
+
+Implementation Brief remains NOT RELEASED. Implementation Authorization remains NOT ISSUED. Claude and Kimi remain NOT AUTHORIZED. Candidate staging/commit, main integration and push remain separate Architecture Authority gates.
