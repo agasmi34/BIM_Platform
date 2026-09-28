@@ -629,3 +629,23 @@ remains unimplemented and BimRv remains external to Git.
 | ACR | NONE |
 
 P0-T008 is architecture-first. No source, test, CMake, persistence, dependency-graph or BIM-feature implementation is authorized by this Gate approval.
+
+## 2026-09-28 - P0-T008 Implementation Brief Approved
+
+| Field | State |
+| --- | --- |
+| Task | `P0-T008 - Topological Reference Spike` |
+| Governance baseline | `df9536d20495d97034d3aef5b4e81adb54bfa520` |
+| Architecture Gate | `BIM-AG-P0-T008 v1.0` - FROZEN / APPROVED |
+| Implementation Brief | `P0-T008-IB v1.0` - FROZEN / APPROVED |
+| Product Authority approval | APPROVED |
+| Implementation Authorization | NOT ISSUED |
+| Claude | NOT AUTHORIZED |
+| Kimi | NOT AUTHORIZED |
+| Candidate commit | NOT AUTHORIZED |
+| Main integration | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |
+| ACR | NONE |
+
+The brief refines implementation mechanics only and does not alter the approved
+Architecture Gate or authorize source modification.

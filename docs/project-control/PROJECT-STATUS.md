@@ -440,3 +440,32 @@ governance-only candidate commit authorization
     ->
 candidate commit only if separately authorized
 ```
+
+## Current - P0-T008 Implementation Brief Approved (2026-09-28)
+
+```text
+Architecture Gate                 = FROZEN / APPROVED
+Governance baseline HEAD          = df9536d20495d97034d3aef5b4e81adb54bfa520
+Implementation Brief              = P0-T008-IB v1.0 / FROZEN / APPROVED
+Product Authority approval        = APPROVED
+Implementation Authorization      = NOT ISSUED
+Claude                            = NOT AUTHORIZED
+Kimi                              = NOT AUTHORIZED
+Source implementation             = NONE
+Candidate commit                  = NOT AUTHORIZED
+Main integration                  = NOT AUTHORIZED
+Push                              = NOT AUTHORIZED
+ACR                               = NONE
+```
+
+Next lifecycle gate:
+
+```text
+Architecture Authority inspection of approved brief materialization
+    ->
+governance-only brief commit authorization
+    ->
+exact brief baseline capture
+    ->
+separate Implementation Authorization
+```

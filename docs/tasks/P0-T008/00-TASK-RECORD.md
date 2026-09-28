@@ -58,3 +58,12 @@ No production Wall, Door, Slab, Window, Room, IFC, DWG or RVT reference integrat
 | ACR | NONE |
 
 Product Authority approved `BIM-AG-P0-T008 v1.0` on 2026-09-27. The next checkpoint is Architecture Authority inspection of the approved seven-path governance delta before any staging or candidate commit. No Implementation Brief or implementation authority is implied by this approval.
+
+## Implementation Brief approval
+
+`P0-T008-IB v1.0` is FROZEN / APPROVED against governance baseline
+`df9536d20495d97034d3aef5b4e81adb54bfa520`.
+
+Product Authority approval is APPROVED. Implementation Authorization is NOT ISSUED.
+Claude and Kimi remain NOT AUTHORIZED. No source/CMake/test modification, staging,
+candidate commit, main integration, or push is authorized by this brief approval alone.

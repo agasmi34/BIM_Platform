@@ -708,3 +708,20 @@ Product integration remains NOT AUTHORIZED. ACR remains NONE.
 - Claude and Kimi remain NOT AUTHORIZED.
 - Candidate staging/commit, main integration and push remain separately gated.
 - ACR remains NONE.
+
+## 2026-09-28 - P0-T008 Implementation Brief Approved
+
+- Materialized approved `P0-T008-IB v1.0` against governance baseline `df9536d20495d97034d3aef5b4e81adb54bfa520`.
+- Product Authority approval is APPROVED.
+- Brief inherits and does not alter `BIM-AG-P0-T008 v1.0`.
+- Face-only persistent-reference scope remains locked.
+- Persistent identity remains project-owned and OCCT-independent.
+- Required proof corpus covers same-spec regeneration, dimension change, translation,
+  repeat regeneration, unaffected Face continuity through a boolean cut, split-Face
+  ambiguity, deleted Face behavior, and invalid owner/reference handling.
+- Public `bim_model` / `bim_geometry_api` OCCT leakage remains prohibited.
+- Implementation Authorization remains NOT ISSUED.
+- Claude and Kimi remain NOT AUTHORIZED.
+- No source/CMake/test modification, candidate commit, main integration, or push is
+  authorized by brief approval alone.
+- ACR remains NONE.
