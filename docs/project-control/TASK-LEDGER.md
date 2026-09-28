@@ -655,11 +655,12 @@ Architecture Gate or authorize source modification.
 | Field | State |
 | --- | --- |
 | Task | `P0-T008 - Topological Reference Spike` |
-| Implementation baseline | `31a5b9c6ba1c679ab34858089af14607d78ecdd9` |
+| Approved brief baseline | `31a5b9c6ba1c679ab34858089af14607d78ecdd9` |
 | Architecture Gate | `BIM-AG-P0-T008 v1.0` - FROZEN / APPROVED |
 | Implementation Brief | `P0-T008-IB v1.0` - FROZEN / APPROVED |
 | Implementation Authorization | `P0-T008-IA v1.0` - ISSUED |
-| Execution activation | PENDING COMMITTED AUTHORIZATION BASELINE |
+| Execution baseline | FINAL AUTHORIZATION GOVERNANCE COMMIT - TO BE CAPTURED AFTER CORRECTION COMMIT |
+| Execution activation | PENDING CORRECTED AUTHORIZATION BASELINE CAPTURE |
 | Claude | NOT YET AUTHORIZED TO EXECUTE |
 | Kimi | NOT AUTHORIZED |
 | Candidate commit | NOT AUTHORIZED |

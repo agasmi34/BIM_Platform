@@ -729,11 +729,28 @@ Product integration remains NOT AUTHORIZED. ACR remains NONE.
 ## 2026-09-28 - P0-T008 Implementation Authorization Issued
 
 - Architecture Authority issued `P0-T008-IA v1.0`.
-- Authorization is bound to implementation baseline `31a5b9c6ba1c679ab34858089af14607d78ecdd9`.
+- Authorization is grounded on approved brief baseline `31a5b9c6ba1c679ab34858089af14607d78ecdd9`; the exact execution baseline is established only after the final authorization governance revision is committed and captured.
 - Approved Architecture Gate and Implementation Brief remain unchanged.
 - Execution is PENDING a committed authorization baseline and exact baseline capture.
 - Claude remains NOT YET AUTHORIZED TO EXECUTE.
 - Kimi remains NOT AUTHORIZED.
 - No source/CMake/test modification, staging, candidate commit, main integration, or push
   is authorized by this materialization step.
+- ACR remains NONE.
+
+## 2026-09-28 - P0-T008 Authorization Baseline Semantics Correction
+
+- B12-H1 confirmed a governance semantics mismatch in `P0-T008-IA v1.0`.
+- The authorization had hard-coded the approved brief baseline as Claude's execution
+  baseline even though the authorization governance commit occurs later.
+- The corrected contract distinguishes the approved brief baseline from the exact
+  execution baseline.
+- The exact execution baseline is the final authorization governance commit captured
+  after this correction commit and explicitly named by Architecture Authority during
+  execution activation.
+- No architecture contract, implementation scope, source, CMake, test, dependency,
+  toolchain, or proprietary SDK policy changes are introduced.
+- Claude remains NOT AUTHORIZED TO EXECUTE until corrected authorization baseline
+  capture and explicit AA activation.
+- Kimi remains NOT AUTHORIZED.
 - ACR remains NONE.

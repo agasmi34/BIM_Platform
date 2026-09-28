@@ -475,9 +475,10 @@ separate Implementation Authorization
 ```text
 Architecture Gate                 = FROZEN / APPROVED
 Implementation Brief              = FROZEN / APPROVED
-Implementation baseline HEAD      = 31a5b9c6ba1c679ab34858089af14607d78ecdd9
+Approved brief baseline HEAD       = 31a5b9c6ba1c679ab34858089af14607d78ecdd9
 Implementation Authorization      = P0-T008-IA v1.0 / ISSUED
-Execution activation              = PENDING COMMITTED AUTHORIZATION BASELINE
+Execution baseline                = FINAL AUTHORIZATION GOVERNANCE COMMIT / TO BE CAPTURED
+Execution activation              = PENDING CORRECTED AUTHORIZATION BASELINE CAPTURE
 Claude                            = NOT YET AUTHORIZED TO EXECUTE
 Kimi                              = NOT AUTHORIZED
 Source implementation             = NONE

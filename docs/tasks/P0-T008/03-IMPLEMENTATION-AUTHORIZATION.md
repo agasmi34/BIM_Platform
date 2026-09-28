@@ -6,8 +6,8 @@
 **Execution status:** PENDING COMMITTED AUTHORIZATION BASELINE
 **Architecture Gate:** `BIM-AG-P0-T008 v1.0` - FROZEN / APPROVED
 **Implementation Brief:** `P0-T008-IB v1.0` - FROZEN / APPROVED
-**Implementation baseline HEAD:** `31a5b9c6ba1c679ab34858089af14607d78ecdd9`
-**Implementation baseline TREE:** `47ed702b2ceace734d17351dfe24cdaaf54b02a0`
+**Approved brief baseline HEAD:** `31a5b9c6ba1c679ab34858089af14607d78ecdd9`
+**Approved brief baseline TREE:** `47ed702b2ceace734d17351dfe24cdaaf54b02a0`
 **Implementation Brief blob:** `30246bc9859f2f66a77815064e33b8b2af4c8e12`
 **Architecture Gate blob:** `50f98bdbe59239aff52d82131c44d1d2e71a48e1`
 **Task Record blob:** `75f036bfcad39deff770c1c4cce6285dd319f248`
@@ -17,8 +17,7 @@
 
 ## 1. Authority
 
-Architecture Authority issues `P0-T008-IA v1.0` against the exact approved implementation
-baseline identified above.
+Architecture Authority issues `P0-T008-IA v1.0` against the exact approved brief baseline identified above.
 
 This decision does NOT become executable merely because this file exists in the working
 tree. Execution becomes active only after:
@@ -49,21 +48,35 @@ minimum CMake wiring required for those tests/targets
 
 All implementation MUST conform to the approved Architecture Gate and Implementation Brief.
 
-## 3. Exact baseline rule
+## 3. Exact execution baseline rule
 
-Claude MUST begin from:
+Claude MUST begin from the exact final authorization governance baseline captured after
+the final authorization revision is committed and explicitly named by Architecture
+Authority in the execution-activation handover.
+
+The execution baseline is intentionally NOT self-identified by its own HEAD/TREE inside
+this document because committing this document creates that baseline commit. The exact
+execution baseline is therefore established by post-commit repository evidence.
+
+Before editing, Claude MUST verify all of the following values supplied by Architecture
+Authority in the activation handover:
 
 ```text
-branch = task/P0-T008-topological-reference-spike
-HEAD   = 31a5b9c6ba1c679ab34858089af14607d78ecdd9
-TREE   = 47ed702b2ceace734d17351dfe24cdaaf54b02a0
+branch
+authorization baseline HEAD
+authorization baseline TREE
+authorization blob
+implementation brief blob
+architecture gate blob
+clean worktree state
+staged count = 0
 ```
 
-The worktree MUST be clean and unstaged at implementation start.
+The authorization baseline MUST contain this authorization revision and the frozen
+Implementation Brief and Architecture Gate objects.
 
-If branch, HEAD, TREE, or clean-state evidence does not match, Claude MUST STOP without
-editing.
-
+If any supplied branch, HEAD, TREE, blob identity, clean-state, or staged-state evidence
+does not match the repository, Claude MUST STOP without editing.
 ## 4. Frozen architecture constraints
 
 Claude MUST preserve all approved constraints, including:

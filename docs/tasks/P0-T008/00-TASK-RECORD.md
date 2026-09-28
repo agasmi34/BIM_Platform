@@ -70,10 +70,25 @@ candidate commit, main integration, or push is authorized by this brief approval
 
 ## Implementation Authorization issuance
 
-Architecture Authority issued `P0-T008-IA v1.0` against implementation baseline
-`31a5b9c6ba1c679ab34858089af14607d78ecdd9`.
+Architecture Authority issued `P0-T008-IA v1.0` against approved brief baseline `31a5b9c6ba1c679ab34858089af14607d78ecdd9`.
 
 Execution is NOT YET ACTIVE. The authorization must first be committed as governance-only
 documentation and its exact commit/blob baseline captured. Claude remains NOT YET
 AUTHORIZED TO EXECUTE until Architecture Authority explicitly activates the committed
 authorization. Kimi remains NOT AUTHORIZED.
+
+## Authorization baseline semantics correction
+
+B12-H1 confirmed that the authorization document hard-coded the approved brief baseline
+as Claude's execution baseline even though the authorization governance commit necessarily
+occurs later.
+
+The authorization now distinguishes the approved brief baseline from the executable
+authorization baseline. The executable baseline will be the exact final authorization
+governance commit captured after this correction is committed and explicitly supplied by
+Architecture Authority during execution activation.
+
+This is a governance semantics correction only. Architecture, implementation scope,
+dependencies, source, CMake, tests, and ACR status are unchanged. Claude remains NOT
+AUTHORIZED TO EXECUTE until the corrected authorization baseline is committed, captured,
+and explicitly activated.
