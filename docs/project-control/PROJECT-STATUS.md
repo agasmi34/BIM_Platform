@@ -469,3 +469,32 @@ exact brief baseline capture
     ->
 separate Implementation Authorization
 ```
+
+## Current - P0-T008 Implementation Authorization Issued (2026-09-28)
+
+```text
+Architecture Gate                 = FROZEN / APPROVED
+Implementation Brief              = FROZEN / APPROVED
+Implementation baseline HEAD      = 31a5b9c6ba1c679ab34858089af14607d78ecdd9
+Implementation Authorization      = P0-T008-IA v1.0 / ISSUED
+Execution activation              = PENDING COMMITTED AUTHORIZATION BASELINE
+Claude                            = NOT YET AUTHORIZED TO EXECUTE
+Kimi                              = NOT AUTHORIZED
+Source implementation             = NONE
+Candidate commit                  = NOT AUTHORIZED
+Main integration                  = NOT AUTHORIZED
+Push                              = NOT AUTHORIZED
+ACR                               = NONE
+```
+
+Next lifecycle gate:
+
+```text
+AA inspection of authorization materialization
+    ->
+governance-only authorization commit
+    ->
+exact authorization baseline capture
+    ->
+AA execution activation / Claude handover
+```

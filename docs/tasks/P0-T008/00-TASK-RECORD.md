@@ -67,3 +67,13 @@ Product Authority approved `BIM-AG-P0-T008 v1.0` on 2026-09-27. The next checkpo
 Product Authority approval is APPROVED. Implementation Authorization is NOT ISSUED.
 Claude and Kimi remain NOT AUTHORIZED. No source/CMake/test modification, staging,
 candidate commit, main integration, or push is authorized by this brief approval alone.
+
+## Implementation Authorization issuance
+
+Architecture Authority issued `P0-T008-IA v1.0` against implementation baseline
+`31a5b9c6ba1c679ab34858089af14607d78ecdd9`.
+
+Execution is NOT YET ACTIVE. The authorization must first be committed as governance-only
+documentation and its exact commit/blob baseline captured. Claude remains NOT YET
+AUTHORIZED TO EXECUTE until Architecture Authority explicitly activates the committed
+authorization. Kimi remains NOT AUTHORIZED.

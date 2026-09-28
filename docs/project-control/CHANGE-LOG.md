@@ -725,3 +725,15 @@ Product integration remains NOT AUTHORIZED. ACR remains NONE.
 - No source/CMake/test modification, candidate commit, main integration, or push is
   authorized by brief approval alone.
 - ACR remains NONE.
+
+## 2026-09-28 - P0-T008 Implementation Authorization Issued
+
+- Architecture Authority issued `P0-T008-IA v1.0`.
+- Authorization is bound to implementation baseline `31a5b9c6ba1c679ab34858089af14607d78ecdd9`.
+- Approved Architecture Gate and Implementation Brief remain unchanged.
+- Execution is PENDING a committed authorization baseline and exact baseline capture.
+- Claude remains NOT YET AUTHORIZED TO EXECUTE.
+- Kimi remains NOT AUTHORIZED.
+- No source/CMake/test modification, staging, candidate commit, main integration, or push
+  is authorized by this materialization step.
+- ACR remains NONE.

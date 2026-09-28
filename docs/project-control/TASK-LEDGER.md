@@ -649,3 +649,23 @@ P0-T008 is architecture-first. No source, test, CMake, persistence, dependency-g
 
 The brief refines implementation mechanics only and does not alter the approved
 Architecture Gate or authorize source modification.
+
+## 2026-09-28 - P0-T008 Implementation Authorization Issued
+
+| Field | State |
+| --- | --- |
+| Task | `P0-T008 - Topological Reference Spike` |
+| Implementation baseline | `31a5b9c6ba1c679ab34858089af14607d78ecdd9` |
+| Architecture Gate | `BIM-AG-P0-T008 v1.0` - FROZEN / APPROVED |
+| Implementation Brief | `P0-T008-IB v1.0` - FROZEN / APPROVED |
+| Implementation Authorization | `P0-T008-IA v1.0` - ISSUED |
+| Execution activation | PENDING COMMITTED AUTHORIZATION BASELINE |
+| Claude | NOT YET AUTHORIZED TO EXECUTE |
+| Kimi | NOT AUTHORIZED |
+| Candidate commit | NOT AUTHORIZED |
+| Main integration | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |
+| ACR | NONE |
+
+Authorization issuance does not itself permit execution from an uncommitted governance
+state. Exact authorization baseline capture and explicit AA activation remain required.
