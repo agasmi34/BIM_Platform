@@ -554,3 +554,31 @@ if(BIM_ENABLE_DWG)
         )
     endforeach()
 endif()
+
+# --- P0-T008 Topological Reference Spike (Implementation Brief
+# BIM-TASK-P0-T008-CLAUDE v1.0) - the real-kernel end of the mandatory proof
+# corpus (cases A/B/C/D/E/G). Links bim::model, bim::geometry_api, and
+# bim::geometry_occt together - the only place in this test suite all three
+# are linked into one executable, since this is the only place that needs
+# to build real solids (bim::geometry_occt), observe their real faces
+# (bim::geometry_api::ObserveFaces, implemented in bim::geometry_occt), and
+# resolve persistent references against them (bim::model), all in the same
+# process. geometry_occt_test_constants.hpp is reused unchanged for its
+# kReferenceTolerance/MakeP01/MakeAxisAlignedBox helpers (same
+# same-directory quote-include convention integration_geometry_occt_*.cpp
+# already use above). Registered unconditionally, like every other
+# geometry/model target in this file - bim_model and bim_geometry_api/occt
+# are always available, gated by nothing.
+add_executable(integration_p0_t008_face_reference_spike
+    integration_p0_t008_face_reference_spike.cpp
+)
+target_link_libraries(integration_p0_t008_face_reference_spike
+    PRIVATE
+        bim::model
+        bim::geometry_api
+        bim::geometry_occt
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_p0_t008_face_reference_spike PRIVATE cxx_std_20)
+bim_apply_warnings(integration_p0_t008_face_reference_spike)
+add_test(NAME integration_p0_t008_face_reference_spike COMMAND integration_p0_t008_face_reference_spike)

@@ -23,6 +23,30 @@ target_compile_features(unit_model_links_foundation PRIVATE cxx_std_20)
 bim_apply_warnings(unit_model_links_foundation)
 add_test(NAME unit_model_links_foundation COMMAND unit_model_links_foundation)
 
+# unit_model_face_reference_resolver - P0-T008 Topological Reference Spike
+# (Implementation Brief BIM-TASK-P0-T008-CLAUDE v1.0). Links bim::model and
+# bim::geometry_api only, deliberately never bim::geometry_occt - a
+# successful build of this target is itself mechanical proof that
+# ResolveFaceReference() and every type it depends on need no OCCT symbol.
+# Every FaceObservation this file exercises is hand-constructed data, never
+# produced by a real kernel solid (the real-kernel proof corpus lives under
+# tests/integration/ instead) - this is where the mandatory model-level,
+# kernel-free enumeration-order-independence test lives, along with corpus
+# cases F (split face -> Ambiguous) and H (invalid owner / invalid
+# reference).
+add_executable(unit_model_face_reference_resolver
+    unit_model_face_reference_resolver.cpp
+)
+target_link_libraries(unit_model_face_reference_resolver
+    PRIVATE
+        bim::model
+        bim::geometry_api
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_model_face_reference_resolver PRIVATE cxx_std_20)
+bim_apply_warnings(unit_model_face_reference_resolver)
+add_test(NAME unit_model_face_reference_resolver COMMAND unit_model_face_reference_resolver)
+
 # unit_geometry_api_contract - P0-T002 Phase C-M (Implementation Brief
 # section 23; Amendment 01 AA-C08: "must link ONLY bim::geometry_api" - this
 # target deliberately does NOT link bim::geometry_occt, so a successful

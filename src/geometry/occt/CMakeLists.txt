@@ -4,8 +4,13 @@
 # Phase C-M, the full neutral geometry contract (MakeLinearExtrusion, Cut,
 # Fuse, Inspect - Implementation Brief section 6.10) plus the P0-only
 # operation-history diagnostic surface (bim::geometry_occt::spike_diagnostics,
-# Brief section 19; Amendment 01 AA-C06). This rule is checked mechanically
-# by tools/architecture_checker.cmake (R1-R5 plus, as of P0-T002,
+# Brief section 19; Amendment 01 AA-C06). As of P0-T008 (Topological
+# Reference Spike; Implementation Brief BIM-TASK-P0-T008-CLAUDE v1.0), this
+# is also the sole implementation of bim::geometry_api::ObserveFaces()
+# (src/face_observation.cpp) - the neutral per-face observation contract
+# bim_model's resolver consumes; bim_model never links this target or the
+# kernel directly. This rule is checked mechanically by
+# tools/architecture_checker.cmake (R1-R5 plus, as of P0-T002,
 # R6/GEOMETRY_API_NO_OCCT_LEAK and R7/GEOMETRY_OCCT_ONLY_KERNEL_OWNER).
 
 find_package(OpenCASCADE CONFIG REQUIRED)
@@ -24,6 +29,7 @@ add_library(bim_geometry_occt STATIC
     src/geometry_occt_probe.cpp
     src/geometry_occt_adapter.cpp
     src/spike_diagnostics.cpp
+    src/face_observation.cpp
 )
 add_library(bim::geometry_occt ALIAS bim_geometry_occt)
 
