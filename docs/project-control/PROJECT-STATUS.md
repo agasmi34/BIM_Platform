@@ -4,7 +4,7 @@
 
 **System of record:** Git
 
-**Current active task:** P0-T008 - Topological Reference Spike
+**Current active task:** P0-T009 - Dependency Graph Spike
 
 ## P0-T001
 
@@ -498,4 +498,37 @@ governance-only authorization commit
 exact authorization baseline capture
     ->
 AA execution activation / Claude handover
+```
+
+## Current - P0-T009 Dependency Graph Spike Architecture Gate (2026-09-29)
+
+```text
+P0-T009 - Dependency Graph Spike
+
+Bootstrap                     = PASS / CLOSED
+Architecture baseline capture = PASS / CLOSED
+BIM-AG-P0-T009 v1.0          = FROZEN / APPROVED
+Product Authority             = APPROVED
+
+Graph owner                   = bim_dependency_graph
+Production dependency         = bim::foundation only
+Direction                     = upstream -> downstream
+Dirty propagation             = affected downstream only
+Planning                      = deterministic topological
+Cycle policy                  = reject before mutation
+Computed refresh              = atomic
+Recompute clean-state commit  = atomic / fail closed
+P0-T008 semantics             = preserved
+Persistence                   = out of scope
+Production BIM features       = out of scope
+Parallel scheduler            = out of scope
+Third-party dependency delta  = none
+ACR                           = NONE
+
+Implementation Brief          = NOT RELEASED
+Implementation Authorization  = NOT ISSUED
+Claude                        = NOT AUTHORIZED
+Kimi                          = NOT AUTHORIZED
+Commit                        = NOT AUTHORIZED
+Push                          = NOT AUTHORIZED
 ```

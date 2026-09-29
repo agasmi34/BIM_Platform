@@ -48,3 +48,18 @@ Verification Runbook B's actual execution, which has not happened yet.
 | P0T8-R04 | Referenced semantic face disappears | Stale reference could be misinterpreted | CONTROLLED / OPEN | Required outcome is Missing; no silent fallback |
 | P0T8-R05 | P0-T008 grows into dependency-graph or BIM-feature implementation | Phase-0 architecture boundary would be bypassed | CONTROLLED | DAG work remains P0-T009; Phase-1 features remain blocked |
 | P0T8-R06 | Spike owner token is mistaken for final platform-wide BIM UUID architecture | Temporary proof contract could ossify prematurely | CONTROLLED / OPEN | Owner identity is narrow P0-T008 proof scope only unless later AA decision expands it |
+
+## P0-T009 Dependency Graph controlled risks - 2026-09-29
+
+| ID | Risk | Impact | State | Control |
+|---|---|---|---|---|
+| P0T9-R01 | Evaluation edge direction is confused with domain relation direction | Dirty propagation may run backwards | CONTROLLED | Freeze upstream -> downstream as evaluation direction |
+| P0T9-R02 | Insertion/container order affects planning | Non-deterministic regeneration | CONTROLLED | Deterministic NodeId tie order + permutation proof |
+| P0T9-R03 | Cycle validation occurs after mutation | Corrupt committed topology | CONTROLLED | Validate candidate topology before commit |
+| P0T9-R04 | Computed refresh removes explicit semantic edges | Semantic relation loss | CONTROLLED | Replace only Computed incoming set |
+| P0T9-R05 | Recompute failure leaves some nodes falsely Clean | Partial invalid committed state | CONTROLLED | Stage outcomes and atomically commit Clean transitions |
+| P0T9-R06 | dependency_graph absorbs P0-T008 model ownership | Module coupling | CONTROLLED | No dependency_graph -> model dependency |
+| P0T9-R07 | Spike expands into BIM feature implementation | Phase-1 gate bypass | CONTROLLED | Neutral proof corpus; P0-T010 remains required |
+| P0T9-R08 | Graph persistence is introduced prematurely | Reopens P0-T004/schema | CONTROLLED | In-memory only |
+| P0T9-R09 | Third-party graph/scheduler library is introduced | Dependency-policy expansion | CONTROLLED | First-party C++20 only |
+| P0T9-R10 | Parallel scheduling expands scope | Semantic proof becomes obscured | CONTROLLED | Single-threaded P0-T009 |

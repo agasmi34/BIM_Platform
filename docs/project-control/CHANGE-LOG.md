@@ -754,3 +754,25 @@ Product integration remains NOT AUTHORIZED. ACR remains NONE.
   capture and explicit AA activation.
 - Kimi remains NOT AUTHORIZED.
 - ACR remains NONE.
+
+## 2026-09-29 - P0-T009 Dependency Graph Architecture Gate Approval
+
+- Opened P0-T009 from accepted P0-T008 integration baseline `96c0cc2fd9d90ccf453d6e4bd7eb8ce9f57a64ac`.
+- Completed read-only architecture baseline capture.
+- Confirmed src/dependency_graph remained scaffold-only before implementation.
+- Product Authority approved BIM-AG-P0-T009 v1.0.
+- Froze evaluation direction as upstream -> downstream.
+- Froze project-owned opaque NodeId semantics without finalizing BIM UUID architecture.
+- Froze ExplicitSemantic and Computed dependency provenance.
+- Froze affected-downstream dirty propagation.
+- Froze deterministic topological dirty-subgraph planning.
+- Froze cycle rejection before mutation.
+- Froze atomic Computed dependency refresh.
+- Froze all-or-none graph Clean-state commit behavior after recompute.
+- Preserved P0-T008 persistent-reference ownership in bim_model.
+- Preserved bim_dependency_graph -> bim::foundation production dependency boundary.
+- Kept persistence, production transactions, BIM elements, automatic read tracing and parallel scheduling out of scope.
+- Added no third-party dependency.
+- ACR remains NONE.
+- Implementation Brief remains NOT RELEASED.
+- Claude and Kimi remain NOT AUTHORIZED.

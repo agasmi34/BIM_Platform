@@ -721,3 +721,35 @@ Architecture Gate approval, Implementation Brief release and Implementation Auth
 Product Authority approved `BIM-AG-P0-T008 v1.0` with the frozen Face-only persistent-reference scope, fail-closed resolution semantics, OCCT identity prohibitions, and P0-T009 / Phase-1 boundaries unchanged.
 
 Implementation Brief remains NOT RELEASED. Implementation Authorization remains NOT ISSUED. Claude and Kimi remain NOT AUTHORIZED. Candidate staging/commit, main integration and push remain separate Architecture Authority gates.
+
+## P0-T009 - Dependency Graph architecture decisions
+
+| ID | Decision | Status |
+|---|---|---|
+| P0T9-D01 | P0-T009 owns the Phase-0 explicit semantic DAG and computed dependency tracking proof | LOCKED |
+| P0T9-D02 | bim_dependency_graph retains bim::foundation as its only production first-party dependency for this spike | LOCKED |
+| P0T9-D03 | Evaluation direction is upstream -> downstream | LOCKED |
+| P0T9-D04 | NodeId is project-owned, opaque and deterministically orderable | LOCKED |
+| P0T9-D05 | NodeId is distinct from FeatureOwnerId and PersistentFaceReference | LOCKED |
+| P0T9-D06 | Provenance distinguishes ExplicitSemantic and Computed | LOCKED |
+| P0T9-D07 | Exact duplicate dependency registration is idempotent/no-change | LOCKED |
+| P0T9-D08 | Missing endpoints fail explicitly and are never implicitly created | LOCKED |
+| P0T9-D09 | InvalidateDependents dirties strict downstream closure | LOCKED |
+| P0T9-D10 | MarkDirty dirties node plus downstream closure | LOCKED |
+| P0T9-D11 | Recompute planning is deterministic, topological and duplicate-free | LOCKED |
+| P0T9-D12 | NodeId ordering resolves simultaneously-ready ties | LOCKED |
+| P0T9-D13 | Self/direct/transitive cycles are rejected before mutation | LOCKED |
+| P0T9-D14 | Computed dependency replacement is atomic | LOCKED |
+| P0T9-D15 | Computed refresh preserves ExplicitSemantic edges | LOCKED |
+| P0T9-D16 | Failed recompute cannot partially commit Clean state | LOCKED |
+| P0T9-D17 | Diagnostics are inspectable and deterministically ordered | LOCKED |
+| P0T9-D18 | Automatic runtime dependency discovery is out of scope | LOCKED |
+| P0T9-D19 | P0-T009 is single-threaded | LOCKED |
+| P0T9-D20 | Persistence and production transaction integration are out of scope | LOCKED |
+| P0T9-D21 | P0-T008 persistent-reference semantics remain unchanged | LOCKED |
+| P0T9-D22 | No new third-party dependency is introduced | LOCKED |
+| P0T9-D23 | Phase-1 implementation remains blocked pending P0-T010 | LOCKED |
+
+Product Authority approved `BIM-AG-P0-T009 v1.0` on 2026-09-29.
+
+ACR remains `NONE`.

@@ -670,3 +670,34 @@ Architecture Gate or authorize source modification.
 
 Authorization issuance does not itself permit execution from an uncommitted governance
 state. Exact authorization baseline capture and explicit AA activation remain required.
+
+## 2026-09-29 - P0-T009 Dependency Graph Architecture Gate Approval
+
+| Item | Value |
+|---|---|
+| Task | P0-T009 - Dependency Graph Spike |
+| Branch | `task/P0-T009-dependency-graph-spike` |
+| Baseline HEAD | `96c0cc2fd9d90ccf453d6e4bd7eb8ce9f57a64ac` |
+| Baseline TREE | `9d73da74e990b981e413f85ed9be579bbe2ade2b` |
+| Architecture Gate | `BIM-AG-P0-T009 v1.0` |
+| Product Authority | APPROVED - 2026-09-29 |
+| Gate | FROZEN / APPROVED |
+| ACR | NONE |
+| Implementation Brief | NOT RELEASED |
+| Implementation Authorization | NOT ISSUED |
+| Claude | NOT AUTHORIZED |
+| Kimi | NOT AUTHORIZED |
+| Commit | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |
+
+Frozen scope:
+
+- explicit semantic DAG;
+- computed dependency tracking;
+- affected-downstream dirty propagation;
+- deterministic topological planning;
+- cycle rejection before mutation;
+- atomic computed dependency refresh;
+- atomic graph-level recompute Clean-state commit.
+
+Architecture Gate approval is governance only and does not authorize implementation.
