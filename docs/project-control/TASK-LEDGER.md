@@ -701,3 +701,25 @@ Frozen scope:
 - atomic graph-level recompute Clean-state commit.
 
 Architecture Gate approval is governance only and does not authorize implementation.
+
+## 2026-09-29 - P0-T009 Implementation Brief Approval
+
+| Item | Value |
+|---|---|
+| Brief | `P0-T009-IB v1.0` |
+| Product Authority | APPROVED |
+| Status | FROZEN / APPROVED |
+| Governance baseline HEAD | `623d1b1f220d1341a83fe67fa0e67f0a353e5623` |
+| Governance baseline TREE | `fc956308d638263b766b80eeb193f1fcf3abe193` |
+| Initial implementation manifest | 8 paths |
+| Implementation Authorization | NOT ISSUED |
+| Claude | NOT AUTHORIZED |
+| Kimi | NOT AUTHORIZED |
+| Candidate commit | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |
+| ACR | NONE |
+
+The Brief freezes the implementation contract only.
+
+Execution requires a separate committed Implementation Authorization and
+explicit Architecture Authority activation.

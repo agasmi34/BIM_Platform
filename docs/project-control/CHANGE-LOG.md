@@ -776,3 +776,22 @@ Product integration remains NOT AUTHORIZED. ACR remains NONE.
 - ACR remains NONE.
 - Implementation Brief remains NOT RELEASED.
 - Claude and Kimi remain NOT AUTHORIZED.
+
+## 2026-09-29 - P0-T009 Implementation Brief Approval
+
+- Product Authority approved `P0-T009-IB v1.0`.
+- Froze the project-owned NodeId contract with NodeId{0} invalid.
+- Froze ExplicitSemantic and Computed dependency provenance.
+- Froze deterministic snapshot and topological-plan ordering.
+- Froze pre-mutation cycle rejection and deterministic cycle diagnostics.
+- Froze atomic ReplaceComputedDependencies semantics.
+- Froze explicit separation between topology mutation and dirty-state mutation.
+- Froze graph revision semantics for stale recompute-plan rejection.
+- Froze atomic CommitRecompute failure/success behavior.
+- Froze the initial implementation manifest to exactly eight production/test paths.
+- Kept architecture-checker modifications outside initial authorization.
+- Preserved P0-T008 public contracts and the dependency_graph -> foundation boundary.
+- Added no dependency, schema, persistence, BIM-feature or Phase-1 scope.
+- Implementation Authorization remains NOT ISSUED.
+- Claude and Kimi remain NOT AUTHORIZED.
+- ACR remains NONE.

@@ -532,3 +532,45 @@ Kimi                          = NOT AUTHORIZED
 Commit                        = NOT AUTHORIZED
 Push                          = NOT AUTHORIZED
 ```
+
+## Current - P0-T009 Implementation Brief Approved (2026-09-29)
+
+```text
+P0-T009 - Dependency Graph Spike
+
+Architecture Gate              = FROZEN / APPROVED
+P0-T009-IB v1.0               = FROZEN / APPROVED
+Product Authority              = APPROVED
+
+Public primitive               = bim::dependency_graph
+Production dependency          = bim::foundation only
+Initial candidate manifest     = 8 implementation/test paths
+NodeId                         = project-owned opaque uint64 contract
+Dependency provenance          = ExplicitSemantic / Computed
+Dirty propagation              = downstream / deterministic
+Planning                       = topological / deterministic
+Cycle mutation                 = reject before commit
+Computed replacement           = atomic
+Recompute Clean commit         = atomic
+P0-T008 contracts              = unchanged
+Persistence                    = out of scope
+New third-party dependency     = none
+ACR                            = NONE
+
+Implementation Authorization   = NOT ISSUED
+Implementation                 = NOT AUTHORIZED
+Claude                         = NOT AUTHORIZED
+Kimi                           = NOT AUTHORIZED
+Candidate commit               = NOT AUTHORIZED
+Main integration               = NOT AUTHORIZED
+Push                           = NOT AUTHORIZED
+
+Next lifecycle gate:
+Implementation Brief governance audit
+    ->
+Implementation Brief governance commit
+    ->
+separate Implementation Authorization
+    ->
+separate execution activation
+```

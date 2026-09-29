@@ -199,7 +199,7 @@ Later validation must prove:
 
 ```text
 Architecture Gate         = FROZEN / APPROVED
-Implementation Brief      = NOT RELEASED
+Implementation Brief      = FROZEN / APPROVED
 Implementation Auth       = NOT ISSUED
 Implementation            = NOT AUTHORIZED
 Claude                    = NOT AUTHORIZED
@@ -211,3 +211,20 @@ ACR                       = NONE
 ```
 
 Architecture Gate approval does not authorize implementation.
+
+## 16. Implementation Brief approval
+
+`P0-T009-IB v1.0` was approved by Product Authority on 2026-09-29.
+
+```text
+Implementation Brief      = FROZEN / APPROVED
+Implementation Auth       = NOT ISSUED
+Implementation            = NOT AUTHORIZED
+Claude                    = NOT AUTHORIZED
+Kimi                      = NOT AUTHORIZED
+Candidate commit          = NOT AUTHORIZED
+Push                      = NOT AUTHORIZED
+ACR                       = NONE
+```
+
+Approval of the Implementation Brief does not authorize execution.
