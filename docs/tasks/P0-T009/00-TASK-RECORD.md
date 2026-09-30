@@ -228,3 +228,28 @@ ACR                       = NONE
 ```
 
 Approval of the Implementation Brief does not authorize execution.
+
+## 17. Implementation Authorization approval
+
+`BIM-AUTH-P0-T009 v1.0` was approved by Product Authority on 2026-09-29.
+
+The Authorization freezes the implementation scope but does not activate
+Claude execution.
+
+```text
+Implementation Brief      = FROZEN / APPROVED
+Implementation Auth       = ISSUED / FROZEN
+Execution Activation      = NOT ISSUED
+Implementation            = NOT AUTHORIZED TO START
+Claude Execution          = NOT ACTIVE
+Kimi                      = NOT AUTHORIZED
+Candidate commit          = NOT AUTHORIZED
+Main integration          = NOT AUTHORIZED
+Push                      = NOT AUTHORIZED
+ACR                       = NONE
+```
+
+Exact initial execution manifest = 8 implementation/test paths.
+
+A separate Architecture Authority Activation is required before any
+implementation-file mutation.

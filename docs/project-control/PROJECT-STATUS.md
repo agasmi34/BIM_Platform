@@ -574,3 +574,39 @@ separate Implementation Authorization
     ->
 separate execution activation
 ```
+
+## Current - P0-T009 Implementation Authorization Issued (2026-09-29)
+
+```text
+P0-T009 - Dependency Graph Spike
+
+Architecture Gate              = FROZEN / APPROVED
+P0-T009-IB v1.0               = FROZEN / APPROVED
+BIM-AUTH-P0-T009 v1.0         = ISSUED / FROZEN
+Product Authority              = APPROVED
+
+Initial execution manifest     = 8 paths / FROZEN
+Production dependency          = bim::foundation only
+New third-party dependency     = none
+P0-T008 contracts              = unchanged
+ACR                            = NONE
+
+Execution Activation           = NOT ISSUED
+Implementation                 = NOT AUTHORIZED TO START
+Claude Execution               = NOT ACTIVE
+Kimi                           = NOT AUTHORIZED
+Candidate commit               = NOT AUTHORIZED
+Main integration               = NOT AUTHORIZED
+Push                           = NOT AUTHORIZED
+
+Next lifecycle gate:
+Authorization governance audit
+    ->
+Authorization governance commit
+    ->
+Activation baseline lock
+    ->
+explicit Architecture Authority Execution Activation
+    ->
+Claude implementation may begin
+```

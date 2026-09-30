@@ -723,3 +723,29 @@ The Brief freezes the implementation contract only.
 
 Execution requires a separate committed Implementation Authorization and
 explicit Architecture Authority activation.
+
+## 2026-09-29 - P0-T009 Implementation Authorization Approval
+
+| Item | Value |
+|---|---|
+| Authorization | `BIM-AUTH-P0-T009 v1.0` |
+| Product Authority | APPROVED |
+| Status | ISSUED / FROZEN |
+| Authorization baseline HEAD | `58feb7b18f5f8a830de0717a8e57e0a256fc39e7` |
+| Authorization baseline TREE | `63010fb864203c25d7cf8c474a4b43fcad1e8d99` |
+| Architecture Gate | FROZEN / APPROVED |
+| Implementation Brief | FROZEN / APPROVED |
+| Initial execution manifest | 8 implementation/test paths |
+| Execution Activation | NOT ISSUED |
+| Implementation | NOT AUTHORIZED TO START |
+| Claude Execution | NOT ACTIVE |
+| Kimi | NOT AUTHORIZED |
+| Candidate commit | NOT AUTHORIZED |
+| Main integration | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |
+| ACR | NONE |
+
+Authorization scope is frozen but execution remains inactive.
+
+A separate Architecture Authority Activation must lock the committed
+Authorization baseline before Claude may modify implementation files.

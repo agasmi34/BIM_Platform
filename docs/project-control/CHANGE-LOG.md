@@ -795,3 +795,21 @@ Product integration remains NOT AUTHORIZED. ACR remains NONE.
 - Implementation Authorization remains NOT ISSUED.
 - Claude and Kimi remain NOT AUTHORIZED.
 - ACR remains NONE.
+
+## 2026-09-29 - P0-T009 Implementation Authorization Approval
+
+- Product Authority approved `BIM-AUTH-P0-T009 v1.0`.
+- Froze the initial implementation manifest to exactly eight implementation/test paths.
+- Preserved the frozen P0-T009 Architecture Gate and Implementation Brief.
+- Preserved dependency_graph -> foundation as the production dependency boundary.
+- Preserved NodeId, provenance, cycle, invalidation, planning, revision and recompute semantics.
+- Explicitly kept architecture-checker and architecture-fixture modifications outside initial execution scope.
+- Explicitly prohibited Git staging, commit, merge, rebase and push by Claude.
+- Explicitly prohibited Claude from invoking Kimi.
+- Required STOP and Architecture Authority classification before any scope expansion.
+- Required minimum-delta corrections after failure classification.
+- Kept candidate commit, main integration, push and cleanup as separate later gates.
+- Execution Activation remains NOT ISSUED.
+- Claude Execution remains NOT ACTIVE.
+- Added no new dependency, schema, persistence or Phase-1 behavior.
+- ACR remains NONE.
