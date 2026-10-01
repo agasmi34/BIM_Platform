@@ -191,3 +191,26 @@ if(BIM_ENABLE_DWG)
         VERBATIM
     )
 endif()
+
+# unit_dependency_graph - P0-T009 Dependency Graph Spike (Architecture Gate
+# BIM-AG-P0-T009 v1.0; Implementation Brief P0-T009-IB v1.0; Implementation
+# Authorization BIM-AUTH-P0-T009 v1.0). Links ONLY bim::dependency_graph and
+# bim::foundation (Architecture Gate section 17: bim_dependency_graph ->
+# bim::foundation only) - a successful build of this target is itself
+# mechanical proof the dependency-graph public surface needs no
+# model/geometry/transactions/persistence/interop/desktop/viewport symbol.
+# Fine-grained per-operation coverage; the named mandatory proof corpus
+# (A-H) lives in
+# tests/integration/integration_p0_t009_dependency_graph_spike.cpp.
+add_executable(unit_dependency_graph
+    unit_dependency_graph.cpp
+)
+target_link_libraries(unit_dependency_graph
+    PRIVATE
+        bim::dependency_graph
+        bim::foundation
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_dependency_graph PRIVATE cxx_std_20)
+bim_apply_warnings(unit_dependency_graph)
+add_test(NAME unit_dependency_graph COMMAND unit_dependency_graph)

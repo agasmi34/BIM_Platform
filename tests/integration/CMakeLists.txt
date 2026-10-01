@@ -582,3 +582,27 @@ target_link_libraries(integration_p0_t008_face_reference_spike
 target_compile_features(integration_p0_t008_face_reference_spike PRIVATE cxx_std_20)
 bim_apply_warnings(integration_p0_t008_face_reference_spike)
 add_test(NAME integration_p0_t008_face_reference_spike COMMAND integration_p0_t008_face_reference_spike)
+
+# --- P0-T009 Dependency Graph Spike (Architecture Gate BIM-AG-P0-T009 v1.0
+# section 19 / Implementation Authorization BIM-AUTH-P0-T009 v1.0 section
+# 14) - the named mandatory proof corpus (A-H) plus the accompanying
+# whole-graph scenario properties. Links ONLY bim::dependency_graph and
+# bim::foundation, mirroring unit_dependency_graph's "link only the
+# accepted module boundary" pattern - bim::dependency_graph is a pure,
+# kernel-free, foundation-only module (Architecture Gate section 17), so
+# unlike every geometry/model integration target above, this target needs
+# no additional kernel/vendor library to reach its real (not reconstructed
+# or hand-simulated) implementation under real-kernel-equivalent,
+# end-to-end conditions.
+add_executable(integration_p0_t009_dependency_graph_spike
+    integration_p0_t009_dependency_graph_spike.cpp
+)
+target_link_libraries(integration_p0_t009_dependency_graph_spike
+    PRIVATE
+        bim::dependency_graph
+        bim::foundation
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_p0_t009_dependency_graph_spike PRIVATE cxx_std_20)
+bim_apply_warnings(integration_p0_t009_dependency_graph_spike)
+add_test(NAME integration_p0_t009_dependency_graph_spike COMMAND integration_p0_t009_dependency_graph_spike)
