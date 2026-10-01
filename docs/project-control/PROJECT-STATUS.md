@@ -4,7 +4,7 @@
 
 **System of record:** Git
 
-**Current active task:** P0-T009 - Dependency Graph Spike
+**Current active task:** P0-T010 - Phase 1 Architecture Gate
 
 ## P0-T001
 
@@ -610,3 +610,32 @@ explicit Architecture Authority Execution Activation
     ->
 Claude implementation may begin
 ```
+
+## Current - P0-T010 Phase 1 Architecture Gate (2026-10-01)
+
+    P0-T010 - Phase 1 Architecture Gate
+
+    Authoritative baseline HEAD        = af6201957b8b96382ec2fbd3bdf58c598da8dffb
+    Authoritative baseline TREE        = d52bb08b0961e78a2dd933aa03609357270cfe3d
+    Task branch                        = task/P0-T010-phase-1-architecture-gate
+    Task worktree                      = D:\Projects\BIM-Platform-WT-P0-T010
+
+    Architecture intake                = CLOSED / PASS
+    Product Authority architecture     = APPROVED
+    VS1                                = Level-Constrained Straight Wall
+    ADR-0003                           = ACCEPTED
+    Gate materialization               = ACTIVE / UNCOMMITTED
+    Governance candidate commit        = NOT AUTHORIZED
+    Independent architecture review    = NOT AUTHORIZED
+    Phase-1 implementation             = NOT AUTHORIZED
+    Claude                             = NOT AUTHORIZED
+    Kimi                               = NOT AUTHORIZED
+    Main integration                   = NOT AUTHORIZED
+    Push                               = NOT AUTHORIZED
+    ACR                                = NONE
+
+P0-T010 is governance-only.
+
+No ElementId, Level, StraightWall, document-runtime, schema-v2, command,
+query, geometry, viewport or desktop production implementation is
+authorized by Gate materialization.

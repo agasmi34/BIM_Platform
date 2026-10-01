@@ -813,3 +813,27 @@ Product integration remains NOT AUTHORIZED. ACR remains NONE.
 - Claude Execution remains NOT ACTIVE.
 - Added no new dependency, schema, persistence or Phase-1 behavior.
 - ACR remains NONE.
+
+## 2026-10-01 - P0-T010 Phase 1 Architecture Gate Approval
+
+- Opened P0-T010 on the accepted P0-T009 baseline.
+- Product Authority approved BIM-AG-P0-T010 v1.0.
+- Froze VS1 as Level-Constrained Straight Wall.
+- Froze durable project-owned 128-bit ElementId semantics.
+- Preserved strict separation between ElementId and DependencyGraph NodeId.
+- Introduced bim_document as the higher-layer coordination boundary.
+- Froze Level -> StraightWall as the first production semantic dependency.
+- Preserved BIM parameters as authoritative and geometry as derived.
+- Froze command-only mutation and read-only query boundaries.
+- Froze fail-closed transaction/recompute atomicity.
+- Froze production semantic wall-face reference behavior.
+- Preserved schema v1 and froze Phase-1 schema v2 with atomic 1 -> 2 migration.
+- Prohibited authoritative persistence of raw kernel/GPU state and runtime NodeIds.
+- Required a project-owned kernel-to-render extraction seam.
+- Kept VS1 single-threaded and deterministic.
+- Accepted ADR-0003 retaining Catch2 v3 + CTest.
+- Froze P1-T001 through P1-T006.
+- Added no production implementation and no third-party dependency.
+- Claude and Kimi remain NOT AUTHORIZED.
+- Governance commit, main integration and push remain NOT AUTHORIZED.
+- ACR remains NONE.

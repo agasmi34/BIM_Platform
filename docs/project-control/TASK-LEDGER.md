@@ -749,3 +749,29 @@ Authorization scope is frozen but execution remains inactive.
 
 A separate Architecture Authority Activation must lock the committed
 Authorization baseline before Claude may modify implementation files.
+
+## 2026-10-01 - P0-T010 Phase 1 Architecture Gate Approval
+
+| Item | Value |
+|---|---|
+| Task | P0-T010 - Phase 1 Architecture Gate |
+| Baseline HEAD | `af6201957b8b96382ec2fbd3bdf58c598da8dffb` |
+| Baseline TREE | `d52bb08b0961e78a2dd933aa03609357270cfe3d` |
+| Branch | `task/P0-T010-phase-1-architecture-gate` |
+| Worktree | `D:\Projects\BIM-Platform-WT-P0-T010` |
+| Architecture Gate | `BIM-AG-P0-T010 v1.0` |
+| Product Authority | APPROVED - 2026-10-01 |
+| Vertical Slice | VS1 - Level-Constrained Straight Wall |
+| ADR | ADR-0003 |
+| ADR status | ACCEPTED |
+| Production implementation | NOT AUTHORIZED |
+| Claude | NOT AUTHORIZED |
+| Kimi | NOT AUTHORIZED |
+| Governance commit | NOT AUTHORIZED |
+| Main integration | NOT AUTHORIZED |
+| Push | NOT AUTHORIZED |
+| ACR | NONE |
+
+P0-T010 freezes Phase-1 contracts only.
+
+No production BIM code is part of this materialization.

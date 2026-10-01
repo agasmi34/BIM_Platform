@@ -753,3 +753,46 @@ Implementation Brief remains NOT RELEASED. Implementation Authorization remains 
 Product Authority approved `BIM-AG-P0-T009 v1.0` on 2026-09-29.
 
 ACR remains `NONE`.
+
+## P0-T010 - Phase 1 architecture decisions
+
+Product Authority approved `BIM-AG-P0-T010 v1.0` on 2026-10-01.
+
+| ID | Decision | Status |
+|---|---|---|
+| P0T10-D01 | VS1 is Level-Constrained Straight Wall | LOCKED |
+| P0T10-D02 | Phase 1 introduces durable first-party 128-bit ElementId | LOCKED |
+| P0T10-D03 | All-zero ElementId is invalid; vendor/kernel/database/GPU identities are non-authoritative | LOCKED |
+| P0T10-D04 | Production persistent-reference ownership transitions from spike FeatureOwnerId to ElementId | LOCKED |
+| P0T10-D05 | ElementId and DependencyGraph NodeId remain distinct | LOCKED |
+| P0T10-D06 | Runtime ElementId <-> NodeId mapping is higher-layer state | LOCKED |
+| P0T10-D07 | dependency_graph remains model-neutral | LOCKED |
+| P0T10-D08 | Level -> StraightWall is the first production ExplicitSemantic dependency | LOCKED |
+| P0T10-D09 | Phase 1 introduces bim_document coordination | LOCKED |
+| P0T10-D10 | bim_document public APIs remain vendor-neutral | LOCKED |
+| P0T10-D11 | Production UI/application mutation occurs through commands | LOCKED |
+| P0T10-D12 | Query remains read-only | LOCKED |
+| P0T10-D13 | BIM parameters are authoritative; geometry is derived | LOCKED |
+| P0T10-D14 | Command/recompute/journal commit is fail-closed and atomic | LOCKED |
+| P0T10-D15 | Wall face identity remains project-owned semantic identity | LOCKED |
+| P0T10-D16 | P0-T004 schema v1 is preserved; first Phase-1 BIM schema is v2 | LOCKED |
+| P0T10-D17 | Version 1 -> 2 migration is explicit and atomic | LOCKED |
+| P0T10-D18 | Raw kernel/GPU state and runtime NodeIds are not authoritative persisted BIM state | LOCKED |
+| P0T10-D19 | Rendering uses a project-owned kernel-to-render extraction seam | LOCKED |
+| P0T10-D20 | Viewport remains BIM-neutral and OCCT-free | LOCKED |
+| P0T10-D21 | VS1 mutation/recompute is single-threaded and deterministic | LOCKED |
+| P0T10-D22 | IFC/DWG/RVT identifiers do not replace ElementId | LOCKED |
+| P0T10-D23 | Catch2 v3 + CTest remains VS1 Phase-1 baseline via ADR-0003 | LOCKED |
+| P0T10-D24 | No new third-party dependency is authorized | LOCKED |
+| P0T10-D25 | Initial implementation sequence is P1-T001 through P1-T006 | LOCKED |
+| P0T10-D26 | P0-T010 is governance-only | LOCKED |
+| P0T10-D27 | Architecture Change Record | NONE |
+
+### ADR-0003
+
+`ADR-0003 - Phase-1 C++ Test Framework Continuity`
+
+Status: `ACCEPTED`
+
+Decision: Catch2 v3 + CTest remains the approved VS1 Phase-1 testing
+baseline.

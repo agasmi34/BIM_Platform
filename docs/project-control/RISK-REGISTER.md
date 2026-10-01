@@ -63,3 +63,20 @@ Verification Runbook B's actual execution, which has not happened yet.
 | P0T9-R08 | Graph persistence is introduced prematurely | Reopens P0-T004/schema | CONTROLLED | In-memory only |
 | P0T9-R09 | Third-party graph/scheduler library is introduced | Dependency-policy expansion | CONTROLLED | First-party C++20 only |
 | P0T9-R10 | Parallel scheduling expands scope | Semantic proof becomes obscured | CONTROLLED | Single-threaded P0-T009 |
+
+## P0-T010 Phase 1 Architecture controlled risks - 2026-10-01
+
+| ID | Risk | Impact | State | Control |
+|---|---|---|---|---|
+| P0T10-R01 | Spike FeatureOwnerId becomes final BIM identity | Temporary identity ossifies | CONTROLLED | Production identity is ElementId |
+| P0T10-R02 | NodeId is reused as durable BIM identity | Reopen/reconstruction can corrupt references | CONTROLLED | ElementId and NodeId remain distinct |
+| P0T10-R03 | bim_document becomes monolithic | Module ownership collapses | CONTROLLED / OPEN | It coordinates; lower modules retain semantics |
+| P0T10-R04 | Schema v2 becomes full future BIM schema | Premature lock-in | CONTROLLED | v2 is VS1-only authoritative data |
+| P0T10-R05 | Recompute failure partially commits | Inconsistent document state | CONTROLLED | Staged evaluation plus atomic commit |
+| P0T10-R06 | Wall references use topology order/kernel identity | Silent retargeting | CONTROLLED | ElementId plus semantic role |
+| P0T10-R07 | Derived kernel/GPU state becomes authoritative persistence | Vendor lock-in/stale state | CONTROLLED | Persist BIM parameters and regenerate |
+| P0T10-R08 | Desktop bypasses commands | Validation/graph/journal bypass | CONTROLLED | Commands are mutation boundary |
+| P0T10-R09 | Viewport couples to OCCT | Rendering becomes kernel-dependent | CONTROLLED | Project-owned extraction seam |
+| P0T10-R10 | Phase 1 triggers test-framework replacement | Unrelated infrastructure churn | CONTROLLED | ADR-0003 retains Catch2/CTest |
+| P0T10-R11 | VS1 expands to joins/openings/doors/rooms | Scope becomes unbounded | CONTROLLED | Explicit non-goals and separate gates |
+| P0T10-R12 | Parallel recompute starts prematurely | Race-dependent state | CONTROLLED | VS1 remains single-threaded |
