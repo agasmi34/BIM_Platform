@@ -214,3 +214,46 @@ target_link_libraries(unit_dependency_graph
 target_compile_features(unit_dependency_graph PRIVATE cxx_std_20)
 bim_apply_warnings(unit_dependency_graph)
 add_test(NAME unit_dependency_graph COMMAND unit_dependency_graph)
+
+# --- P1-T001 Core BIM Identity & Domain Model (Implementation Brief
+# BIM-TASK-P1-T001-CLAUDE v1.0 section 16). Each target links ONLY bim::model
+# (never bim::geometry_occt, never bim::dependency_graph): the ElementId,
+# Level, StraightWall and wall-face-reference contracts are pure,
+# standard-library-only value logic, and a successful build of these targets
+# is itself mechanical proof they need no kernel, graph, persistence or UI
+# symbol.
+add_executable(unit_model_element_id
+    unit_model_element_id.cpp
+)
+target_link_libraries(unit_model_element_id
+    PRIVATE
+        bim::model
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_model_element_id PRIVATE cxx_std_20)
+bim_apply_warnings(unit_model_element_id)
+add_test(NAME unit_model_element_id COMMAND unit_model_element_id)
+
+add_executable(unit_model_domain_validation
+    unit_model_domain_validation.cpp
+)
+target_link_libraries(unit_model_domain_validation
+    PRIVATE
+        bim::model
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_model_domain_validation PRIVATE cxx_std_20)
+bim_apply_warnings(unit_model_domain_validation)
+add_test(NAME unit_model_domain_validation COMMAND unit_model_domain_validation)
+
+add_executable(unit_model_wall_face_reference
+    unit_model_wall_face_reference.cpp
+)
+target_link_libraries(unit_model_wall_face_reference
+    PRIVATE
+        bim::model
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_model_wall_face_reference PRIVATE cxx_std_20)
+bim_apply_warnings(unit_model_wall_face_reference)
+add_test(NAME unit_model_wall_face_reference COMMAND unit_model_wall_face_reference)
