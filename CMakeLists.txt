@@ -134,6 +134,9 @@ add_subdirectory(src/foundation)
 add_subdirectory(src/geometry/api)
 add_subdirectory(src/dependency_graph)
 add_subdirectory(src/model)
+# P1-T002: bim_document needs model, geometry_api and dependency_graph (all
+# added above); it does not use transactions, persistence or geometry_occt.
+add_subdirectory(src/document)
 add_subdirectory(src/transactions)
 add_subdirectory(src/query)
 add_subdirectory(src/commands)

@@ -257,3 +257,20 @@ target_link_libraries(unit_model_wall_face_reference
 target_compile_features(unit_model_wall_face_reference PRIVATE cxx_std_20)
 bim_apply_warnings(unit_model_wall_face_reference)
 add_test(NAME unit_model_wall_face_reference COMMAND unit_model_wall_face_reference)
+
+# --- P1-T002 Document Runtime & Dependency Recompute (Implementation Brief
+# P1-T002-IB section 17). Links ONLY bim::document and Catch2 - deliberately
+# never bim::dependency_graph (the document's private runtime machinery is not
+# visible to this target, so the whole proof goes through the public document
+# API), and never bim::geometry_occt (P1-T002 derives neutral geometry only).
+add_executable(unit_document_runtime
+    unit_document_runtime.cpp
+)
+target_link_libraries(unit_document_runtime
+    PRIVATE
+        bim::document
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_document_runtime PRIVATE cxx_std_20)
+bim_apply_warnings(unit_document_runtime)
+add_test(NAME unit_document_runtime COMMAND unit_document_runtime)

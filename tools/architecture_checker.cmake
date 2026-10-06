@@ -20,9 +20,10 @@
 # rejects the fixture).
 #
 # BIM_ARCH_CHECK_RULE (added P0-T002 Phase C-M, Amendment 01 AA-C09; extended
-# P0-T003; extended P0-T004 Phase F; extended P0-T005; extended P0-T006)
+# P0-T003; extended P0-T004 Phase F; extended P0-T005; extended P0-T006;
+# extended P1-T002)
 # selects which rule group to run:
-#   ALL                          (default) - every rule below (R1-R17)
+#   ALL                          (default) - every rule below (R1-R18)
 #   GEOMETRY_API_NO_OCCT_LEAK    - only R6
 #   GEOMETRY_OCCT_ONLY_KERNEL_OWNER - only R7
 #   VIEWPORT_PUBLIC_NEUTRAL      - only R8  (P0-T003)
@@ -35,13 +36,15 @@
 #   IFC_PUBLIC_NEUTRAL           - only R15 (P0-T005)
 #   ODA_DRAWINGS_ONLY_DWG_OWNER  - only R16 (P0-T006)
 #   DWG_PUBLIC_NEUTRAL           - only R17 (P0-T006)
+#   DOCUMENT_PUBLIC_RUNTIME_NEUTRAL - only R18 (P1-T002)
 # This selector exists so each single-rule CTest test (arch_geometry_api_no_occt_leak,
 # arch_geometry_occt_only_kernel_owner, and, as of P0-T003,
 # arch_viewport_public_neutral / arch_qt_desktop_only / arch_bgfx_viewport_owner /
 # arch_no_direct_d3d, and, as of P0-T004 Phase F,
 # arch_sqlite_persistence_only / arch_persistence_public_neutral, and, as of
 # P0-T005, arch_ifc_openshell_only_ifc_owner / arch_ifc_public_neutral, and,
-# as of P0-T006, arch_p0_t006_oda_owner / arch_p0_t006_dwg_public_neutral -
+# as of P0-T006, arch_p0_t006_oda_owner / arch_p0_t006_dwg_public_neutral, and,
+# as of P1-T002, arch_document_public_runtime_neutral -
 # tests/architecture/CMakeLists.txt) can each exercise exactly one rule,
 # while arch_repository_boundaries and arch_checker_detects_violation
 # continue to omit BIM_ARCH_CHECK_RULE entirely and so continue to run
@@ -148,6 +151,18 @@
 #        low-false-positive-risk reason R15 gives for reusing R14's token
 #        set against a small, entirely first-party-authored public header
 #        set.
+#   R18 - (P1-T002) DOCUMENT_PUBLIC_RUNTIME_NEUTRAL: bim::document's public
+#        contract stays free of dependency-graph runtime identities and of
+#        persistence/transaction internals - no token from the frozen R18 set
+#        (dependency-graph include path/namespace, the runtime node identity,
+#        graph result/plan/snapshot types, persistence and transaction
+#        include paths/namespaces, journal transaction/record types) in real
+#        code under <root>/document/include/** (Architecture Gate
+#        BIM-AG-P1-T002 section 16). Mirrors R6/R8/R13/R15/R17's
+#        public-header-neutrality pattern, including their plain
+#        comment-aware substring helper for every token, with one narrow
+#        exact-identifier exemption (the document-owned result code
+#        NodeIdExhausted) - see this file's own P1-T002 ADDITION NOTE below.
 #
 # ==============================================================================
 # P0-T004 PHASE F ADDITION NOTE - R12/SQLITE_PERSISTENCE_ONLY,
@@ -393,6 +408,38 @@
 # this addition's first execution against the real, locked ODA Drawings SDK
 # tree itself.
 # ==============================================================================
+# P1-T002 ADDITION NOTE - R18/DOCUMENT_PUBLIC_RUNTIME_NEUTRAL
+#
+# Added for P1-T002 Document Runtime & Dependency Recompute (Architecture Gate
+# BIM-AG-P1-T002 section 16; Implementation Brief P1-T002-IB sections 19-21;
+# Implementation Authorization BIM-AUTH-P1-T002 section 8). bim::document
+# privately owns the runtime ElementId <-> dependency-graph node association;
+# R18 mechanically keeps that runtime identity, the graph types and the
+# persistence/transaction layers out of document's PUBLIC headers
+# (<root>/document/include/**), exactly as R13/R15/R17 do for their modules.
+# R1-R17 are untouched: their semantics and token sets are unchanged.
+#
+# Matching. All twelve frozen tokens use the existing plain comment-aware
+# substring semantics, like R13/R15/R17, via a new helper
+# (bim_scan_files_for_tokens_ignoring_comments_except_exact_identifiers, below)
+# that differs from bim_scan_files_for_tokens_ignoring_comments() in exactly
+# one way: before the substring scan it blanks out every occurrence of an
+# explicitly listed, EXACT, case-sensitive, whole identifier. R18 lists exactly
+# one such identifier, "NodeIdExhausted": the frozen document result contract
+# (Architecture Gate section 7) names its exhaustion code that way, and it
+# merely CONTAINS the forbidden token "NodeId", so without the exemption R18
+# would reject bim::document's own approved public header. The exemption is
+# deliberately NOT a general "whole identifier" rule for NodeId: NodeId in any
+# other form is still a violation, including inside a larger identifier
+# (NodeIdMap, MyNodeIdHolder, dependency_graph::NodeId, std::map<NodeId, ...>,
+# NodeId{1}, ...), and so is any compound that merely begins or ends with the
+# exempt name (NodeIdExhaustedMap, MyNodeIdExhausted) or differs from it in case
+# (nodeidexhausted). Only a stand-alone, exactly spelled NodeIdExhausted is
+# allowed.
+#
+# Scope. Only <root>/document/include/** headers are scanned (never
+# document/src/**: the private implementation legitimately uses the graph).
+# ==============================================================================
 # On the first pass through the selected rule(s), every violation found is
 # collected; if any exist, this script calls message(FATAL_ERROR ...), which
 # makes `cmake -P` exit non-zero. On a clean pass it prints
@@ -427,6 +474,7 @@ set(_bim_valid_rules
     "IFC_PUBLIC_NEUTRAL"
     "ODA_DRAWINGS_ONLY_DWG_OWNER"
     "DWG_PUBLIC_NEUTRAL"
+    "DOCUMENT_PUBLIC_RUNTIME_NEUTRAL"
 )
 list(FIND _bim_valid_rules "${BIM_ARCH_CHECK_RULE}" _bim_rule_idx)
 if(_bim_rule_idx EQUAL -1)
@@ -722,6 +770,58 @@ function(bim_scan_files_for_case_sensitive_boundary_tokens_ignoring_comments fil
             string(REGEX MATCH "${_pattern}" _match "${_content_exact}")
             if(NOT _match STREQUAL "")
                 list(APPEND BIM_VIOLATIONS "[${rule_id}] case-sensitive boundary-matched token '${tok}' found in ${f} (code, not comment)")
+            endif()
+        endforeach()
+    endforeach()
+    set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
+endfunction()
+
+# ------------------------------------------------------------------------------
+# Helper (P1-T002, R18): same contract as
+# bim_scan_files_for_tokens_ignoring_comments() above (comments stripped first
+# via bim_strip_cpp_comments(), then a case-insensitive plain substring scan of
+# every token) with exactly one addition: `exempt_identifiers` is a list of
+# EXACT identifiers that are removed from the comment-stripped code BEFORE the
+# substring scan. An identifier is removed only where it occurs as a complete,
+# stand-alone, exactly-cased (case-sensitive) identifier - the character
+# immediately before and after the occurrence must not be an identifier
+# character ([A-Za-z0-9_]) - so a longer identifier that merely contains it
+# (MyNodeIdExhausted, NodeIdExhaustedMap), or a differently-cased spelling, is
+# NOT exempt and is scanned normally. Each removed occurrence is replaced by a
+# single space (never by nothing), so removal can never glue two neighbouring
+# tokens into a new forbidden spelling. Sentinel spaces at both ends let an
+# occurrence at the very start or end of a file still have both boundaries; the
+# removal is repeated until it no longer changes the text, so back-to-back
+# occurrences that share a boundary character are all removed. Used by R18 only,
+# with the single exempt identifier "NodeIdExhausted". Like the other helpers,
+# this one does not attempt general regex escaping: exempt identifiers must be
+# plain identifier characters.
+# ------------------------------------------------------------------------------
+function(bim_scan_files_for_tokens_ignoring_comments_except_exact_identifiers files tokens exempt_identifiers rule_id)
+    foreach(f IN LISTS files)
+        if(NOT EXISTS "${f}")
+            continue()
+        endif()
+        file(READ "${f}" _content)
+        bim_strip_cpp_comments("${_content}" _code_only)
+        set(_code_only " ${_code_only} ")
+        foreach(_exempt IN LISTS exempt_identifiers)
+            set(_exempt_changing TRUE)
+            while(_exempt_changing)
+                string(REGEX REPLACE "([^A-Za-z0-9_])${_exempt}([^A-Za-z0-9_])" "\\1 \\2" _code_next "${_code_only}")
+                if(_code_next STREQUAL _code_only)
+                    set(_exempt_changing FALSE)
+                else()
+                    set(_code_only "${_code_next}")
+                endif()
+            endwhile()
+        endforeach()
+        string(TOLOWER "${_code_only}" _content_lower)
+        foreach(tok IN LISTS tokens)
+            string(TOLOWER "${tok}" _tok_lower)
+            string(FIND "${_content_lower}" "${_tok_lower}" _idx)
+            if(NOT _idx EQUAL -1)
+                list(APPEND BIM_VIOLATIONS "[${rule_id}] token '${tok}' found in ${f} (code, not comment)")
             endif()
         endforeach()
     endforeach()
@@ -1229,6 +1329,40 @@ if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "DWG_PUBLI
         "TD_Db" "TD_Ge" "TD_Gi" "TD_Root" "TD_Key" "TD_Alloc"
     )
     bim_scan_files_for_tokens_ignoring_comments("${_dwg_public_headers}" "${_r17_tokens}" "R17-dwg-public-oda-leak")
+endif()
+
+# ------------------------------------------------------------------------------
+# R18 - bim::document's public contract stays free of dependency-graph runtime
+# identities and persistence/transaction internals
+# (DOCUMENT_PUBLIC_RUNTIME_NEUTRAL, P1-T002): none of the frozen R18 tokens may
+# appear in real code under <root>/document/include/**. Mirrors
+# R6/R8/R13/R15/R17's public-header-neutrality pattern, using the same plain
+# comment-aware substring semantics for every token, with one narrow
+# exact-identifier exemption: the document-owned result code "NodeIdExhausted"
+# (which merely contains the forbidden token "NodeId") is blanked out before the
+# scan - see this file's own P1-T002 ADDITION NOTE for why and for exactly what
+# is and is not exempt. Selectable alone via
+# BIM_ARCH_CHECK_RULE=DOCUMENT_PUBLIC_RUNTIME_NEUTRAL.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "DOCUMENT_PUBLIC_RUNTIME_NEUTRAL")
+    file(GLOB_RECURSE _document_public_headers
+        "${BIM_ARCH_CHECK_ROOT}/document/include/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/document/include/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/document/include/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/document/include/*.hxx"
+    )
+    set(_r18_tokens
+        "bim/dependency_graph/" "bim::dependency_graph" "NodeId"
+        "GraphResult" "RecomputePlan" "GraphSnapshot"
+        "bim/persistence/" "bim::persistence"
+        "bim/transactions/" "bim::transactions"
+        "JournalTransaction" "JournalRecord"
+    )
+    # The ONLY approved exemption: the frozen document-owned result code, as an
+    # exact stand-alone identifier. NodeId elsewhere, or inside any other
+    # identifier, is still rejected.
+    set(_r18_exempt_identifiers "NodeIdExhausted")
+    bim_scan_files_for_tokens_ignoring_comments_except_exact_identifiers("${_document_public_headers}" "${_r18_tokens}" "${_r18_exempt_identifiers}" "R18-document-public-runtime-leak")
 endif()
 
 # ------------------------------------------------------------------------------

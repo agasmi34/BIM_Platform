@@ -606,3 +606,22 @@ target_link_libraries(integration_p0_t009_dependency_graph_spike
 target_compile_features(integration_p0_t009_dependency_graph_spike PRIVATE cxx_std_20)
 bim_apply_warnings(integration_p0_t009_dependency_graph_spike)
 add_test(NAME integration_p0_t009_dependency_graph_spike COMMAND integration_p0_t009_dependency_graph_spike)
+
+# --- P1-T002 Document Runtime & Dependency Recompute (Implementation Brief
+# P1-T002-IB section 18) - the multi-wall Level scenario: initial neutral
+# geometry, Level elevation recompute of every hosted wall, single-wall
+# update isolation, ElementId stability, repeated mutations and
+# no-partial-state-after-rejection. Links ONLY bim::document and Catch2 and
+# uses only the public document API - it never links bim::dependency_graph, so
+# the private runtime identity and graph are not reachable from this target.
+add_executable(integration_p1_t002_document_recompute
+    integration_p1_t002_document_recompute.cpp
+)
+target_link_libraries(integration_p1_t002_document_recompute
+    PRIVATE
+        bim::document
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_p1_t002_document_recompute PRIVATE cxx_std_20)
+bim_apply_warnings(integration_p1_t002_document_recompute)
+add_test(NAME integration_p1_t002_document_recompute COMMAND integration_p1_t002_document_recompute)

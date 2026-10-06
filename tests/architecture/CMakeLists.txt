@@ -326,3 +326,38 @@ add_test(
             -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
 )
 set_tests_properties(arch_p0_t006_dwg_public_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# --- P1-T002 Document Runtime & Dependency Recompute addition (Architecture
+# Enforcement) - rule R18 (tools/architecture_checker.cmake), run both against
+# the real src/ tree (must PASS) and against its own deliberately-broken
+# fixture under tests/fixtures/ (the checker must FAIL there; WILL_FAIL TRUE
+# inverts that, matching the P0-T003 .. P0-T006 pattern above). Registered
+# unconditionally: R18 is a pure text scan over the real src/ tree / fixture
+# and needs no compiled dependency at all. Test names are exactly those
+# frozen by the P1-T002 Architecture Gate section 17.
+
+# arch_document_public_runtime_neutral - R18 against the real src/ tree: none
+# of the frozen dependency-graph / persistence / transaction runtime tokens
+# appears in real code under src/document/include/** - bim::document's public
+# contract stays runtime-neutral.
+add_test(
+    NAME arch_document_public_runtime_neutral
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=DOCUMENT_PUBLIC_RUNTIME_NEUTRAL
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p1_t002_document_public_fixture_rejected - R18 against
+# tests/fixtures/p1_t002_bad_document_public_runtime/, which deliberately
+# leaks a dependency-graph include, the runtime node identity and a graph
+# result type into a simulated document/include/** header. The checker must
+# FAIL here.
+add_test(
+    NAME arch_p1_t002_document_public_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p1_t002_bad_document_public_runtime
+            -DBIM_ARCH_CHECK_RULE=DOCUMENT_PUBLIC_RUNTIME_NEUTRAL
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p1_t002_document_public_fixture_rejected PROPERTIES WILL_FAIL TRUE)
