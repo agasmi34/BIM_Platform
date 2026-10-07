@@ -361,3 +361,64 @@ add_test(
             -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
 )
 set_tests_properties(arch_p1_t002_document_public_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# --- P1-T003 Commands & Query Vertical Slice addition (Architecture
+# Enforcement) - rules R19 (COMMANDS_PUBLIC_BOUNDARY) and R20
+# (QUERY_READ_ONLY_BOUNDARY) of tools/architecture_checker.cmake, each run both
+# against the real src/ tree (must PASS) and against its own deliberately-broken
+# fixture under tests/fixtures/ (the checker must FAIL there; WILL_FAIL TRUE
+# inverts that, matching the P0-T003 .. P1-T002 pattern above). Registered
+# unconditionally: both rules are pure text scans over the real src/ tree /
+# fixture and need no compiled dependency at all. Test names are exactly those
+# frozen by the P1-T003 Implementation Brief section 10.
+
+# arch_commands_public_boundary - R19 against the real src/ tree: bim::commands
+# stays free of dependency-graph, transaction, persistence, SQLite, kernel, Qt,
+# bgfx, ODA and IfcOpenShell coupling, and its public header carries none of the
+# runtime graph identities or types.
+add_test(
+    NAME arch_commands_public_boundary
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=COMMANDS_PUBLIC_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p1_t003_commands_public_fixture_rejected - R19 against
+# tests/fixtures/p1_t003_bad_commands_public_boundary/, which deliberately leaks
+# dependency-graph, transaction and persistence includes plus the runtime node
+# identity and a graph result type into a simulated commands/include/** header.
+# The checker must FAIL here.
+add_test(
+    NAME arch_p1_t003_commands_public_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p1_t003_bad_commands_public_boundary
+            -DBIM_ARCH_CHECK_RULE=COMMANDS_PUBLIC_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p1_t003_commands_public_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# arch_query_read_only_boundary - R20 against the real src/ tree: bim::query takes
+# the document only as a const reference, calls no mutation, and stays free of
+# command, dependency-graph, transaction, persistence, SQLite, kernel, Qt, bgfx,
+# ODA and IfcOpenShell coupling.
+add_test(
+    NAME arch_query_read_only_boundary
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=QUERY_READ_ONLY_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p1_t003_query_mutation_fixture_rejected - R20 against
+# tests/fixtures/p1_t003_bad_query_mutation/, which deliberately takes a mutable
+# Document reference in a simulated query/include/** header and mutates through
+# it. The checker must FAIL here.
+add_test(
+    NAME arch_p1_t003_query_mutation_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p1_t003_bad_query_mutation
+            -DBIM_ARCH_CHECK_RULE=QUERY_READ_ONLY_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p1_t003_query_mutation_fixture_rejected PROPERTIES WILL_FAIL TRUE)

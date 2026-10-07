@@ -14,7 +14,8 @@
 
 // P1-T002 Document Runtime & Dependency Recompute - implementation of
 // bim::document (Architecture Gate BIM-AG-P1-T002; Implementation Brief
-// P1-T002-IB).
+// P1-T002-IB), extended by P1-T003 (Architecture Gate BIM-AG-P1-T003 sections
+// 5, 6 and 8) with deletion and the two ordered list reads.
 //
 // Everything graph-related lives in this file only. The public header never
 // names a runtime graph type; ElementId is the only identity a caller sees.
@@ -303,6 +304,58 @@ namespace {
     return true;
 }
 
+// Removes the strict ElementId <-> node association of one element from both
+// directions of the staged state. The allocator is not touched: a removed node
+// identity is retired for good and is never handed out again.
+[[nodiscard]] bool UnregisterMapping(detail::State& state, const ElementId& id) {
+    const auto forward = state.element_to_node.find(id);
+    if (forward == state.element_to_node.end()) {
+        return false;
+    }
+    const bool reverse_erased = state.node_to_element.erase(forward->second) == 1;
+    state.element_to_node.erase(forward);
+    return reverse_erased;
+}
+
+// Replaces the staged graph by a freshly constructed one built only from the
+// surviving staged state (Architecture Gate BIM-AG-P1-T003 section 6). The
+// graph has no node-removal operation and gets none: after a deletion a new
+// private graph is registered from the surviving identity mapping and the
+// surviving Level -> StraightWall relationships. Every survivor is registered
+// under the runtime node identity it already has - no identity is allocated,
+// so next_node_value is neither read nor written here, and the node identity
+// of a deleted element is not among the survivors and is never reused. Every
+// surviving wall receives exactly one ExplicitSemantic Level -> wall edge, the
+// same edge AddStraightWallStaged() creates. All rebuilt nodes are Clean, which
+// is correct: deleting an element changes no surviving element's derived
+// geometry, so the cached geometry of the survivors stays valid and no recompute
+// is needed. The result still has to satisfy InvariantsHold() before RunStaged()
+// may publish it. This runs against the staged copy only; the live graph is
+// never rebuilt in place.
+[[nodiscard]] DocumentResult RebuildGraphStaged(detail::State& state) {
+    dg::DependencyGraph rebuilt;
+    for (const auto& association : state.node_to_element) {
+        if (!rebuilt.AddNode(association.first).ok()) {
+            return Fail(DocumentResultCode::GraphRejected);
+        }
+    }
+    for (const auto& entry : state.walls) {
+        const auto host = state.element_to_node.find(entry.second.level_id);
+        const auto node = state.element_to_node.find(entry.first);
+        if (host == state.element_to_node.end() || node == state.element_to_node.end()) {
+            return Fail(DocumentResultCode::InternalFailure);
+        }
+        if (!rebuilt
+                 .AddDependency(host->second, node->second,
+                                dg::DependencyProvenance::ExplicitSemantic)
+                 .ok()) {
+            return Fail(DocumentResultCode::GraphRejected);
+        }
+    }
+    state.graph = std::move(rebuilt);
+    return DocumentResult{};
+}
+
 // --- staged mutations: each operates on the private staged copy only --------
 
 [[nodiscard]] DocumentResult AddLevelStaged(detail::State& state, const Level& level) {
@@ -422,6 +475,36 @@ namespace {
     return RecomputeStaged(state);
 }
 
+// Deletes a StraightWall, or a Level that hosts no StraightWall. Level deletion
+// never cascades and never re-hosts: a Level with any dependent wall is refused
+// before anything is touched.
+[[nodiscard]] DocumentResult DeleteElementStaged(detail::State& state, const ElementId& id) {
+    const auto wall = state.walls.find(id);
+    if (wall != state.walls.end()) {
+        state.wall_geometry.erase(id);
+        state.walls.erase(wall);
+        if (!UnregisterMapping(state, id)) {
+            return Fail(DocumentResultCode::InternalFailure);
+        }
+        return RebuildGraphStaged(state);
+    }
+
+    const auto level = state.levels.find(id);
+    if (level == state.levels.end()) {
+        return Fail(DocumentResultCode::ElementNotFound);
+    }
+    for (const auto& entry : state.walls) {
+        if (entry.second.level_id == id) {
+            return Fail(DocumentResultCode::ElementHasDependents);
+        }
+    }
+    state.levels.erase(level);
+    if (!UnregisterMapping(state, id)) {
+        return Fail(DocumentResultCode::InternalFailure);
+    }
+    return RebuildGraphStaged(state);
+}
+
 // Runs `mutation` against a private staged copy of the runtime and publishes
 // it only on complete success. The publish is a noexcept pointer move; every
 // throwing step (copy, container growth, graph work) happens before it, on
@@ -476,6 +559,8 @@ const char* ToString(DocumentResultCode code) noexcept {
             return "RecomputeFailed";
         case DocumentResultCode::InternalFailure:
             return "InternalFailure";
+        case DocumentResultCode::ElementHasDependents:
+            return "ElementHasDependents";
     }
     return "Unknown";
 }
@@ -504,6 +589,11 @@ DocumentResult Document::UpdateLevelElevation(const ElementId& id, double elevat
 DocumentResult Document::UpdateStraightWall(const StraightWall& wall) noexcept {
     return RunStaged(
         state_, [&wall](detail::State& staged) { return UpdateStraightWallStaged(staged, wall); });
+}
+
+DocumentResult Document::DeleteElement(const ElementId& id) noexcept {
+    return RunStaged(state_,
+                     [&id](detail::State& staged) { return DeleteElementStaged(staged, id); });
 }
 
 std::optional<Level> Document::FindLevel(const ElementId& id) const noexcept {
@@ -538,6 +628,32 @@ Document::FindWallGeometry(const ElementId& wall_id) const noexcept {
         return std::nullopt;
     }
     return found->second;
+}
+
+std::vector<Level> Document::ListLevels() const {
+    std::vector<Level> levels;
+    if (!state_) {
+        return levels;
+    }
+    levels.reserve(state_->levels.size());
+    // std::map<ElementId, ...> iterates in ElementId ascending order, which is
+    // the order the public contract promises.
+    for (const auto& entry : state_->levels) {
+        levels.push_back(entry.second);
+    }
+    return levels;
+}
+
+std::vector<StraightWall> Document::ListStraightWalls() const {
+    std::vector<StraightWall> walls;
+    if (!state_) {
+        return walls;
+    }
+    walls.reserve(state_->walls.size());
+    for (const auto& entry : state_->walls) {
+        walls.push_back(entry.second);
+    }
+    return walls;
 }
 
 } // namespace bim::document

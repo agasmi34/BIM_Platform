@@ -625,3 +625,23 @@ target_link_libraries(integration_p1_t002_document_recompute
 target_compile_features(integration_p1_t002_document_recompute PRIVATE cxx_std_20)
 bim_apply_warnings(integration_p1_t002_document_recompute)
 add_test(NAME integration_p1_t002_document_recompute COMMAND integration_p1_t002_document_recompute)
+
+# --- P1-T003 Commands & Query Vertical Slice (Implementation Brief P1-T003-IB
+# sections 10-11) - the end-to-end slice: commands author, edit and trim a
+# multi-Level model, queries read it back in ElementId order, a rejected command
+# is invisible to later queries, and the committed model does not depend on how
+# it was reached. Links ONLY bim::commands, bim::query and Catch2 and uses only
+# their public APIs - it never links bim::dependency_graph, bim::transactions or
+# bim::persistence. This is exactly one new CTest registration.
+add_executable(integration_p1_t003_commands_query_vertical_slice
+    integration_p1_t003_commands_query_vertical_slice.cpp
+)
+target_link_libraries(integration_p1_t003_commands_query_vertical_slice
+    PRIVATE
+        bim::commands
+        bim::query
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_p1_t003_commands_query_vertical_slice PRIVATE cxx_std_20)
+bim_apply_warnings(integration_p1_t003_commands_query_vertical_slice)
+add_test(NAME integration_p1_t003_commands_query_vertical_slice COMMAND integration_p1_t003_commands_query_vertical_slice)

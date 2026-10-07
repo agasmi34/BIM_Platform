@@ -1,16 +1,31 @@
-# bim_commands - private compilation anchor only in P0-T001 (IC-004).
-# Depends on transactions only; model is not linked directly because
-# transactions already provides the path to model, per the target table in
-# Implementation Brief Phase G ("transactions (and model only if necessary)")
-# - it is not necessary here. bim_commands MUST NOT link SQLite/bim_persistence
-# (Architecture Gate section 8.2).
+# bim_commands - P1-T003 Commands & Query Vertical Slice (Architecture Gate
+# BIM-AG-P1-T003; Implementation Brief P1-T003-IB). The production command
+# mutation boundary: CreateLevel, ChangeLevelElevation, CreateStraightWall,
+# ChangeStraightWallGeometry and DeleteElement, each one atomic Document
+# mutation. This replaces the P0-T001 compilation anchor (IC-004).
+#
+# Dependency surface (frozen by the Architecture Gate, section 2):
+#   PUBLIC  bim::document - the Document a command acts on; its public headers
+#                           carry the model values the commands take.
+# It deliberately does NOT link bim::transactions, bim::persistence,
+# bim::dependency_graph, bim::geometry_occt, SQLite, Qt, bgfx, ODA or
+# IfcOpenShell (rules R3 and COMMANDS_PUBLIC_BOUNDARY,
+# tools/architecture_checker.cmake).
 
 add_library(bim_commands STATIC
-    src/commands_anchor.cpp
+    src/commands.cpp
 )
 add_library(bim::commands ALIAS bim_commands)
 
-target_link_libraries(bim_commands PRIVATE bim::transactions)
+target_include_directories(bim_commands
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
+target_link_libraries(bim_commands
+    PUBLIC
+        bim::document
+)
 target_compile_features(bim_commands PUBLIC cxx_std_20)
 
 bim_apply_warnings(bim_commands)

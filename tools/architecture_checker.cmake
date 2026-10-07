@@ -21,9 +21,9 @@
 #
 # BIM_ARCH_CHECK_RULE (added P0-T002 Phase C-M, Amendment 01 AA-C09; extended
 # P0-T003; extended P0-T004 Phase F; extended P0-T005; extended P0-T006;
-# extended P1-T002)
+# extended P1-T002; extended P1-T003)
 # selects which rule group to run:
-#   ALL                          (default) - every rule below (R1-R18)
+#   ALL                          (default) - every rule below (R1-R20)
 #   GEOMETRY_API_NO_OCCT_LEAK    - only R6
 #   GEOMETRY_OCCT_ONLY_KERNEL_OWNER - only R7
 #   VIEWPORT_PUBLIC_NEUTRAL      - only R8  (P0-T003)
@@ -37,6 +37,8 @@
 #   ODA_DRAWINGS_ONLY_DWG_OWNER  - only R16 (P0-T006)
 #   DWG_PUBLIC_NEUTRAL           - only R17 (P0-T006)
 #   DOCUMENT_PUBLIC_RUNTIME_NEUTRAL - only R18 (P1-T002)
+#   COMMANDS_PUBLIC_BOUNDARY     - only R19 (P1-T003)
+#   QUERY_READ_ONLY_BOUNDARY     - only R20 (P1-T003)
 # This selector exists so each single-rule CTest test (arch_geometry_api_no_occt_leak,
 # arch_geometry_occt_only_kernel_owner, and, as of P0-T003,
 # arch_viewport_public_neutral / arch_qt_desktop_only / arch_bgfx_viewport_owner /
@@ -44,7 +46,8 @@
 # arch_sqlite_persistence_only / arch_persistence_public_neutral, and, as of
 # P0-T005, arch_ifc_openshell_only_ifc_owner / arch_ifc_public_neutral, and,
 # as of P0-T006, arch_p0_t006_oda_owner / arch_p0_t006_dwg_public_neutral, and,
-# as of P1-T002, arch_document_public_runtime_neutral -
+# as of P1-T002, arch_document_public_runtime_neutral, and, as of P1-T003,
+# arch_commands_public_boundary / arch_query_read_only_boundary -
 # tests/architecture/CMakeLists.txt) can each exercise exactly one rule,
 # while arch_repository_boundaries and arch_checker_detects_violation
 # continue to omit BIM_ARCH_CHECK_RULE entirely and so continue to run
@@ -163,6 +166,22 @@
 #        comment-aware substring helper for every token, with one narrow
 #        exact-identifier exemption (the document-owned result code
 #        NodeIdExhausted) - see this file's own P1-T002 ADDITION NOTE below.
+#   R19 - (P1-T003) COMMANDS_PUBLIC_BOUNDARY: bim::commands depends on
+#        bim::document only. No dependency-graph, transaction, persistence,
+#        SQLite, geometry_occt, Qt, bgfx, ODA or IfcOpenShell token in real code
+#        anywhere under <root>/commands/** or in the non-comment lines of
+#        <root>/commands/CMakeLists.txt, and no runtime graph identity or type
+#        (NodeId, GraphResult, RecomputePlan, GraphSnapshot, DependencyGraph,
+#        JournalTransaction, JournalRecord) in the public headers
+#        <root>/commands/include/** (Architecture Gate BIM-AG-P1-T003 sections
+#        2, 4 and 11).
+#   R20 - (P1-T003) QUERY_READ_ONLY_BOUNDARY: bim::query is strictly read-only.
+#        In real code anywhere under <root>/query/** the only permitted use of
+#        the Document type is a const reference, no Document mutation or command
+#        name is called, const_cast is not used, and no command, dependency-graph,
+#        transaction, persistence, SQLite, geometry_occt, Qt, bgfx, ODA or
+#        IfcOpenShell token appears (Architecture Gate BIM-AG-P1-T003 sections
+#        2, 9 and 11) - see this file's own P1-T003 ADDITION NOTE below.
 #
 # ==============================================================================
 # P0-T004 PHASE F ADDITION NOTE - R12/SQLITE_PERSISTENCE_ONLY,
@@ -440,6 +459,63 @@
 # Scope. Only <root>/document/include/** headers are scanned (never
 # document/src/**: the private implementation legitimately uses the graph).
 # ==============================================================================
+# P1-T003 ADDITION NOTE - R19/COMMANDS_PUBLIC_BOUNDARY,
+# R20/QUERY_READ_ONLY_BOUNDARY
+#
+# Added for P1-T003 Commands & Query Vertical Slice (Architecture Gate
+# BIM-AG-P1-T003 sections 2, 4, 9 and 11; Implementation Brief P1-T003-IB
+# sections 8 and 9). R1-R18 are untouched: their semantics and token sets are
+# unchanged. Each new rule has one real-tree positive test and one controlled
+# negative fixture test (tests/architecture/CMakeLists.txt).
+#
+# R19 keeps the command module on its frozen dependency direction
+# (commands -> document only). Two scopes: (1) every first-party source/header
+# file under <root>/commands/** and the non-comment lines of
+# <root>/commands/CMakeLists.txt are scanned for the coupling tokens listed in
+# the R19 block below - dependency-graph, transaction, persistence, SQLite,
+# geometry_occt, Qt, bgfx, ODA Drawings and IfcOpenShell, reusing the R9/R16
+# token vocabulary; (2) the PUBLIC headers <root>/commands/include/** are
+# additionally scanned for the runtime graph identity and types (NodeId and the
+# graph result/plan/snapshot types), with NO exemption: unlike bim::document, the
+# command contract has no legitimate use for even the document-owned
+# NodeIdExhausted spelling - it publishes RuntimeCapacityExhausted instead.
+# commands.cpp may legitimately name the document's NodeIdExhausted code while
+# translating it, which is why the runtime-identity tokens are scoped to the public
+# headers only. All token matching is the existing plain, case-insensitive,
+# comment-aware substring semantics (comments are ignored, real code is not).
+#
+# R20 keeps the query module read-only. It scans every first-party
+# source/header file under <root>/query/** and the non-comment lines of
+# <root>/query/CMakeLists.txt for the same coupling tokens plus the command
+# module, and adds two query-specific checks that are NOT plain substring tests:
+#   * Mutable Document. The identifier Document may appear in query code ONLY as
+#     the referent of a const lvalue reference - `const Document&`,
+#     `const bim::document::Document&` or the east-const `Document const&` (an
+#     optional leading `::`, `bim::document::` or `document::` qualifier is
+#     accepted). Every such occurrence is blanked out first; any occurrence of the
+#     stand-alone identifier Document that remains - `Document&`,
+#     `bim::document::Document &`, `Document*`, a by-value Document, a template
+#     argument, `using Alias = ...Document`, `Document::Member` - is a violation.
+#     This is deliberately NOT "forbid every Document& substring": the required
+#     `const bim::document::Document&` is permitted and a non-const reference is
+#     rejected. A longer identifier that merely contains the word (DocumentResult)
+#     is a different identifier and is not matched. As a consequence query code
+#     must spell the const reference out; a using-declaration for Document is
+#     itself a violation.
+#   * Mutation calls. The Document mutation operations (AddLevel,
+#     AddStraightWall, UpdateLevelElevation, UpdateStraightWall, DeleteElement),
+#     the five command names (CreateLevel, ChangeLevelElevation,
+#     CreateStraightWall, ChangeStraightWallGeometry, DeleteElement) and
+#     const_cast are rejected as exact stand-alone identifiers (case-sensitive,
+#     identifier-boundary matched), so ListLevels or FindLevel can never
+#     false-match them.
+#
+# Scope. Both rules are text scans over <root>/commands/** and <root>/query/**
+# only; the P1-T002 fixture and every other module are out of scope. CMake
+# comment lines (from `#` to end of line) are ignored when scanning
+# CMakeLists.txt; bracket comments are not used in this repository and are not
+# handled.
+# ==============================================================================
 # On the first pass through the selected rule(s), every violation found is
 # collected; if any exist, this script calls message(FATAL_ERROR ...), which
 # makes `cmake -P` exit non-zero. On a clean pass it prints
@@ -475,6 +551,8 @@ set(_bim_valid_rules
     "ODA_DRAWINGS_ONLY_DWG_OWNER"
     "DWG_PUBLIC_NEUTRAL"
     "DOCUMENT_PUBLIC_RUNTIME_NEUTRAL"
+    "COMMANDS_PUBLIC_BOUNDARY"
+    "QUERY_READ_ONLY_BOUNDARY"
 )
 list(FIND _bim_valid_rules "${BIM_ARCH_CHECK_RULE}" _bim_rule_idx)
 if(_bim_rule_idx EQUAL -1)
@@ -824,6 +902,108 @@ function(bim_scan_files_for_tokens_ignoring_comments_except_exact_identifiers fi
                 list(APPEND BIM_VIOLATIONS "[${rule_id}] token '${tok}' found in ${f} (code, not comment)")
             endif()
         endforeach()
+    endforeach()
+    set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
+endfunction()
+
+# ------------------------------------------------------------------------------
+# Helper (P1-T003, R19/R20): scans the NON-COMMENT text of CMakeLists.txt files
+# for a list of forbidden (case-insensitive) substrings. Every `#` through the
+# end of its line is removed first, so a comment that merely describes a
+# forbidden dependency never self-triggers the rule; real target names in
+# target_link_libraries() and friends still do. Bracket comments (#[[ ... ]])
+# are not used in this repository and are not handled.
+# ------------------------------------------------------------------------------
+function(bim_scan_cmake_files_for_tokens_ignoring_comments files tokens rule_id)
+    foreach(f IN LISTS files)
+        if(NOT EXISTS "${f}")
+            continue()
+        endif()
+        file(READ "${f}" _content)
+        string(REGEX REPLACE "#[^\n]*" "" _code_only "${_content}")
+        string(TOLOWER "${_code_only}" _content_lower)
+        foreach(tok IN LISTS tokens)
+            string(TOLOWER "${tok}" _tok_lower)
+            string(FIND "${_content_lower}" "${_tok_lower}" _idx)
+            if(NOT _idx EQUAL -1)
+                list(APPEND BIM_VIOLATIONS "[${rule_id}] token '${tok}' found in ${f} (CMake code, not comment)")
+            endif()
+        endforeach()
+    endforeach()
+    set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
+endfunction()
+
+# ------------------------------------------------------------------------------
+# Helper (P1-T003, R20): rejects exact, stand-alone, case-sensitive identifiers
+# in real code (comments stripped first via bim_strip_cpp_comments()). An
+# identifier matches only where the character immediately before and after it
+# is not an identifier character ([A-Za-z0-9_]); sentinel spaces at both ends let
+# an occurrence at the very start or end of a file still have both boundaries.
+# So `AddLevel` matches `document.AddLevel(level)` but never `ListLevels`,
+# `FindLevel` or `MyAddLevel`. Identifiers must be plain identifier characters
+# (no regex escaping is attempted).
+# ------------------------------------------------------------------------------
+function(bim_scan_files_for_exact_identifiers_ignoring_comments files identifiers rule_id)
+    foreach(f IN LISTS files)
+        if(NOT EXISTS "${f}")
+            continue()
+        endif()
+        file(READ "${f}" _content)
+        bim_strip_cpp_comments("${_content}" _code_only)
+        set(_code_only " ${_code_only} ")
+        foreach(_id IN LISTS identifiers)
+            string(REGEX MATCH "[^A-Za-z0-9_]${_id}[^A-Za-z0-9_]" _match "${_code_only}")
+            if(NOT _match STREQUAL "")
+                list(APPEND BIM_VIOLATIONS "[${rule_id}] forbidden identifier '${_id}' found in ${f} (code, not comment)")
+            endif()
+        endforeach()
+    endforeach()
+    set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
+endfunction()
+
+# ------------------------------------------------------------------------------
+# Helper (P1-T003, R20): in real code (comments stripped first), the stand-alone
+# identifier `Document` may appear ONLY as the referent of a const lvalue
+# reference. Every `const Document&` / `const bim::document::Document&` /
+# `const document::Document&` / `const ::bim::document::Document&` and every
+# east-const `Document const&` form (whitespace anywhere around `::`, `const` and
+# `&`) is blanked out first, the blanking repeated until the text stops changing;
+# any stand-alone `Document` identifier that is left over is a mutable or
+# otherwise non-read-only use (`Document&`, `Document *`, a by-value Document, a
+# template argument, `using Alias = ...Document`, `Document::Member`, ...) and is
+# reported. This is intentionally NOT a test for the substring "Document&": the
+# permitted const reference passes, a non-const one fails. `DocumentResult`,
+# `DocumentResultCode` and any other longer identifier are different identifiers
+# and never match, because the stand-alone test requires a non-identifier
+# character on both sides.
+# ------------------------------------------------------------------------------
+function(bim_scan_files_for_non_const_document_ignoring_comments files rule_id)
+    set(_ws "[ \t\r\n]")
+    set(_qual "(::${_ws}*)?((bim${_ws}*::${_ws}*)?document${_ws}*::${_ws}*)?")
+    set(_west_const_re "([^A-Za-z0-9_])const${_ws}+${_qual}Document${_ws}*&")
+    set(_east_const_re "([^A-Za-z0-9_])${_qual}Document${_ws}+const${_ws}*&")
+    foreach(f IN LISTS files)
+        if(NOT EXISTS "${f}")
+            continue()
+        endif()
+        file(READ "${f}" _content)
+        bim_strip_cpp_comments("${_content}" _code_only)
+        set(_code_only " ${_code_only} ")
+        foreach(_re IN ITEMS "${_west_const_re}" "${_east_const_re}")
+            set(_changing TRUE)
+            while(_changing)
+                string(REGEX REPLACE "${_re}" "\\1 " _code_next "${_code_only}")
+                if(_code_next STREQUAL _code_only)
+                    set(_changing FALSE)
+                else()
+                    set(_code_only "${_code_next}")
+                endif()
+            endwhile()
+        endforeach()
+        string(REGEX MATCH "[^A-Za-z0-9_]Document[^A-Za-z0-9_]" _match "${_code_only}")
+        if(NOT _match STREQUAL "")
+            list(APPEND BIM_VIOLATIONS "[${rule_id}] non-const use of the Document type (only a const reference is allowed) in ${f} (code, not comment)")
+        endif()
     endforeach()
     set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
 endfunction()
@@ -1363,6 +1543,99 @@ if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "DOCUMENT_
     # identifier, is still rejected.
     set(_r18_exempt_identifiers "NodeIdExhausted")
     bim_scan_files_for_tokens_ignoring_comments_except_exact_identifiers("${_document_public_headers}" "${_r18_tokens}" "${_r18_exempt_identifiers}" "R18-document-public-runtime-leak")
+endif()
+
+# ------------------------------------------------------------------------------
+# R19 - bim::commands depends on bim::document only (COMMANDS_PUBLIC_BOUNDARY,
+# P1-T003). Scope 1: every first-party source/header file under
+# <root>/commands/** and the non-comment lines of <root>/commands/CMakeLists.txt
+# are free of dependency-graph, transaction, persistence, SQLite, geometry_occt,
+# Qt, bgfx, ODA Drawings and IfcOpenShell tokens. Scope 2: the public headers
+# <root>/commands/include/** additionally carry no runtime graph identity or
+# type, with no exemption. See this file's own P1-T003 ADDITION NOTE. Selectable
+# alone via BIM_ARCH_CHECK_RULE=COMMANDS_PUBLIC_BOUNDARY.
+# ------------------------------------------------------------------------------
+set(_bim_boundary_coupling_tokens
+    # dependency graph (include path, namespace, target) and OCCT kernel
+    "dependency_graph" "geometry_occt"
+    # transaction / persistence layers and SQLite
+    "bim/transactions/" "bim::transactions" "bim/persistence/" "bim::persistence" "sqlite3"
+    # Qt (R9's vocabulary)
+    "<Qt" "Qt::" "QObject" "QWidget" "QString" "QApplication" "QGuiApplication"
+    "QCoreApplication" "QWindow" "QMainWindow" "QTimer" "QScreen" "QMouseEvent"
+    "QWheelEvent" "QResizeEvent" "QShowEvent" "QHideEvent" "QCloseEvent" "QExposeEvent"
+    "QPlatformSurfaceEvent" "QDebug" "qDebug(" "Q_OBJECT" "Q_ASSERT" "QComboBox" "QLabel"
+    "QStatusBar" "QToolBar" "QVBoxLayout"
+    # bgfx
+    "bgfx"
+    # ODA Drawings (R16's vocabulary)
+    "OdDb" "OdGe" "OdGi" "OdRx" "OdString" "OdError" "OdAnsiString"
+    "OdStaticRxObject" "OdWrFileBuf" "OdFileBuf"
+    "ExSystemServices" "ExHostAppServices"
+    "odInitialize" "odUninitialize" "TEIGHA_TRIAL"
+    "TD_Db" "TD_Ge" "TD_Gi" "TD_Root" "TD_Key" "TD_Alloc"
+    # IfcOpenShell
+    "IfcOpenShell" "IfcParse" "IfcUtil" "Ifc4::" "<ifcparse/" "<ifcgeom/"
+)
+set(_bim_boundary_cmake_coupling_tokens
+    "dependency_graph" "geometry_occt" "transactions" "persistence" "sqlite"
+    "Qt5" "Qt6" "bgfx" "OpenCASCADE" "IfcOpenShell"
+)
+
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "COMMANDS_PUBLIC_BOUNDARY")
+    file(GLOB_RECURSE _commands_code_files
+        "${BIM_ARCH_CHECK_ROOT}/commands/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/commands/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/commands/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/commands/*.hxx"
+        "${BIM_ARCH_CHECK_ROOT}/commands/*.cpp"
+        "${BIM_ARCH_CHECK_ROOT}/commands/*.cc"
+    )
+    file(GLOB_RECURSE _commands_public_headers
+        "${BIM_ARCH_CHECK_ROOT}/commands/include/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/commands/include/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/commands/include/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/commands/include/*.hxx"
+    )
+    set(_r19_public_runtime_tokens
+        "NodeId" "GraphResult" "RecomputePlan" "GraphSnapshot" "DependencyGraph"
+        "JournalTransaction" "JournalRecord"
+    )
+    bim_scan_files_for_tokens_ignoring_comments("${_commands_code_files}" "${_bim_boundary_coupling_tokens}" "R19-commands-coupling")
+    bim_scan_files_for_tokens_ignoring_comments("${_commands_public_headers}" "${_r19_public_runtime_tokens}" "R19-commands-public-runtime-leak")
+    bim_scan_cmake_files_for_tokens_ignoring_comments("${BIM_ARCH_CHECK_ROOT}/commands/CMakeLists.txt" "${_bim_boundary_cmake_coupling_tokens}" "R19-commands-cmake-coupling")
+endif()
+
+# ------------------------------------------------------------------------------
+# R20 - bim::query is strictly read-only (QUERY_READ_ONLY_BOUNDARY, P1-T003).
+# Every first-party source/header file under <root>/query/** is scanned for: the
+# R19 coupling tokens plus the command module; any Document use other than a
+# const lvalue reference; the Document mutation / command names and const_cast
+# as exact identifiers. The non-comment lines of <root>/query/CMakeLists.txt are
+# scanned for the same coupling plus the commands target. See this file's own
+# P1-T003 ADDITION NOTE for the precise Document matching. Selectable alone via
+# BIM_ARCH_CHECK_RULE=QUERY_READ_ONLY_BOUNDARY.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "QUERY_READ_ONLY_BOUNDARY")
+    file(GLOB_RECURSE _query_code_files
+        "${BIM_ARCH_CHECK_ROOT}/query/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/query/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/query/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/query/*.hxx"
+        "${BIM_ARCH_CHECK_ROOT}/query/*.cpp"
+        "${BIM_ARCH_CHECK_ROOT}/query/*.cc"
+    )
+    set(_r20_coupling_tokens ${_bim_boundary_coupling_tokens} "bim/commands/" "bim::commands" "bim_commands")
+    set(_r20_cmake_coupling_tokens ${_bim_boundary_cmake_coupling_tokens} "commands")
+    set(_r20_mutation_identifiers
+        "AddLevel" "AddStraightWall" "UpdateLevelElevation" "UpdateStraightWall" "DeleteElement"
+        "CreateLevel" "ChangeLevelElevation" "CreateStraightWall" "ChangeStraightWallGeometry"
+        "const_cast"
+    )
+    bim_scan_files_for_tokens_ignoring_comments("${_query_code_files}" "${_r20_coupling_tokens}" "R20-query-coupling")
+    bim_scan_files_for_non_const_document_ignoring_comments("${_query_code_files}" "R20-query-mutable-document")
+    bim_scan_files_for_exact_identifiers_ignoring_comments("${_query_code_files}" "${_r20_mutation_identifiers}" "R20-query-mutation-call")
+    bim_scan_cmake_files_for_tokens_ignoring_comments("${BIM_ARCH_CHECK_ROOT}/query/CMakeLists.txt" "${_r20_cmake_coupling_tokens}" "R20-query-cmake-coupling")
 endif()
 
 # ------------------------------------------------------------------------------

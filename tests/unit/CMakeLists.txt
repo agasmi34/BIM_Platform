@@ -274,3 +274,22 @@ target_link_libraries(unit_document_runtime
 target_compile_features(unit_document_runtime PRIVATE cxx_std_20)
 bim_apply_warnings(unit_document_runtime)
 add_test(NAME unit_document_runtime COMMAND unit_document_runtime)
+
+# --- P1-T003 Commands & Query Vertical Slice (Implementation Brief P1-T003-IB
+# sections 10-11). Links ONLY bim::commands, bim::query and Catch2 - the
+# document's private runtime machinery is not visible to this target (and
+# bim::dependency_graph, bim::transactions and bim::persistence are deliberately
+# not linked), so the whole proof goes through the public command and query
+# APIs. This is exactly one new CTest registration.
+add_executable(unit_p1_t003_commands_query
+    unit_p1_t003_commands_query.cpp
+)
+target_link_libraries(unit_p1_t003_commands_query
+    PRIVATE
+        bim::commands
+        bim::query
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_p1_t003_commands_query PRIVATE cxx_std_20)
+bim_apply_warnings(unit_p1_t003_commands_query)
+add_test(NAME unit_p1_t003_commands_query COMMAND unit_p1_t003_commands_query)

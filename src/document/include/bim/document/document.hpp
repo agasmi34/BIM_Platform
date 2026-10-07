@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <memory>
 #include <optional>
+#include <vector>
 
 // P1-T002 Document Runtime & Dependency Recompute - the first production
 // bim_document coordination layer (Architecture Gate BIM-AG-P1-T002; Task
@@ -32,6 +33,13 @@
 // failed mutation leaves every observable value, and the private runtime
 // state, exactly as it was. No exception crosses a mutation boundary and no
 // failure report allocates.
+//
+// P1-T003 extends this contract by exactly four public capabilities: the
+// ElementHasDependents result code, DeleteElement, ListLevels and
+// ListStraightWalls (Architecture Gate BIM-AG-P1-T003 section 8). Deletion
+// has no cascade and no automatic re-host, and the list reads return
+// committed value copies in ElementId ascending order. Nothing else about the
+// public surface changed, and no private runtime identity is exposed.
 
 namespace bim::document {
 
@@ -50,6 +58,7 @@ enum class DocumentResultCode : std::uint8_t {
     DerivedGeometryInvalid, // derived wall geometry overflowed or was not finite
     RecomputeFailed,        // dependency recompute failed or found inconsistent runtime state
     InternalFailure,        // an allocation, library or internal-invariant failure was contained
+    ElementHasDependents,   // a Level cannot be deleted while any StraightWall is hosted by it
 };
 
 // Stable diagnostic name of a code; an out-of-range value yields "Unknown".
@@ -112,6 +121,14 @@ public:
     // InvalidElement, DerivedGeometryInvalid.
     [[nodiscard]] DocumentResult UpdateStraightWall(const bim::model::StraightWall& wall) noexcept;
 
+    // Deletes an existing StraightWall, or an existing Level that hosts no
+    // StraightWall. There is no cascade: a Level that still hosts one or more
+    // walls is rejected with ElementHasDependents, and nothing is re-hosted.
+    // Fails with ElementNotFound when the id names no element. Every failure
+    // leaves all committed state exactly as it was, and the survivors keep
+    // their private runtime association unchanged.
+    [[nodiscard]] DocumentResult DeleteElement(const bim::model::ElementId& id) noexcept;
+
     // Committed value reads. Each returns a copy of the committed value, or
     // an empty optional when no such element (of that kind) exists. No read
     // exposes internal containers, and no read ever observes a partially
@@ -124,6 +141,15 @@ public:
     // The committed derived neutral extrusion specification of a wall.
     [[nodiscard]] std::optional<bim::geometry_api::LinearExtrusionSpec>
     FindWallGeometry(const bim::model::ElementId& wall_id) const noexcept;
+
+    // Committed value copies of every Level / StraightWall, in ElementId
+    // ascending order (the canonical byte order of ElementId). The order is a
+    // semantic guarantee of the contract, never an artifact of internal
+    // storage. An empty document yields an empty vector. Building the copy
+    // can run out of memory, so these two reads are deliberately not noexcept;
+    // they never expose or modify internal state.
+    [[nodiscard]] std::vector<bim::model::Level> ListLevels() const;
+    [[nodiscard]] std::vector<bim::model::StraightWall> ListStraightWalls() const;
 
 private:
     std::unique_ptr<detail::State> state_;
