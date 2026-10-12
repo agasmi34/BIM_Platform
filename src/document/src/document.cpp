@@ -1,14 +1,19 @@
 #include "bim/document/document.hpp"
 
 #include "bim/dependency_graph/dependency_graph.hpp"
+#include "bim/persistence/document_store.hpp"
+#include "bim/transactions/journal.hpp"
 
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
+#include <filesystem>
 #include <initializer_list>
 #include <map>
 #include <memory>
 #include <optional>
+#include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -30,6 +35,21 @@
 // staged copy, so no live container, mapping, graph revision, geometry-cache
 // entry or identity-allocator value is ever changed before success. There is
 // no mutate-then-rollback path anywhere.
+//
+// P1-T004 extends the same law to two more things. (1) Journal coordination:
+// every successful production mutation prepares exactly one pending journal
+// transaction - one record, its kind naming the mutation, its payload the 16
+// bytes of the affected ElementId, its id a freshly generated canonical UUID-v4
+// text - inside the SAME staged State, so the pending queue is published (or
+// discarded) together with the domain state and a failed mutation leaves no
+// journal trace. (2) Lifecycle: Save hands the committed state and the pending
+// queue to the persistence layer in one atomic durable step and clears the
+// queue only after that step succeeded; Open builds a complete document from the
+// loaded authoritative state on the side and publishes it by the same noexcept
+// pointer move. The journal is audit / transaction-boundary data only: it is
+// never replayed, it is not authoritative state and it is not undo/redo. This
+// file is the only place that names persistence or transaction types; neither
+// appears in the public header.
 
 namespace bim::document {
 
@@ -63,6 +83,12 @@ struct State {
     // emitted. After the largest value is handed out the counter wraps to 0,
     // which marks the identity space exhausted: values are never reused.
     std::uint64_t next_node_value = 1;
+    // Journal transactions prepared by successful mutations and not yet saved,
+    // oldest first. It is part of the State on purpose: the whole-State staged
+    // copy therefore stages it, and publication makes it visible atomically with
+    // the domain state it describes. Never persisted as BIM state, never
+    // replayed.
+    std::vector<bim::transactions::JournalTransaction> pending_journal;
 };
 
 } // namespace detail
@@ -186,6 +212,41 @@ namespace {
 
 [[nodiscard]] bool IsUsedElementId(const detail::State& state, const ElementId& id) {
     return state.levels.contains(id) || state.walls.contains(id);
+}
+
+// The five frozen P1-T004 journal record kinds (Architecture Gate
+// BIM-AG-P1-T004 section 12), one per production mutation.
+constexpr std::string_view kJournalKindAddLevel = "bim.document.add_level.v1";
+constexpr std::string_view kJournalKindUpdateLevelElevation =
+    "bim.document.update_level_elevation.v1";
+constexpr std::string_view kJournalKindAddStraightWall = "bim.document.add_straight_wall.v1";
+constexpr std::string_view kJournalKindUpdateStraightWall = "bim.document.update_straight_wall.v1";
+constexpr std::string_view kJournalKindDeleteElement = "bim.document.delete_element.v1";
+
+// Prepares the one pending journal transaction of a successful mutation on the
+// staged state: a single record of `kind` whose payload is exactly the 16 bytes
+// of the affected ElementId, under a freshly generated canonical UUID-v4
+// transaction id from the project ElementId generator. Returns false - and
+// appends nothing - when the generator cannot supply an identity; the caller
+// then rejects the complete mutation. Allocation failure throws, which
+// RunStaged contains.
+[[nodiscard]] bool AppendPendingJournal(detail::State& state, std::string_view kind,
+                                        const ElementId& target) {
+    const std::optional<ElementId> transaction_id = bim::model::GenerateElementId();
+    if (!transaction_id.has_value()) {
+        return false;
+    }
+    bim::transactions::JournalRecord record;
+    record.kind = std::string(kind);
+    record.payload.reserve(target.bytes.size());
+    for (const std::uint8_t byte : target.bytes) {
+        record.payload.push_back(static_cast<std::byte>(byte));
+    }
+    bim::transactions::JournalTransaction transaction;
+    transaction.id = bim::model::ToString(*transaction_id);
+    transaction.records.push_back(std::move(record));
+    state.pending_journal.push_back(std::move(transaction));
+    return true;
 }
 
 // Evaluates every planned node in BuildRecomputePlan() order, then - only
@@ -510,9 +571,13 @@ namespace {
 // throwing step (copy, container growth, graph work) happens before it, on
 // the staged copy, so a contained exception can never leave live state
 // changed. A document that has never been mutated has no state object, and
-// its first mutation stages from an empty one.
+// its first mutation stages from an empty one. A successful mutation also
+// prepares its one pending journal transaction (`journal_kind` for `target`) in
+// the staged state, after the invariants hold and before the publish, so the
+// journal entry and the domain change become visible together or not at all.
 template <typename Mutation>
 [[nodiscard]] DocumentResult RunStaged(std::unique_ptr<detail::State>& live,
+                                       std::string_view journal_kind, const ElementId& target,
                                        Mutation&& mutation) noexcept {
     try {
         std::unique_ptr<detail::State> staged =
@@ -522,6 +587,9 @@ template <typename Mutation>
             return result;
         }
         if (!InvariantsHold(*staged)) {
+            return Fail(DocumentResultCode::InternalFailure);
+        }
+        if (!AppendPendingJournal(*staged, journal_kind, target)) {
             return Fail(DocumentResultCode::InternalFailure);
         }
         live = std::move(staged);
@@ -565,34 +633,55 @@ const char* ToString(DocumentResultCode code) noexcept {
     return "Unknown";
 }
 
+const char* ToString(DocumentLifecycleResultCode code) noexcept {
+    switch (code) {
+        case DocumentLifecycleResultCode::Ok:
+            return "Ok";
+        case DocumentLifecycleResultCode::PersistenceFailure:
+            return "PersistenceFailure";
+        case DocumentLifecycleResultCode::RuntimeCapacityExhausted:
+            return "RuntimeCapacityExhausted";
+        case DocumentLifecycleResultCode::DerivedGeometryInvalid:
+            return "DerivedGeometryInvalid";
+        case DocumentLifecycleResultCode::RecomputeFailed:
+            return "RecomputeFailed";
+        case DocumentLifecycleResultCode::InternalFailure:
+            return "InternalFailure";
+    }
+    return "Unknown";
+}
+
 Document::Document() noexcept = default;
 Document::~Document() = default;
 Document::Document(Document&&) noexcept = default;
 Document& Document::operator=(Document&&) noexcept = default;
 
 DocumentResult Document::AddLevel(const Level& level) noexcept {
-    return RunStaged(state_,
+    return RunStaged(state_, kJournalKindAddLevel, level.id,
                      [&level](detail::State& staged) { return AddLevelStaged(staged, level); });
 }
 
 DocumentResult Document::AddStraightWall(const StraightWall& wall) noexcept {
-    return RunStaged(
-        state_, [&wall](detail::State& staged) { return AddStraightWallStaged(staged, wall); });
+    return RunStaged(state_, kJournalKindAddStraightWall, wall.id, [&wall](detail::State& staged) {
+        return AddStraightWallStaged(staged, wall);
+    });
 }
 
 DocumentResult Document::UpdateLevelElevation(const ElementId& id, double elevation) noexcept {
-    return RunStaged(state_, [&id, elevation](detail::State& staged) {
-        return UpdateLevelElevationStaged(staged, id, elevation);
-    });
+    return RunStaged(state_, kJournalKindUpdateLevelElevation, id,
+                     [&id, elevation](detail::State& staged) {
+                         return UpdateLevelElevationStaged(staged, id, elevation);
+                     });
 }
 
 DocumentResult Document::UpdateStraightWall(const StraightWall& wall) noexcept {
     return RunStaged(
-        state_, [&wall](detail::State& staged) { return UpdateStraightWallStaged(staged, wall); });
+        state_, kJournalKindUpdateStraightWall, wall.id,
+        [&wall](detail::State& staged) { return UpdateStraightWallStaged(staged, wall); });
 }
 
 DocumentResult Document::DeleteElement(const ElementId& id) noexcept {
-    return RunStaged(state_,
+    return RunStaged(state_, kJournalKindDeleteElement, id,
                      [&id](detail::State& staged) { return DeleteElementStaged(staged, id); });
 }
 
@@ -654,6 +743,124 @@ std::vector<StraightWall> Document::ListStraightWalls() const {
         walls.push_back(entry.second);
     }
     return walls;
+}
+
+namespace {
+
+[[nodiscard]] constexpr DocumentLifecycleResult
+LifecycleFail(DocumentLifecycleResultCode code) noexcept {
+    return DocumentLifecycleResult{.code = code};
+}
+
+// Maps the outcome of one reconstruction step of Open to the lifecycle
+// contract. A reconstruction step that rejects the loaded content on a document
+// rule (invalid value, duplicate id, missing host Level) means the stored file
+// is not a valid document, which is a persistence failure; the runtime-capacity
+// and derived-geometry/recompute outcomes keep their own lifecycle codes; any
+// remaining private-runtime outcome is an internal failure.
+[[nodiscard]] constexpr DocumentLifecycleResult
+TranslateReconstruction(DocumentResultCode code) noexcept {
+    switch (code) {
+        case DocumentResultCode::Ok:
+            return LifecycleFail(DocumentLifecycleResultCode::Ok);
+        case DocumentResultCode::InvalidElement:
+        case DocumentResultCode::DuplicateElementId:
+        case DocumentResultCode::LevelNotFound:
+        case DocumentResultCode::ElementNotFound:
+        case DocumentResultCode::ElementKindMismatch:
+            return LifecycleFail(DocumentLifecycleResultCode::PersistenceFailure);
+        case DocumentResultCode::NodeIdExhausted:
+            return LifecycleFail(DocumentLifecycleResultCode::RuntimeCapacityExhausted);
+        case DocumentResultCode::DerivedGeometryInvalid:
+            return LifecycleFail(DocumentLifecycleResultCode::DerivedGeometryInvalid);
+        case DocumentResultCode::RecomputeFailed:
+            return LifecycleFail(DocumentLifecycleResultCode::RecomputeFailed);
+        case DocumentResultCode::RehostNotAllowed:
+        case DocumentResultCode::GraphRejected:
+        case DocumentResultCode::InternalFailure:
+        case DocumentResultCode::ElementHasDependents:
+            return LifecycleFail(DocumentLifecycleResultCode::InternalFailure);
+    }
+    return LifecycleFail(DocumentLifecycleResultCode::InternalFailure);
+}
+
+} // namespace
+
+DocumentLifecycleResult Document::Save(const std::filesystem::path& path) noexcept {
+    try {
+        bim::persistence::DocumentSnapshot snapshot;
+        const std::vector<bim::transactions::JournalTransaction> no_pending_journal;
+        if (state_) {
+            snapshot.levels.reserve(state_->levels.size());
+            for (const auto& entry : state_->levels) {
+                snapshot.levels.push_back(entry.second);
+            }
+            snapshot.straight_walls.reserve(state_->walls.size());
+            for (const auto& entry : state_->walls) {
+                snapshot.straight_walls.push_back(entry.second);
+            }
+        }
+        const std::vector<bim::transactions::JournalTransaction>& pending_journal =
+            state_ ? state_->pending_journal : no_pending_journal;
+
+        if (!bim::persistence::SaveDocument(path, snapshot, pending_journal).ok()) {
+            // Nothing in this Document was touched: the pending journal is
+            // still pending and the next Save retries it.
+            return LifecycleFail(DocumentLifecycleResultCode::PersistenceFailure);
+        }
+        // The durable commit happened. Clearing the queue cannot fail, so the
+        // in-memory pending journal never disagrees with the durable one.
+        if (state_) {
+            state_->pending_journal.clear();
+        }
+        return LifecycleFail(DocumentLifecycleResultCode::Ok);
+    } catch (...) {
+        return LifecycleFail(DocumentLifecycleResultCode::InternalFailure);
+    }
+}
+
+DocumentLifecycleResult Document::Open(const std::filesystem::path& path,
+                                       Document& out_document) noexcept {
+    try {
+        bim::persistence::DocumentSnapshot snapshot;
+        if (!bim::persistence::LoadDocument(path, snapshot).ok()) {
+            return LifecycleFail(DocumentLifecycleResultCode::PersistenceFailure);
+        }
+
+        // Rebuild on the side with the staged domain primitives: Levels first
+        // (a wall needs its hosting Level), then StraightWalls, each in
+        // ElementId ascending order as LoadDocument returns them. These
+        // primitives allocate fresh runtime node identities from the normal
+        // allocator start, register the Level -> StraightWall dependencies and
+        // regenerate every wall's derived geometry. They are NOT the RunStaged
+        // path, so no pending journal transaction is prepared: reconstruction is
+        // not a mutation.
+        std::unique_ptr<detail::State> rebuilt = std::make_unique<detail::State>();
+        for (const Level& level : snapshot.levels) {
+            const DocumentLifecycleResult step =
+                TranslateReconstruction(AddLevelStaged(*rebuilt, level).code);
+            if (!step.ok()) {
+                return step;
+            }
+        }
+        for (const StraightWall& wall : snapshot.straight_walls) {
+            const DocumentLifecycleResult step =
+                TranslateReconstruction(AddStraightWallStaged(*rebuilt, wall).code);
+            if (!step.ok()) {
+                return step;
+            }
+        }
+        if (!InvariantsHold(*rebuilt)) {
+            return LifecycleFail(DocumentLifecycleResultCode::InternalFailure);
+        }
+
+        // Publish: a noexcept pointer move. The previous state of out_document
+        // (including any pending journal it held) is replaced as a whole.
+        out_document.state_ = std::move(rebuilt);
+        return LifecycleFail(DocumentLifecycleResultCode::Ok);
+    } catch (...) {
+        return LifecycleFail(DocumentLifecycleResultCode::InternalFailure);
+    }
 }
 
 } // namespace bim::document

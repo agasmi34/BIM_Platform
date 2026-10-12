@@ -109,6 +109,16 @@ InsertJournalEntryRow(sqlite3* db, const std::string& transaction_id, std::int64
 
 } // namespace
 
+bim::foundation::Status InsertJournalTransactionWithinTransaction(
+    sqlite3* db, const bim::transactions::JournalTransaction& transaction) {
+    bim::foundation::Status status = InsertJournalTransactionRow(db, transaction.id);
+    for (std::size_t ordinal = 0; status.ok() && ordinal < transaction.records.size(); ++ordinal) {
+        status = InsertJournalEntryRow(db, transaction.id, static_cast<std::int64_t>(ordinal),
+                                       transaction.records[ordinal]);
+    }
+    return status;
+}
+
 bim::foundation::Status
 AppendJournalTransaction(sqlite3* db, const bim::transactions::JournalTransaction& transaction) {
     bim::foundation::Status validation = bim::transactions::ValidateJournalTransaction(transaction);
@@ -121,11 +131,7 @@ AppendJournalTransaction(sqlite3* db, const bim::transactions::JournalTransactio
         return status;
     }
 
-    status = InsertJournalTransactionRow(db, transaction.id);
-    for (std::size_t ordinal = 0; status.ok() && ordinal < transaction.records.size(); ++ordinal) {
-        status = InsertJournalEntryRow(db, transaction.id, static_cast<std::int64_t>(ordinal),
-                                       transaction.records[ordinal]);
-    }
+    status = InsertJournalTransactionWithinTransaction(db, transaction);
 
     if (!status.ok()) {
         // Preserve the original failure as the returned Status regardless

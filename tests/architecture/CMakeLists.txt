@@ -422,3 +422,63 @@ add_test(
             -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
 )
 set_tests_properties(arch_p1_t003_query_mutation_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# --- P1-T004 Persistence Schema v2 addition (Architecture Enforcement) - rules
+# R21 (PERSISTENCE_DOCUMENT_STORE_BOUNDARY) and R22 (DOCUMENT_LIFECYCLE_BOUNDARY)
+# of tools/architecture_checker.cmake, each run both against the real src/ tree
+# (must PASS) and against its own deliberately-broken fixture under
+# tests/fixtures/ (the checker must FAIL there; WILL_FAIL TRUE inverts that,
+# matching the P0-T003 .. P1-T003 pattern above). Registered unconditionally:
+# both rules are pure text scans over the real src/ tree / fixture and need no
+# compiled dependency at all. Test names are exactly those frozen by the P1-T004
+# Architecture Gate / Implementation Brief.
+
+# arch_persistence_document_store_boundary - R21 against the real src/ tree:
+# bim::persistence stays below the document layer and free of runtime graph
+# identities, derived-geometry caches and every UI / kernel / interop coupling.
+add_test(
+    NAME arch_persistence_document_store_boundary
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=PERSISTENCE_DOCUMENT_STORE_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p1_t004_persistence_document_dependency_fixture_rejected - R21 against
+# tests/fixtures/p1_t004_bad_persistence_document_dependency/, which
+# deliberately includes the document module and a dependency-graph header and
+# names the runtime node identity from a simulated persistence/src file. The
+# checker must FAIL here.
+add_test(
+    NAME arch_p1_t004_persistence_document_dependency_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p1_t004_bad_persistence_document_dependency
+            -DBIM_ARCH_CHECK_RULE=PERSISTENCE_DOCUMENT_STORE_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p1_t004_persistence_document_dependency_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# arch_document_lifecycle_boundary - R22 against the real src/ tree:
+# bim::document links bim::persistence and bim::transactions PRIVATE only, its
+# public headers name no storage or document-store vocabulary, and
+# DocumentResultCode carries no persistence enumerator.
+add_test(
+    NAME arch_document_lifecycle_boundary
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=DOCUMENT_LIFECYCLE_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p1_t004_document_lifecycle_fixture_rejected - R22 against
+# tests/fixtures/p1_t004_bad_document_lifecycle_boundary/, whose simulated
+# document/CMakeLists.txt links bim::persistence and bim::transactions PUBLIC.
+# The checker must FAIL here.
+add_test(
+    NAME arch_p1_t004_document_lifecycle_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p1_t004_bad_document_lifecycle_boundary
+            -DBIM_ARCH_CHECK_RULE=DOCUMENT_LIFECYCLE_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p1_t004_document_lifecycle_fixture_rejected PROPERTIES WILL_FAIL TRUE)

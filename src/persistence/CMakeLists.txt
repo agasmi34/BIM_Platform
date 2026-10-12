@@ -30,10 +30,12 @@ endif()
 
 add_library(bim_persistence STATIC
     src/persistence_probe.cpp
+    src/document_store.cpp
     src/detail/sqlite_status.cpp
     src/detail/sqlite_connection.cpp
     src/detail/sqlite_statement.cpp
     src/detail/schema_v1.cpp
+    src/detail/schema_v2.cpp
     src/detail/journal_store.cpp
 )
 add_library(bim::persistence ALIAS bim_persistence)
@@ -44,12 +46,16 @@ target_include_directories(bim_persistence
         $<INSTALL_INTERFACE:include>
 )
 
+# P1-T004: the public document-store header (bim/persistence/document_store.hpp)
+# is written in bim::model values (Level / StraightWall) and the neutral
+# bim::transactions journal values, so those two are PUBLIC usage requirements
+# now. SQLite stays PRIVATE: no SQLite type appears in any public header.
 target_link_libraries(bim_persistence
     PUBLIC
         bim::foundation
-    PRIVATE
         bim::model
         bim::transactions
+    PRIVATE
         ${BIM_SQLITE_TARGET}
 )
 

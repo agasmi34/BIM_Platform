@@ -7,6 +7,7 @@
 #include "bim/model/validation.hpp"
 
 #include <cstdint>
+#include <filesystem>
 #include <memory>
 #include <optional>
 #include <vector>
@@ -40,6 +41,18 @@
 // has no cascade and no automatic re-host, and the list reads return
 // committed value copies in ElementId ascending order. Nothing else about the
 // public surface changed, and no private runtime identity is exposed.
+//
+// P1-T004 adds the document lifecycle: Save and Open (Architecture Gate
+// BIM-AG-P1-T004 sections 10-13). Their outcome is a separate result contract,
+// DocumentLifecycleResult, so DocumentResultCode - the contract every mutation
+// and every command maps - is not extended and the command layer is untouched.
+// Save writes the authoritative Level / StraightWall state and the document's
+// pending transaction journal in one atomic durable step; Open rebuilds a
+// complete, ready document (fresh private runtime identities, rebuilt
+// dependencies, regenerated derived geometry) from a durable file and publishes
+// it only when every step succeeded. How the document is stored, and the
+// private journal bookkeeping behind it, never appear in this header: the
+// lifecycle surface is a path and a result code.
 
 namespace bim::document {
 
@@ -76,6 +89,34 @@ struct DocumentResult {
 
     friend constexpr bool operator==(const DocumentResult&,
                                      const DocumentResult&) noexcept = default;
+};
+
+// Machine-readable outcome of a lifecycle operation (Save / Open). Callers
+// branch on the code; there is no diagnostic text to parse. This contract is
+// deliberately separate from DocumentResultCode.
+enum class DocumentLifecycleResultCode : std::uint8_t {
+    Ok,
+    PersistenceFailure,       // the durable file could not be written, read or validated
+    RuntimeCapacityExhausted, // the private runtime identity space is exhausted
+    DerivedGeometryInvalid,   // derived wall geometry overflowed or was not finite
+    RecomputeFailed,          // dependency recompute failed or found inconsistent runtime state
+    InternalFailure,          // an allocation, library or internal-invariant failure was contained
+};
+
+// Stable diagnostic name of a code; an out-of-range value yields "Unknown".
+[[nodiscard]] const char* ToString(DocumentLifecycleResultCode code) noexcept;
+
+// Result of Save / Open. Trivially copyable and allocation-free, so it is
+// always safe to build while reporting a failure.
+struct DocumentLifecycleResult {
+    DocumentLifecycleResultCode code = DocumentLifecycleResultCode::Ok;
+
+    [[nodiscard]] constexpr bool ok() const noexcept {
+        return code == DocumentLifecycleResultCode::Ok;
+    }
+
+    friend constexpr bool operator==(const DocumentLifecycleResult&,
+                                     const DocumentLifecycleResult&) noexcept = default;
 };
 
 namespace detail {
@@ -150,6 +191,35 @@ public:
     // they never expose or modify internal state.
     [[nodiscard]] std::vector<bim::model::Level> ListLevels() const;
     [[nodiscard]] std::vector<bim::model::StraightWall> ListStraightWalls() const;
+
+    // Durably saves the document to `path`. One atomic step persists the
+    // complete authoritative Level / StraightWall state and every pending
+    // journal record of the mutations made since the last successful save (or
+    // since the document was opened); previously saved journal history is kept.
+    // A missing file is created. An unchanged document saves its state again and
+    // adds no journal record, because there is nothing pending.
+    //
+    // On success the pending journal is cleared. On any failure the durable file
+    // keeps its previous content, the in-memory document is untouched and its
+    // pending journal is still pending. Saving never mutates the model and never
+    // creates a journal record of its own. Fails with PersistenceFailure, or
+    // InternalFailure for a contained allocation or internal failure.
+    [[nodiscard]] DocumentLifecycleResult Save(const std::filesystem::path& path) noexcept;
+
+    // Replaces `out_document` with the document stored at `path`. The stored
+    // authoritative state is loaded and validated, and a complete document is
+    // built from it on the side: Levels first, then StraightWalls, each in
+    // ElementId order, with fresh private runtime identities, rebuilt
+    // Level -> StraightWall dependencies and regenerated derived geometry.
+    // Runtime identities are not persisted and are not expected to match those
+    // of the document that was saved. Opening creates no journal record and
+    // leaves the pending journal empty. `out_document` is changed only when
+    // every step succeeded; on any failure it is left exactly as it was.
+    // Fails with PersistenceFailure (missing, unreadable or invalid file, or
+    // content the document rules reject), RuntimeCapacityExhausted,
+    // DerivedGeometryInvalid, RecomputeFailed or InternalFailure.
+    [[nodiscard]] static DocumentLifecycleResult Open(const std::filesystem::path& path,
+                                                      Document& out_document) noexcept;
 
 private:
     std::unique_ptr<detail::State> state_;

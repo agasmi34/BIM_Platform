@@ -77,6 +77,14 @@ bim::foundation::Status SqliteStatement::BindInt64(int index, std::int64_t value
     return bim::foundation::Status::Ok();
 }
 
+bim::foundation::Status SqliteStatement::BindDouble(int index, double value) {
+    const int rc = sqlite3_bind_double(stmt_, index, value);
+    if (rc != SQLITE_OK) {
+        return TranslateSqliteError("sqlite3_bind_double", rc, sqlite3_db_handle(stmt_));
+    }
+    return bim::foundation::Status::Ok();
+}
+
 bim::foundation::Status SqliteStatement::Step(bool& out_has_row) {
     const int rc = sqlite3_step(stmt_);
     if (rc == SQLITE_ROW) {
@@ -111,6 +119,10 @@ std::vector<std::byte> SqliteStatement::ColumnBlob(int column) const {
 
 std::int64_t SqliteStatement::ColumnInt64(int column) const {
     return static_cast<std::int64_t>(sqlite3_column_int64(stmt_, column));
+}
+
+double SqliteStatement::ColumnDouble(int column) const {
+    return sqlite3_column_double(stmt_, column);
 }
 
 bim::foundation::Status SqliteStatement::Reset() {

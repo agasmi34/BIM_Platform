@@ -182,6 +182,24 @@
 #        transaction, persistence, SQLite, geometry_occt, Qt, bgfx, ODA or
 #        IfcOpenShell token appears (Architecture Gate BIM-AG-P1-T003 sections
 #        2, 9 and 11) - see this file's own P1-T003 ADDITION NOTE below.
+#   R21 - (P1-T004) PERSISTENCE_DOCUMENT_STORE_BOUNDARY: bim::persistence stays
+#        below the document layer. No document, commands, query, dependency-graph,
+#        geometry_occt, Qt, bgfx, ODA or IfcOpenShell token in real code anywhere
+#        under <root>/persistence/** or in the non-comment lines of
+#        <root>/persistence/CMakeLists.txt, and no runtime graph identity or
+#        derived-geometry cache name (NodeId, GraphResult, RecomputePlan,
+#        GraphSnapshot, DependencyGraph, wall_geometry) in real code anywhere
+#        under <root>/persistence/** (Architecture Gate BIM-AG-P1-T004 sections
+#        2, 3 and 13) - see this file's own P1-T004 ADDITION NOTE below.
+#   R22 - (P1-T004) DOCUMENT_LIFECYCLE_BOUNDARY: the document lifecycle
+#        (Save / Open) is a private implementation detail of bim::document.
+#        <root>/document/CMakeLists.txt may link bim::persistence and
+#        bim::transactions only PRIVATE (never PUBLIC, INTERFACE or without a
+#        scope keyword); the public headers <root>/document/include/** name no
+#        storage-engine, document-store, snapshot or pending-journal token; and
+#        the DocumentResultCode enumeration carries no persistence enumerator
+#        (Architecture Gate BIM-AG-P1-T004 sections 10 and 13) - see this file's
+#        own P1-T004 ADDITION NOTE below.
 #
 # ==============================================================================
 # P0-T004 PHASE F ADDITION NOTE - R12/SQLITE_PERSISTENCE_ONLY,
@@ -516,6 +534,50 @@
 # CMakeLists.txt; bracket comments are not used in this repository and are not
 # handled.
 # ==============================================================================
+# P1-T004 ADDITION NOTE - R21/PERSISTENCE_DOCUMENT_STORE_BOUNDARY,
+# R22/DOCUMENT_LIFECYCLE_BOUNDARY
+#
+# Added for P1-T004 Persistence Schema v2 (Architecture Gate BIM-AG-P1-T004
+# sections 2, 3, 10 and 13; Implementation Brief BIM-IB-P1-T004 section 12).
+# R1-R20 are untouched: their semantics and token sets are unchanged. Each new
+# rule has one real-tree positive test and one controlled negative fixture test
+# (tests/architecture/CMakeLists.txt).
+#
+# R21 keeps the document store below the document layer. The store is a
+# storage-neutral API over bim::model values: the document layer calls it, never
+# the reverse, and it may not even name the runtime state it deliberately does
+# not persist. Scope: every first-party source/header file under
+# <root>/persistence/** is scanned (plain, case-insensitive, comment-aware
+# substring semantics, the same as R19) for the document, commands, query,
+# dependency-graph, geometry_occt, Qt, bgfx, ODA Drawings and IfcOpenShell
+# vocabulary, and for the runtime graph identity / derived-geometry cache names
+# that must never be persisted. SQLite tokens are NOT scanned here: R12 and R13
+# already own SQLite (the private persistence code legitimately uses it). The
+# non-comment lines of <root>/persistence/CMakeLists.txt are scanned for the
+# bim_document, bim_commands, bim_query, dependency_graph and geometry_occt
+# targets and for Qt, bgfx, OpenCASCADE and IfcOpenShell packages (the bare word
+# "document" is deliberately not a token: it is part of the document_store.cpp
+# source name).
+#
+# R22 keeps the lifecycle private to bim::document. Three scopes: (1) the
+# non-comment target_link_libraries() calls of <root>/document/CMakeLists.txt are
+# parsed with a small link-scope parser; every occurrence of bim::persistence,
+# bim_persistence, bim::transactions or bim_transactions must follow the PRIVATE
+# keyword - under PUBLIC, INTERFACE or no keyword at all it is a violation, so
+# a linking consumer of bim::document can never inherit either target; (2) the
+# public headers <root>/document/include/** are scanned for SQLite and
+# document-store vocabulary (the store API names, the snapshot type and the
+# pending-journal member), on top of the R18 token set that already keeps the
+# persistence / transaction includes, namespaces and journal types out; (3) the
+# body of the DocumentResultCode enumeration in the public headers must carry no
+# persistence enumerator, because Save / Open report through the separate
+# DocumentLifecycleResult contract. The enumeration body is located after
+# stripping comments; the lifecycle enumeration (DocumentLifecycleResultCode) is
+# a different identifier and is not inspected by the third scope.
+#
+# Scope. Both rules are text scans over <root>/persistence/** and
+# <root>/document/** only; every other module is out of scope.
+# ==============================================================================
 # On the first pass through the selected rule(s), every violation found is
 # collected; if any exist, this script calls message(FATAL_ERROR ...), which
 # makes `cmake -P` exit non-zero. On a clean pass it prints
@@ -553,6 +615,8 @@ set(_bim_valid_rules
     "DOCUMENT_PUBLIC_RUNTIME_NEUTRAL"
     "COMMANDS_PUBLIC_BOUNDARY"
     "QUERY_READ_ONLY_BOUNDARY"
+    "PERSISTENCE_DOCUMENT_STORE_BOUNDARY"
+    "DOCUMENT_LIFECYCLE_BOUNDARY"
 )
 list(FIND _bim_valid_rules "${BIM_ARCH_CHECK_RULE}" _bim_rule_idx)
 if(_bim_rule_idx EQUAL -1)
@@ -1004,6 +1068,97 @@ function(bim_scan_files_for_non_const_document_ignoring_comments files rule_id)
         if(NOT _match STREQUAL "")
             list(APPEND BIM_VIOLATIONS "[${rule_id}] non-const use of the Document type (only a const reference is allowed) in ${f} (code, not comment)")
         endif()
+    endforeach()
+    set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
+endfunction()
+
+# ------------------------------------------------------------------------------
+# Helper (P1-T004, R22): link-scope parser for CMakeLists.txt files. In the
+# NON-COMMENT text of each file (every `#` through the end of its line removed),
+# every target_link_libraries( ... ) call is split into whitespace-separated
+# arguments; the first is the target, and each later argument inherits the most
+# recent PUBLIC / PRIVATE / INTERFACE keyword (no keyword seen yet = "NONE", the
+# plain signature). An argument equal (case-insensitive) to one of `restricted`
+# whose scope is not PRIVATE is a violation. Arguments are compared whole, so
+# bim::persistence_extras would not match bim::persistence. Calls are consumed
+# one at a time (never joined into a CMake list), so a generator expression
+# containing `;` cannot corrupt the parse. Bracket comments are not used in this
+# repository and are not handled.
+# ------------------------------------------------------------------------------
+function(bim_scan_cmake_link_scope_private_only files restricted rule_id)
+    foreach(f IN LISTS files)
+        if(NOT EXISTS "${f}")
+            continue()
+        endif()
+        file(READ "${f}" _content)
+        string(REGEX REPLACE "#[^\n]*" "" _rest "${_content}")
+        set(_more TRUE)
+        while(_more)
+            string(REGEX MATCH "[Tt][Aa][Rr][Gg][Ee][Tt]_[Ll][Ii][Nn][Kk]_[Ll][Ii][Bb][Rr][Aa][Rr][Ii][Ee][Ss][ \t\r\n]*\\(([^)]*)\\)" _call "${_rest}")
+            if(_call STREQUAL "")
+                set(_more FALSE)
+            else()
+                set(_args "${CMAKE_MATCH_1}")
+                string(FIND "${_rest}" "${_call}" _call_pos)
+                string(LENGTH "${_call}" _call_len)
+                math(EXPR _after "${_call_pos} + ${_call_len}")
+                string(SUBSTRING "${_rest}" ${_after} -1 _rest)
+                string(REGEX REPLACE "[ \t\r\n]+" ";" _arg_list "${_args}")
+                set(_scope "NONE")
+                set(_first TRUE)
+                foreach(_arg IN LISTS _arg_list)
+                    if(_arg STREQUAL "")
+                        continue()
+                    endif()
+                    if(_first)
+                        set(_first FALSE)
+                        continue()
+                    endif()
+                    if(_arg STREQUAL "PUBLIC" OR _arg STREQUAL "PRIVATE" OR _arg STREQUAL "INTERFACE")
+                        set(_scope "${_arg}")
+                        continue()
+                    endif()
+                    string(TOLOWER "${_arg}" _arg_lower)
+                    foreach(_r IN LISTS restricted)
+                        string(TOLOWER "${_r}" _r_lower)
+                        if(_arg_lower STREQUAL _r_lower AND NOT _scope STREQUAL "PRIVATE")
+                            list(APPEND BIM_VIOLATIONS "[${rule_id}] '${_r}' is linked with scope ${_scope} in ${f} (must be PRIVATE)")
+                        endif()
+                    endforeach()
+                endforeach()
+            endif()
+        endwhile()
+    endforeach()
+    set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
+endfunction()
+
+# ------------------------------------------------------------------------------
+# Helper (P1-T004, R22): the DocumentResultCode enumeration in the given public
+# headers must carry no persistence enumerator. Comments are stripped first; the
+# body `{ ... }` of `enum class DocumentResultCode` (exactly that identifier -
+# DocumentLifecycleResultCode never matches because `enum class
+# DocumentResultCode` is not a substring of it) is isolated, and any of the
+# supplied (case-insensitive) substrings inside that body is a violation.
+# ------------------------------------------------------------------------------
+function(bim_scan_files_for_result_code_enum_tokens files tokens rule_id)
+    foreach(f IN LISTS files)
+        if(NOT EXISTS "${f}")
+            continue()
+        endif()
+        file(READ "${f}" _content)
+        bim_strip_cpp_comments("${_content}" _code_only)
+        string(REGEX MATCH "enum[ \t\r\n]+class[ \t\r\n]+DocumentResultCode[^{]*{([^}]*)}" _enum "${_code_only}")
+        if(_enum STREQUAL "")
+            continue()
+        endif()
+        string(TOLOWER "${CMAKE_MATCH_1}" _body_lower)
+        foreach(tok IN LISTS tokens)
+            string(TOLOWER "${tok}" _tok_lower)
+            string(FIND "${_body_lower}" "${_tok_lower}" _idx)
+            if(NOT _idx EQUAL -1)
+                list(APPEND BIM_VIOLATIONS "[${rule_id}] enumerator containing '${tok}' found in DocumentResultCode in ${f}")
+            endif()
+        endforeach()
     endforeach()
     set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
 endfunction()
@@ -1636,6 +1791,91 @@ if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "QUERY_REA
     bim_scan_files_for_non_const_document_ignoring_comments("${_query_code_files}" "R20-query-mutable-document")
     bim_scan_files_for_exact_identifiers_ignoring_comments("${_query_code_files}" "${_r20_mutation_identifiers}" "R20-query-mutation-call")
     bim_scan_cmake_files_for_tokens_ignoring_comments("${BIM_ARCH_CHECK_ROOT}/query/CMakeLists.txt" "${_r20_cmake_coupling_tokens}" "R20-query-cmake-coupling")
+endif()
+
+# ------------------------------------------------------------------------------
+# R21 - bim::persistence stays below the document layer
+# (PERSISTENCE_DOCUMENT_STORE_BOUNDARY, P1-T004). Every first-party source/header
+# file under <root>/persistence/** is free of document, commands, query,
+# dependency-graph, geometry_occt, Qt, bgfx, ODA Drawings and IfcOpenShell tokens
+# and of the runtime graph identity / derived-geometry cache names; the
+# non-comment lines of <root>/persistence/CMakeLists.txt link none of those
+# targets. SQLite is deliberately not scanned (R12/R13 own it). See this file's
+# own P1-T004 ADDITION NOTE. Selectable alone via
+# BIM_ARCH_CHECK_RULE=PERSISTENCE_DOCUMENT_STORE_BOUNDARY.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "PERSISTENCE_DOCUMENT_STORE_BOUNDARY")
+    file(GLOB_RECURSE _persistence_code_files
+        "${BIM_ARCH_CHECK_ROOT}/persistence/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/persistence/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/persistence/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/persistence/*.hxx"
+        "${BIM_ARCH_CHECK_ROOT}/persistence/*.cpp"
+        "${BIM_ARCH_CHECK_ROOT}/persistence/*.cc"
+    )
+    set(_r21_tokens
+        # the layers above persistence
+        "bim/document/" "bim::document" "bim_document"
+        "bim/commands/" "bim::commands" "bim_commands"
+        "bim/query/" "bim::query" "bim_query"
+        # dependency graph (include path, namespace, target) and OCCT kernel
+        "dependency_graph" "geometry_occt"
+        # runtime identities and derived caches that are never persisted
+        "NodeId" "GraphResult" "RecomputePlan" "GraphSnapshot" "DependencyGraph"
+        "wall_geometry"
+        # Qt (R9's vocabulary)
+        "<Qt" "Qt::" "QObject" "QWidget" "QString" "QApplication" "QGuiApplication"
+        "QCoreApplication" "QWindow" "QMainWindow" "QTimer" "QScreen" "QMouseEvent"
+        "QWheelEvent" "QResizeEvent" "QShowEvent" "QHideEvent" "QCloseEvent" "QExposeEvent"
+        "QPlatformSurfaceEvent" "QDebug" "qDebug(" "Q_OBJECT" "Q_ASSERT" "QComboBox" "QLabel"
+        "QStatusBar" "QToolBar" "QVBoxLayout"
+        # bgfx
+        "bgfx"
+        # ODA Drawings (R16's vocabulary)
+        "OdDb" "OdGe" "OdGi" "OdRx" "OdString" "OdError" "OdAnsiString"
+        "OdStaticRxObject" "OdWrFileBuf" "OdFileBuf"
+        "ExSystemServices" "ExHostAppServices"
+        "odInitialize" "odUninitialize" "TEIGHA_TRIAL"
+        "TD_Db" "TD_Ge" "TD_Gi" "TD_Root" "TD_Key" "TD_Alloc"
+        # IfcOpenShell
+        "IfcOpenShell" "IfcParse" "IfcUtil" "Ifc4::" "<ifcparse/" "<ifcgeom/"
+    )
+    set(_r21_cmake_tokens
+        "bim_document" "bim::document" "bim_commands" "bim::commands" "bim_query" "bim::query"
+        "dependency_graph" "geometry_occt"
+        "Qt5" "Qt6" "bgfx" "OpenCASCADE" "IfcOpenShell"
+    )
+    bim_scan_files_for_tokens_ignoring_comments("${_persistence_code_files}" "${_r21_tokens}" "R21-persistence-document-store-boundary")
+    bim_scan_cmake_files_for_tokens_ignoring_comments("${BIM_ARCH_CHECK_ROOT}/persistence/CMakeLists.txt" "${_r21_cmake_tokens}" "R21-persistence-cmake-coupling")
+endif()
+
+# ------------------------------------------------------------------------------
+# R22 - the document lifecycle is private to bim::document
+# (DOCUMENT_LIFECYCLE_BOUNDARY, P1-T004). (1) <root>/document/CMakeLists.txt
+# links bim::persistence and bim::transactions only PRIVATE; (2) the public
+# headers <root>/document/include/** name no SQLite or document-store vocabulary;
+# (3) DocumentResultCode carries no persistence enumerator. See this file's own
+# P1-T004 ADDITION NOTE. Selectable alone via
+# BIM_ARCH_CHECK_RULE=DOCUMENT_LIFECYCLE_BOUNDARY.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "DOCUMENT_LIFECYCLE_BOUNDARY")
+    file(GLOB_RECURSE _document_lifecycle_public_headers
+        "${BIM_ARCH_CHECK_ROOT}/document/include/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/document/include/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/document/include/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/document/include/*.hxx"
+    )
+    set(_r22_restricted_link_targets
+        "bim::persistence" "bim_persistence" "bim::transactions" "bim_transactions"
+    )
+    set(_r22_public_tokens
+        "sqlite3" "SQLITE_"
+        "DocumentSnapshot" "SaveDocument" "LoadDocument" "document_store" "pending_journal"
+    )
+    set(_r22_result_code_tokens "Persistence" "Sqlite" "Journal" "Save" "Open" "Load" "Storage")
+    bim_scan_cmake_link_scope_private_only("${BIM_ARCH_CHECK_ROOT}/document/CMakeLists.txt" "${_r22_restricted_link_targets}" "R22-document-lifecycle-link-scope")
+    bim_scan_files_for_tokens_ignoring_comments("${_document_lifecycle_public_headers}" "${_r22_public_tokens}" "R22-document-lifecycle-public-leak")
+    bim_scan_files_for_result_code_enum_tokens("${_document_lifecycle_public_headers}" "${_r22_result_code_tokens}" "R22-document-result-code-extended")
 endif()
 
 # ------------------------------------------------------------------------------

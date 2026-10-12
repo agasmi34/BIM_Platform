@@ -13,8 +13,15 @@
 #                                   names a graph type (rule R18,
 #                                   DOCUMENT_PUBLIC_RUNTIME_NEUTRAL)
 # It deliberately does NOT link bim::geometry_occt (no OCCT solid is built in
-# P1-T002), bim::transactions, bim::persistence, SQLite, Qt, bgfx, ODA or
-# IfcOpenShell.
+# P1-T002), SQLite, Qt, bgfx, ODA or IfcOpenShell.
+#
+# P1-T004 adds the document lifecycle (Save / Open) and the pending transaction
+# journal, which makes two more PRIVATE dependencies (Architecture Gate
+# BIM-AG-P1-T004 sections 2 and 10): bim::transactions (the neutral journal
+# values) and bim::persistence (the project-owned document-store API). Both are
+# strictly implementation details of document.cpp: neither is a PUBLIC or
+# INTERFACE usage requirement, and no public Document header names a
+# transaction or persistence type (rules R18 and R22).
 
 add_library(bim_document STATIC
     src/document.cpp
@@ -27,6 +34,8 @@ target_link_libraries(bim_document
         bim::geometry_api
     PRIVATE
         bim::dependency_graph
+        bim::transactions
+        bim::persistence
 )
 
 target_include_directories(bim_document

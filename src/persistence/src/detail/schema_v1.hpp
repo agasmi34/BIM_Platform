@@ -55,6 +55,15 @@ inline constexpr std::int64_t kSchemaV1Version = 1;
 // Read-only: never creates or modifies anything.
 [[nodiscard]] bim::foundation::Status ValidateSchemaV1(sqlite3* db);
 
+// P1-T004 reuse primitive: executes only the two frozen schema-v1 CREATE TABLE
+// statements (journal_transactions, journal_entries) on `db`. It opens no
+// transaction, sets no PRAGMA user_version and validates nothing: the caller
+// owns the surrounding transaction and the version bump. BootstrapSchemaV1
+// below is built on it unchanged in behavior; the schema-v2 direct 0 -> 2
+// bootstrap uses it so the journal tables are created inside the single v2
+// transaction instead of a separate, observable v1 commit.
+[[nodiscard]] bim::foundation::Status CreateSchemaV1Tables(sqlite3* db);
+
 // Creates the frozen schema-v1 tables and sets PRAGMA user_version = 1
 // inside a single atomic BEGIN IMMEDIATE / COMMIT transaction, validating
 // the created schema before setting user_version, and rolling back on any

@@ -645,3 +645,75 @@ target_link_libraries(integration_p1_t003_commands_query_vertical_slice
 target_compile_features(integration_p1_t003_commands_query_vertical_slice PRIVATE cxx_std_20)
 bim_apply_warnings(integration_p1_t003_commands_query_vertical_slice)
 add_test(NAME integration_p1_t003_commands_query_vertical_slice COMMAND integration_p1_t003_commands_query_vertical_slice)
+
+# --- P1-T004 Persistence Schema v2 (Implementation Brief BIM-IB-P1-T004
+# section 13) - exactly four runtime CTests. Each drives the public
+# bim::document lifecycle (Save / Open) and the public
+# bim::persistence document-store API, and reaches the private
+# bim::persistence::detail headers (schema, journal store, SQLite wrappers) only
+# through file-relative quoted includes, as the P0-T004 persistence tests above
+# do, to inspect or damage the durable file. They link bim::document,
+# bim::persistence, bim::transactions, bim::model, bim::foundation and Catch2.
+
+add_executable(integration_p1_t004_schema_v2
+    integration_p1_t004_schema_v2.cpp
+)
+target_link_libraries(integration_p1_t004_schema_v2
+    PRIVATE
+        bim::persistence
+        bim::transactions
+        bim::model
+        bim::foundation
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_p1_t004_schema_v2 PRIVATE cxx_std_20)
+bim_apply_warnings(integration_p1_t004_schema_v2)
+add_test(NAME integration_p1_t004_schema_v2 COMMAND integration_p1_t004_schema_v2)
+
+add_executable(integration_p1_t004_save_reopen
+    integration_p1_t004_save_reopen.cpp
+)
+target_link_libraries(integration_p1_t004_save_reopen
+    PRIVATE
+        bim::document
+        bim::persistence
+        bim::transactions
+        bim::model
+        bim::foundation
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_p1_t004_save_reopen PRIVATE cxx_std_20)
+bim_apply_warnings(integration_p1_t004_save_reopen)
+add_test(NAME integration_p1_t004_save_reopen COMMAND integration_p1_t004_save_reopen)
+
+add_executable(integration_p1_t004_save_atomicity
+    integration_p1_t004_save_atomicity.cpp
+)
+target_link_libraries(integration_p1_t004_save_atomicity
+    PRIVATE
+        bim::document
+        bim::persistence
+        bim::transactions
+        bim::model
+        bim::foundation
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_p1_t004_save_atomicity PRIVATE cxx_std_20)
+bim_apply_warnings(integration_p1_t004_save_atomicity)
+add_test(NAME integration_p1_t004_save_atomicity COMMAND integration_p1_t004_save_atomicity)
+
+add_executable(integration_p1_t004_journal_coordination
+    integration_p1_t004_journal_coordination.cpp
+)
+target_link_libraries(integration_p1_t004_journal_coordination
+    PRIVATE
+        bim::document
+        bim::persistence
+        bim::transactions
+        bim::model
+        bim::foundation
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_p1_t004_journal_coordination PRIVATE cxx_std_20)
+bim_apply_warnings(integration_p1_t004_journal_coordination)
+add_test(NAME integration_p1_t004_journal_coordination COMMAND integration_p1_t004_journal_coordination)

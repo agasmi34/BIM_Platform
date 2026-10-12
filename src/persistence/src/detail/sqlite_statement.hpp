@@ -42,6 +42,10 @@ public:
     [[nodiscard]] bim::foundation::Status BindText(int index, std::string_view value);
     [[nodiscard]] bim::foundation::Status BindBlob(int index, const std::vector<std::byte>& value);
     [[nodiscard]] bim::foundation::Status BindInt64(int index, std::int64_t value);
+    // P1-T004: binds an IEEE-754 double as a SQLite REAL. A NaN is stored by
+    // SQLite as NULL, which every NOT NULL schema-v2 column rejects, so a NaN
+    // can never be persisted silently; callers validate finiteness first.
+    [[nodiscard]] bim::foundation::Status BindDouble(int index, double value);
 
     // Executes one step. `out_has_row` is set true when a row is available
     // (SQLITE_ROW), false when the statement is exhausted (SQLITE_DONE).
@@ -53,6 +57,8 @@ public:
     [[nodiscard]] std::string ColumnText(int column) const;
     [[nodiscard]] std::vector<std::byte> ColumnBlob(int column) const;
     [[nodiscard]] std::int64_t ColumnInt64(int column) const;
+    // P1-T004: reads a REAL column as a double (the bit-exact stored value).
+    [[nodiscard]] double ColumnDouble(int column) const;
 
     // Resets the statement so it may be Step()-ped again from the start.
     // Matches sqlite3_reset() semantics: bound parameter values are NOT

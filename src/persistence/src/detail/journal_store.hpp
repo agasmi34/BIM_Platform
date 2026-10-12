@@ -42,6 +42,22 @@ namespace bim::persistence::detail {
 [[nodiscard]] bim::foundation::Status
 AppendJournalTransaction(sqlite3* db, const bim::transactions::JournalTransaction& transaction);
 
+// P1-T004 private insertion primitive: writes one already-validated
+// `transaction` (the transaction row plus one journal_entries row per record,
+// ordinals 0..N-1 in record order, every value bound through prepared-statement
+// parameters) using the transaction ALREADY OPEN on `db`. It owns no
+// transaction: it issues no BEGIN, COMMIT or ROLLBACK, so a caller that owns a
+// wider transaction (the schema-v2 document store, whose single atomic save
+// covers the BIM snapshot and the pending journal together) can append journal
+// rows inside it. The caller is responsible for
+// bim::transactions::ValidateJournalTransaction(transaction) having succeeded
+// and for rolling the wider transaction back on any failure returned here.
+// AppendJournalTransaction above is implemented on top of this primitive and
+// keeps its exact observable behavior. `transaction` is never mutated.
+[[nodiscard]] bim::foundation::Status
+InsertJournalTransactionWithinTransaction(sqlite3* db,
+                                          const bim::transactions::JournalTransaction& transaction);
+
 // Reconstructs every committed journal transaction on `db` in
 // deterministic order: transactions are ordered by their first committed
 // entry's journal_entries.sequence (never lexical id order, never

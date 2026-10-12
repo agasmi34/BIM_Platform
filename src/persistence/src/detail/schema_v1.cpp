@@ -461,16 +461,21 @@ bim::foundation::Status ValidateSchemaV1(sqlite3* db) {
     return bim::foundation::Status::Ok();
 }
 
+bim::foundation::Status CreateSchemaV1Tables(sqlite3* db) {
+    bim::foundation::Status status = ExecuteFixedStatement(db, kCreateJournalTransactions);
+    if (status.ok()) {
+        status = ExecuteFixedStatement(db, kCreateJournalEntries);
+    }
+    return status;
+}
+
 bim::foundation::Status BootstrapSchemaV1(sqlite3* db) {
     bim::foundation::Status status = ExecuteFixedStatement(db, "BEGIN IMMEDIATE;");
     if (!status.ok()) {
         return status;
     }
 
-    status = ExecuteFixedStatement(db, kCreateJournalTransactions);
-    if (status.ok()) {
-        status = ExecuteFixedStatement(db, kCreateJournalEntries);
-    }
+    status = CreateSchemaV1Tables(db);
     if (status.ok()) {
         status = ValidateSchemaV1(db);
     }
