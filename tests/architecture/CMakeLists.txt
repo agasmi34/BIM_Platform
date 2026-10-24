@@ -482,3 +482,53 @@ add_test(
             -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
 )
 set_tests_properties(arch_p1_t004_document_lifecycle_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# arch_presentation_bridge_boundary - R23 against the real src/ tree:
+# bim::presentation includes only standard-library, bim/geometry_api/,
+# bim/viewport/ and bim/presentation/ headers, names no document, model,
+# command, query, dependency-graph, transaction, persistence, kernel, Qt, bgfx,
+# Direct3D / Windows, SQLite, IFC or DWG vocabulary, and links only
+# bim::geometry_api and bim::viewport.
+add_test(
+    NAME arch_presentation_bridge_boundary
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=PRESENTATION_BRIDGE_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p1_t005_presentation_bridge_fixture_rejected - R23 against
+# tests/fixtures/p1_t005_bad_presentation_bridge/, whose simulated
+# presentation/CMakeLists.txt links bim::document. The checker must FAIL here.
+add_test(
+    NAME arch_p1_t005_presentation_bridge_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p1_t005_bad_presentation_bridge
+            -DBIM_ARCH_CHECK_RULE=PRESENTATION_BRIDGE_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p1_t005_presentation_bridge_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# arch_viewport_upstream_isolation - R24 against the real src/ tree:
+# src/viewport/** (bgfx adapter included) depends on no presentation,
+# geometry_api, geometry_occt, document or model include path, namespace or
+# target.
+add_test(
+    NAME arch_viewport_upstream_isolation
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=VIEWPORT_UPSTREAM_ISOLATION
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p1_t005_viewport_upstream_fixture_rejected - R24 against
+# tests/fixtures/p1_t005_bad_viewport_upstream/, whose simulated
+# viewport/CMakeLists.txt links bim::presentation. The checker must FAIL here.
+add_test(
+    NAME arch_p1_t005_viewport_upstream_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p1_t005_bad_viewport_upstream
+            -DBIM_ARCH_CHECK_RULE=VIEWPORT_UPSTREAM_ISOLATION
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p1_t005_viewport_upstream_fixture_rejected PROPERTIES WILL_FAIL TRUE)

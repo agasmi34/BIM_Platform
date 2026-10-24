@@ -200,6 +200,23 @@
 #        the DocumentResultCode enumeration carries no persistence enumerator
 #        (Architecture Gate BIM-AG-P1-T004 sections 10 and 13) - see this file's
 #        own P1-T004 ADDITION NOTE below.
+#   R23 - (P1-T005) PRESENTATION_BRIDGE_BOUNDARY: bim::presentation is a pure
+#        bridge between bim::geometry_api and bim::viewport. In real code under
+#        <root>/presentation/** every #include is a standard-library header or
+#        a bim/geometry_api/, bim/viewport/ or bim/presentation/ header, and no
+#        document, model, commands, query, dependency-graph, transactions,
+#        persistence, geometry_occt / OpenCASCADE, Qt, bgfx, Direct3D / Windows
+#        native, SQLite, IfcOpenShell or ODA Drawings vocabulary appears; the
+#        non-comment target_link_libraries() arguments of
+#        <root>/presentation/CMakeLists.txt are limited to bim::geometry_api and
+#        bim::viewport (Architecture Gate BIM-AG-P1-T005) - see this file's own
+#        P1-T005 ADDITION NOTE below.
+#   R24 - (P1-T005) VIEWPORT_UPSTREAM_ISOLATION: the viewport module, including
+#        <root>/viewport/bgfx/**, never depends upward. No presentation,
+#        geometry_api, geometry_occt, document or model include path, namespace
+#        or target name appears in real code or in the non-comment lines of any
+#        CMake file under <root>/viewport/** (Architecture Gate BIM-AG-P1-T005)
+#        - see this file's own P1-T005 ADDITION NOTE below.
 #
 # ==============================================================================
 # P0-T004 PHASE F ADDITION NOTE - R12/SQLITE_PERSISTENCE_ONLY,
@@ -578,6 +595,44 @@
 # Scope. Both rules are text scans over <root>/persistence/** and
 # <root>/document/** only; every other module is out of scope.
 # ==============================================================================
+# P1-T005 ADDITION NOTE - R23/PRESENTATION_BRIDGE_BOUNDARY,
+# R24/VIEWPORT_UPSTREAM_ISOLATION
+#
+# Added for P1-T005 Geometry Tessellation & Viewport Bridge (Architecture Gate
+# BIM-AG-P1-T005). R1-R22 are untouched: their semantics, token sets and scopes
+# are unchanged (R8-R11 in particular are not weakened). Each new rule has one
+# real-tree positive test and one controlled negative fixture test
+# (tests/architecture/CMakeLists.txt).
+#
+# R23 keeps bim::presentation a pure bridge. Three scopes over
+# <root>/presentation/**: (1) include allow-list - after comments are stripped,
+# every #include in a header or source file must name a standard-library header
+# (no directory part and no file extension, e.g. <cmath>) or a header under
+# bim/geometry_api/, bim/viewport/ or bim/presentation/; anything else is a
+# violation, which also rejects platform headers such as <windows.h>; (2)
+# forbidden vocabulary - the same plain, case-insensitive, comment-aware
+# substring scan used by R19/R21 for the document, model, commands, query,
+# dependency-graph, transactions, persistence, geometry_occt / OpenCASCADE, Qt,
+# bgfx, Direct3D / Windows native, SQLite, IfcOpenShell and ODA Drawings
+# vocabulary; (3) the target_link_libraries() calls in the non-comment text of
+# <root>/presentation/CMakeLists.txt are parsed with the same small link parser
+# as R22, but as an allow-list: every argument after the target name that is
+# not a PUBLIC / PRIVATE / INTERFACE keyword must equal (case-insensitive)
+# bim::geometry_api, bim_geometry_api, bim::viewport or bim_viewport. The CMake
+# file is additionally scanned for the vendor package names (Qt, bgfx,
+# OpenCASCADE, IfcOpenShell, SQLite). Test targets are not scanned: the
+# integration test legitimately links bim::document and bim::viewport_bgfx.
+#
+# R24 keeps the viewport module upstream-free. Every first-party source/header
+# under <root>/viewport/** (recursive, so <root>/viewport/bgfx/** is included) is
+# scanned for the presentation, geometry_api, geometry_occt, document and model
+# include paths, namespaces and target names, and every CMakeLists.txt / *.cmake
+# under <root>/viewport/** is scanned for the same names in its non-comment
+# text. Plain, case-insensitive, comment-aware substring semantics.
+#
+# Scope. R23 reads only <root>/presentation/**; R24 reads only
+# <root>/viewport/**; every other module is out of scope.
+# ==============================================================================
 # On the first pass through the selected rule(s), every violation found is
 # collected; if any exist, this script calls message(FATAL_ERROR ...), which
 # makes `cmake -P` exit non-zero. On a clean pass it prints
@@ -617,6 +672,8 @@ set(_bim_valid_rules
     "QUERY_READ_ONLY_BOUNDARY"
     "PERSISTENCE_DOCUMENT_STORE_BOUNDARY"
     "DOCUMENT_LIFECYCLE_BOUNDARY"
+    "PRESENTATION_BRIDGE_BOUNDARY"
+    "VIEWPORT_UPSTREAM_ISOLATION"
 )
 list(FIND _bim_valid_rules "${BIM_ARCH_CHECK_RULE}" _bim_rule_idx)
 if(_bim_rule_idx EQUAL -1)
@@ -1876,6 +1933,187 @@ if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "DOCUMENT_
     bim_scan_cmake_link_scope_private_only("${BIM_ARCH_CHECK_ROOT}/document/CMakeLists.txt" "${_r22_restricted_link_targets}" "R22-document-lifecycle-link-scope")
     bim_scan_files_for_tokens_ignoring_comments("${_document_lifecycle_public_headers}" "${_r22_public_tokens}" "R22-document-lifecycle-public-leak")
     bim_scan_files_for_result_code_enum_tokens("${_document_lifecycle_public_headers}" "${_r22_result_code_tokens}" "R22-document-result-code-extended")
+endif()
+
+# ------------------------------------------------------------------------------
+# Helper (P1-T005, R23): include allow-list. Comments are stripped first
+# (bim_strip_cpp_comments); every `#include <x>` / `#include "x"` in the
+# remaining code must name either a standard-library header (no '/' and no '.'
+# in the name, e.g. <cmath>, <cstdint>) or a header whose path starts with one
+# of the allowed prefixes. Anything else is a violation.
+# ------------------------------------------------------------------------------
+function(bim_scan_files_for_include_allow_list files allowed_prefixes rule_id)
+    foreach(f IN LISTS files)
+        if(NOT EXISTS "${f}")
+            continue()
+        endif()
+        file(READ "${f}" _content)
+        bim_strip_cpp_comments("${_content}" _code)
+        string(REGEX MATCHALL "#[ \t]*include[ \t]*[<\"][^>\"\n]+[>\"]" _includes "${_code}")
+        foreach(_inc IN LISTS _includes)
+            string(REGEX REPLACE "^#[ \t]*include[ \t]*[<\"]([^>\"\n]+)[>\"]$" "\\1" _hdr "${_inc}")
+            set(_ok FALSE)
+            if(NOT _hdr MATCHES "[/.]")
+                set(_ok TRUE)
+            endif()
+            foreach(_pfx IN LISTS allowed_prefixes)
+                string(FIND "${_hdr}" "${_pfx}" _pos)
+                if(_pos EQUAL 0)
+                    set(_ok TRUE)
+                endif()
+            endforeach()
+            if(NOT _ok)
+                list(APPEND BIM_VIOLATIONS "[${rule_id}] include '${_hdr}' is not a standard-library header or an allowed bim/ header in ${f}")
+            endif()
+        endforeach()
+    endforeach()
+    set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
+endfunction()
+
+# ------------------------------------------------------------------------------
+# Helper (P1-T005, R23): link allow-list for CMakeLists.txt files. Same call
+# parsing as bim_scan_cmake_link_scope_private_only(): in the NON-COMMENT text
+# every target_link_libraries( ... ) call is split into whitespace-separated
+# arguments; the first is the target. Every later argument that is not a PUBLIC /
+# PRIVATE / INTERFACE keyword must equal (case-insensitive) one of `allowed`;
+# any other argument (a first-party target, a vendor library, a generator
+# expression) is a violation.
+# ------------------------------------------------------------------------------
+function(bim_scan_cmake_link_allow_list files allowed rule_id)
+    foreach(f IN LISTS files)
+        if(NOT EXISTS "${f}")
+            continue()
+        endif()
+        file(READ "${f}" _content)
+        string(REGEX REPLACE "#[^\n]*" "" _rest "${_content}")
+        set(_more TRUE)
+        while(_more)
+            string(REGEX MATCH "[Tt][Aa][Rr][Gg][Ee][Tt]_[Ll][Ii][Nn][Kk]_[Ll][Ii][Bb][Rr][Aa][Rr][Ii][Ee][Ss][ \t\r\n]*\\(([^)]*)\\)" _call "${_rest}")
+            if(_call STREQUAL "")
+                set(_more FALSE)
+            else()
+                set(_args "${CMAKE_MATCH_1}")
+                string(FIND "${_rest}" "${_call}" _call_pos)
+                string(LENGTH "${_call}" _call_len)
+                math(EXPR _after "${_call_pos} + ${_call_len}")
+                string(SUBSTRING "${_rest}" ${_after} -1 _rest)
+                string(REGEX REPLACE "[ \t\r\n]+" ";" _arg_list "${_args}")
+                set(_first TRUE)
+                foreach(_arg IN LISTS _arg_list)
+                    if(_arg STREQUAL "")
+                        continue()
+                    endif()
+                    if(_first)
+                        set(_first FALSE)
+                        continue()
+                    endif()
+                    if(_arg STREQUAL "PUBLIC" OR _arg STREQUAL "PRIVATE" OR _arg STREQUAL "INTERFACE")
+                        continue()
+                    endif()
+                    string(TOLOWER "${_arg}" _arg_lower)
+                    set(_allowed_hit FALSE)
+                    foreach(_a IN LISTS allowed)
+                        string(TOLOWER "${_a}" _a_lower)
+                        if(_arg_lower STREQUAL _a_lower)
+                            set(_allowed_hit TRUE)
+                        endif()
+                    endforeach()
+                    if(NOT _allowed_hit)
+                        list(APPEND BIM_VIOLATIONS "[${rule_id}] link argument '${_arg}' is not in the allow-list in ${f}")
+                    endif()
+                endforeach()
+            endif()
+        endwhile()
+    endforeach()
+    set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
+endfunction()
+
+# ------------------------------------------------------------------------------
+# R23 - bim::presentation is a pure bridge (PRESENTATION_BRIDGE_BOUNDARY,
+# P1-T005). Under <root>/presentation/**: (1) include allow-list, (2) forbidden
+# vocabulary, (3) target_link_libraries() allow-list of bim::geometry_api and
+# bim::viewport plus a vendor-package scan of the CMake file. See this file's own
+# P1-T005 ADDITION NOTE. Selectable alone via
+# BIM_ARCH_CHECK_RULE=PRESENTATION_BRIDGE_BOUNDARY.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "PRESENTATION_BRIDGE_BOUNDARY")
+    file(GLOB_RECURSE _presentation_code_files
+        "${BIM_ARCH_CHECK_ROOT}/presentation/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/presentation/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/presentation/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/presentation/*.hxx"
+        "${BIM_ARCH_CHECK_ROOT}/presentation/*.cpp"
+        "${BIM_ARCH_CHECK_ROOT}/presentation/*.cc"
+    )
+    set(_r23_include_prefixes "bim/geometry_api/" "bim/viewport/" "bim/presentation/")
+    set(_r23_tokens
+        # first-party layers a bridge must not know
+        "bim/document/" "bim::document" "bim_document"
+        "bim/model/" "bim::model" "bim_model"
+        "bim/commands/" "bim::commands" "bim_commands"
+        "bim/query/" "bim::query" "bim_query"
+        "bim/transactions/" "bim::transactions" "bim_transactions"
+        "bim/persistence/" "bim::persistence" "bim_persistence"
+        "dependency_graph" "geometry_occt"
+        "bim/viewport_bgfx/" "bim::viewport_bgfx" "bim_viewport_bgfx"
+        # OpenCASCADE
+        "opencascade" "BRepMesh" "TopoDS" "gp_Pnt" "Standard_"
+        # Qt (R9's vocabulary)
+        "<Qt" "Qt::" "QObject" "QWidget" "QString" "QApplication" "QGuiApplication"
+        "QCoreApplication" "QWindow" "QMainWindow" "QTimer" "Q_OBJECT"
+        # bgfx and Direct3D / Windows native
+        "bgfx" "d3d" "dxgi" "windows.h" "<wrl" "HWND"
+        # SQLite
+        "sqlite"
+        # ODA Drawings (R16's vocabulary)
+        "OdDb" "OdGe" "OdGi" "OdRx" "OdString" "OdError" "OdAnsiString"
+        "odInitialize" "odUninitialize" "TD_Db" "TD_Ge" "TD_Gi" "TD_Root"
+        # IfcOpenShell
+        "IfcOpenShell" "IfcParse" "IfcUtil" "Ifc4::" "<ifcparse/" "<ifcgeom/"
+        "bim/ifc/" "bim::ifc" "bim_ifc" "bim/dwg/" "bim::dwg" "bim_dwg"
+    )
+    set(_r23_cmake_tokens
+        "Qt5" "Qt6" "bgfx" "OpenCASCADE" "IfcOpenShell" "SQLite" "sqlite"
+    )
+    set(_r23_allowed_links "bim::geometry_api" "bim_geometry_api" "bim::viewport" "bim_viewport")
+    bim_scan_files_for_include_allow_list("${_presentation_code_files}" "${_r23_include_prefixes}" "R23-presentation-include-allow-list")
+    bim_scan_files_for_tokens_ignoring_comments("${_presentation_code_files}" "${_r23_tokens}" "R23-presentation-bridge-boundary")
+    bim_scan_cmake_link_allow_list("${BIM_ARCH_CHECK_ROOT}/presentation/CMakeLists.txt" "${_r23_allowed_links}" "R23-presentation-link-allow-list")
+    bim_scan_cmake_files_for_tokens_ignoring_comments("${BIM_ARCH_CHECK_ROOT}/presentation/CMakeLists.txt" "${_r23_cmake_tokens}" "R23-presentation-cmake-coupling")
+endif()
+
+# ------------------------------------------------------------------------------
+# R24 - the viewport module never depends upward (VIEWPORT_UPSTREAM_ISOLATION,
+# P1-T005). Every first-party source/header under <root>/viewport/** (recursive,
+# bgfx adapter included) and the non-comment text of every CMake file there is
+# free of the presentation, geometry_api, geometry_occt, document and model
+# include paths, namespaces and target names. See this file's own P1-T005
+# ADDITION NOTE. Selectable alone via
+# BIM_ARCH_CHECK_RULE=VIEWPORT_UPSTREAM_ISOLATION.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "VIEWPORT_UPSTREAM_ISOLATION")
+    file(GLOB_RECURSE _viewport_upstream_code_files
+        "${BIM_ARCH_CHECK_ROOT}/viewport/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/viewport/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/viewport/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/viewport/*.hxx"
+        "${BIM_ARCH_CHECK_ROOT}/viewport/*.cpp"
+        "${BIM_ARCH_CHECK_ROOT}/viewport/*.cc"
+    )
+    file(GLOB_RECURSE _viewport_upstream_cmake_files
+        "${BIM_ARCH_CHECK_ROOT}/viewport/CMakeLists.txt"
+        "${BIM_ARCH_CHECK_ROOT}/viewport/*/CMakeLists.txt"
+        "${BIM_ARCH_CHECK_ROOT}/viewport/*.cmake"
+    )
+    set(_r24_tokens
+        "bim/presentation/" "bim::presentation" "bim_presentation"
+        "bim/geometry_api/" "bim::geometry_api" "bim_geometry_api"
+        "bim/geometry_occt/" "bim::geometry_occt" "bim_geometry_occt"
+        "bim/document/" "bim::document" "bim_document"
+        "bim/model/" "bim::model" "bim_model"
+    )
+    bim_scan_files_for_tokens_ignoring_comments("${_viewport_upstream_code_files}" "${_r24_tokens}" "R24-viewport-upstream-isolation")
+    bim_scan_cmake_files_for_tokens_ignoring_comments("${_viewport_upstream_cmake_files}" "${_r24_tokens}" "R24-viewport-upstream-cmake-coupling")
 endif()
 
 # ------------------------------------------------------------------------------

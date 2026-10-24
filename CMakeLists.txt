@@ -143,6 +143,8 @@ add_subdirectory(src/commands)
 add_subdirectory(src/geometry/occt)
 add_subdirectory(src/persistence)
 add_subdirectory(src/viewport)
+# P1-T005: bim_presentation needs only geometry_api (added above) and viewport.
+add_subdirectory(src/presentation)
 add_subdirectory(src/viewport/bgfx)
 add_subdirectory(src/desktop)
 

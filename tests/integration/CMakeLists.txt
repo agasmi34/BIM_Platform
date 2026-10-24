@@ -717,3 +717,25 @@ target_link_libraries(integration_p1_t004_journal_coordination
 target_compile_features(integration_p1_t004_journal_coordination PRIVATE cxx_std_20)
 bim_apply_warnings(integration_p1_t004_journal_coordination)
 add_test(NAME integration_p1_t004_journal_coordination COMMAND integration_p1_t004_journal_coordination)
+
+# --- P1-T005 Geometry Tessellation & Viewport Bridge (BIM-AG-P1-T005).
+# Exercises the real Document wall derivation (Document::FindWallGeometry)
+# -> bim::presentation::BuildWallMesh -> bim::viewport::ValidateMesh ->
+# headless bim::viewport_bgfx::Renderer CreateMesh/DestroyMesh. Test-only
+# links: the production bim::presentation target depends on neither
+# bim::document nor bim::viewport_bgfx.
+
+add_executable(integration_p1_t005_geometry_viewport_bridge
+    integration_p1_t005_geometry_viewport_bridge.cpp
+)
+target_link_libraries(integration_p1_t005_geometry_viewport_bridge
+    PRIVATE
+        bim::document
+        bim::presentation
+        bim::viewport
+        bim::viewport_bgfx
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_p1_t005_geometry_viewport_bridge PRIVATE cxx_std_20)
+bim_apply_warnings(integration_p1_t005_geometry_viewport_bridge)
+add_test(NAME integration_p1_t005_geometry_viewport_bridge COMMAND integration_p1_t005_geometry_viewport_bridge)

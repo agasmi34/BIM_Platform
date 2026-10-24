@@ -293,3 +293,20 @@ target_link_libraries(unit_p1_t003_commands_query
 target_compile_features(unit_p1_t003_commands_query PRIVATE cxx_std_20)
 bim_apply_warnings(unit_p1_t003_commands_query)
 add_test(NAME unit_p1_t003_commands_query COMMAND unit_p1_t003_commands_query)
+
+# --- P1-T005 Geometry Tessellation & Viewport Bridge (Implementation Brief
+# P1-T005). Links ONLY bim::presentation and Catch2 - the document, model and
+# renderer are not visible to this target (and bim::viewport_bgfx is deliberately
+# not linked), so the whole proof goes through the public wall-mesh API on
+# hand-written neutral extrusion specs. This is exactly one new CTest registration.
+add_executable(unit_p1_t005_wall_mesh
+    unit_p1_t005_wall_mesh.cpp
+)
+target_link_libraries(unit_p1_t005_wall_mesh
+    PRIVATE
+        bim::presentation
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_p1_t005_wall_mesh PRIVATE cxx_std_20)
+bim_apply_warnings(unit_p1_t005_wall_mesh)
+add_test(NAME unit_p1_t005_wall_mesh COMMAND unit_p1_t005_wall_mesh)
