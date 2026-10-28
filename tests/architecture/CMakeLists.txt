@@ -532,3 +532,79 @@ add_test(
             -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
 )
 set_tests_properties(arch_p1_t005_viewport_upstream_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# arch_desktop_vs1_command_boundary - R25 against the real src/ tree: nothing
+# under src/desktop/** reaches Document::AddLevel / AddStraightWall /
+# UpdateLevelElevation / UpdateStraightWall / DeleteElement; every VS1 mutation
+# goes through bim::commands.
+add_test(
+    NAME arch_desktop_vs1_command_boundary
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=DESKTOP_VS1_COMMAND_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p1_t006_desktop_direct_document_mutation_fixture_rejected - R25 against
+# tests/fixtures/p1_t006_bad_desktop_direct_document_mutation/, whose simulated
+# desktop/src/bad.cpp calls Document::AddLevel directly. The checker must FAIL
+# here.
+add_test(
+    NAME arch_p1_t006_desktop_direct_document_mutation_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p1_t006_bad_desktop_direct_document_mutation
+            -DBIM_ARCH_CHECK_RULE=DESKTOP_VS1_COMMAND_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p1_t006_desktop_direct_document_mutation_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# arch_desktop_vs1_dependency_boundary - R26 against the real src/ tree:
+# bim_desktop_vs1_workflow links exactly bim::commands, bim::query,
+# bim::document and bim::presentation, and its own files carry no persistence,
+# kernel, viewport-adapter, Qt, bgfx, Direct3D, SQLite, ODA or IfcOpenShell
+# vocabulary.
+add_test(
+    NAME arch_desktop_vs1_dependency_boundary
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=DESKTOP_VS1_DEPENDENCY_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p1_t006_desktop_dependency_fixture_rejected - R26 against
+# tests/fixtures/p1_t006_bad_desktop_dependency/, whose simulated
+# desktop/CMakeLists.txt links bim::geometry_occt from the workflow target. The
+# checker must FAIL here.
+add_test(
+    NAME arch_p1_t006_desktop_dependency_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p1_t006_bad_desktop_dependency
+            -DBIM_ARCH_CHECK_RULE=DESKTOP_VS1_DEPENDENCY_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p1_t006_desktop_dependency_fixture_rejected PROPERTIES WILL_FAIL TRUE)
+
+# arch_production_wall_face_resolution_boundary - R27 against the real src/ tree:
+# the production wall-face resolver includes only standard-library,
+# bim/geometry_api/ and bim/model/ headers and reuses nothing from the P0-T008
+# spike identity or any kernel, document, viewport, Qt or bgfx vocabulary.
+add_test(
+    NAME arch_production_wall_face_resolution_boundary
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/src
+            -DBIM_ARCH_CHECK_RULE=PRODUCTION_WALL_FACE_RESOLUTION_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+
+# arch_p1_t006_wall_face_resolution_fixture_rejected - R27 against
+# tests/fixtures/p1_t006_bad_wall_face_resolution/, whose simulated production
+# resolver header includes the P0-T008 persistent_face_reference.hpp and uses
+# FeatureOwnerId / FaceRole. The checker must FAIL here.
+add_test(
+    NAME arch_p1_t006_wall_face_resolution_fixture_rejected
+    COMMAND ${CMAKE_COMMAND}
+            -DBIM_ARCH_CHECK_ROOT=${CMAKE_SOURCE_DIR}/tests/fixtures/p1_t006_bad_wall_face_resolution
+            -DBIM_ARCH_CHECK_RULE=PRODUCTION_WALL_FACE_RESOLUTION_BOUNDARY
+            -P ${CMAKE_SOURCE_DIR}/tools/architecture_checker.cmake
+)
+set_tests_properties(arch_p1_t006_wall_face_resolution_fixture_rejected PROPERTIES WILL_FAIL TRUE)

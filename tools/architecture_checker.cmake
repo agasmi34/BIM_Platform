@@ -217,6 +217,28 @@
 #        or target name appears in real code or in the non-comment lines of any
 #        CMake file under <root>/viewport/** (Architecture Gate BIM-AG-P1-T005)
 #        - see this file's own P1-T005 ADDITION NOTE below.
+#   R25 - (P1-T006) DESKTOP_VS1_COMMAND_BOUNDARY: the desktop mutates the
+#        Document only through bim::commands. In real code under
+#        <root>/desktop/** none of Document::AddLevel, AddStraightWall,
+#        UpdateLevelElevation, UpdateStraightWall or DeleteElement is reached by
+#        a member call, a Document:: qualification or (for the four names unique
+#        to Document) any stand-alone use (Architecture Gate BIM-AG-P1-T006) -
+#        see this file's own P1-T006 ADDITION NOTE below.
+#   R26 - (P1-T006) DESKTOP_VS1_DEPENDENCY_BOUNDARY: the Qt-free workflow
+#        target bim_desktop_vs1_workflow links exactly bim::commands, bim::query,
+#        bim::document and bim::presentation, and its own files carry only the
+#        approved bim/ includes and no persistence, transaction, kernel, viewport
+#        adapter, Qt, bgfx, Direct3D, SQLite, ODA or IfcOpenShell vocabulary
+#        (Architecture Gate BIM-AG-P1-T006) - see this file's own P1-T006
+#        ADDITION NOTE below.
+#   R27 - (P1-T006) PRODUCTION_WALL_FACE_RESOLUTION_BOUNDARY: the production
+#        wall-face resolver files under <root>/model/** include only
+#        standard-library, bim/geometry_api/ and bim/model/ headers and reuse
+#        neither the P0-T008 spike identity (FeatureOwnerId, FaceRole,
+#        PersistentFaceReference, FeatureFrame) nor a kernel node id, nor any
+#        document / commands / query / persistence / viewport / kernel / Qt /
+#        bgfx vocabulary (Architecture Gate BIM-AG-P1-T006) - see this file's own
+#        P1-T006 ADDITION NOTE below.
 #
 # ==============================================================================
 # P0-T004 PHASE F ADDITION NOTE - R12/SQLITE_PERSISTENCE_ONLY,
@@ -632,6 +654,52 @@
 #
 # Scope. R23 reads only <root>/presentation/**; R24 reads only
 # <root>/viewport/**; every other module is out of scope.
+# P1-T006 ADDITION NOTE - R25/DESKTOP_VS1_COMMAND_BOUNDARY,
+# R26/DESKTOP_VS1_DEPENDENCY_BOUNDARY,
+# R27/PRODUCTION_WALL_FACE_RESOLUTION_BOUNDARY
+#
+# Added for P1-T006 Desktop VS1 End-to-End Acceptance (Architecture Gate
+# BIM-AG-P1-T006). R1-R24 are untouched: their semantics, token sets and scopes
+# are unchanged, and the ALL mode simply also runs the three new rules. Each new
+# rule has one real-tree positive test and one controlled negative fixture test
+# (tests/architecture/CMakeLists.txt).
+#
+# R25 keeps every Document mutation behind bim::commands. After comments are
+# stripped, every header and source under <root>/desktop/** is scanned for the
+# five Document mutation entry points: as a member access (`.` or `->`), as a
+# `Document::` qualification, and - for AddLevel, AddStraightWall,
+# UpdateLevelElevation and UpdateStraightWall, which exist only on Document - as
+# a stand-alone identifier. bim::commands::DeleteElement is the approved delete
+# command, so the bare name DeleteElement is not rejected, only its member and
+# Document:: forms are.
+#
+# R26 keeps the Qt-free workflow target closed. (1) The target_link_libraries()
+# calls for bim_desktop_vs1_workflow in <root>/desktop/CMakeLists.txt must name
+# exactly bim::commands, bim::query, bim::document and bim::presentation (calls
+# for the Qt executable are not inspected, and a missing required dependency is
+# a violation too); (2) the workflow's own header and source (every file named
+# *vs1_workflow.* under <root>/desktop/**) pass an include allow-list of
+# standard-library headers and bim/commands, query, document, presentation,
+# model, geometry_api, viewport and desktop headers - model, geometry_api and
+# viewport headers are the value types that the four approved targets expose
+# publicly, not link dependencies; (3) the same files are scanned with the plain,
+# case-insensitive, comment-aware substring scan for transactions, persistence,
+# dependency-graph, geometry_occt, viewport_bgfx, OpenCASCADE, Qt, bgfx,
+# Direct3D / Windows, SQLite, ODA Drawings and IfcOpenShell vocabulary.
+#
+# R27 keeps the production resolver separate from the P0-T008 spike. The files
+# named *wall_face_reference_resolver.* under <root>/model/** pass an include
+# allow-list of standard-library, bim/geometry_api/ and bim/model/ headers, a
+# plain comment-aware substring scan (P0-T008 spike headers and entry points,
+# kernel node ids, and the document, commands, query, transactions, persistence,
+# viewport, kernel, Qt, bgfx, Direct3D / Windows and SQLite vocabulary) and a
+# case-sensitive exact-identifier scan for FeatureOwnerId, FaceRole,
+# PersistentFaceReference and FeatureFrame. The spike files themselves
+# (persistent_face_reference.hpp, face_reference_resolver.*) are not scanned.
+#
+# Scope. R25 and R26 read only <root>/desktop/**; R27 reads only
+# <root>/model/**; every other module is out of scope.
+# ==============================================================================
 # ==============================================================================
 # On the first pass through the selected rule(s), every violation found is
 # collected; if any exist, this script calls message(FATAL_ERROR ...), which
@@ -674,6 +742,9 @@ set(_bim_valid_rules
     "DOCUMENT_LIFECYCLE_BOUNDARY"
     "PRESENTATION_BRIDGE_BOUNDARY"
     "VIEWPORT_UPSTREAM_ISOLATION"
+    "DESKTOP_VS1_COMMAND_BOUNDARY"
+    "DESKTOP_VS1_DEPENDENCY_BOUNDARY"
+    "PRODUCTION_WALL_FACE_RESOLUTION_BOUNDARY"
 )
 list(FIND _bim_valid_rules "${BIM_ARCH_CHECK_RULE}" _bim_rule_idx)
 if(_bim_rule_idx EQUAL -1)
@@ -2029,6 +2100,130 @@ function(bim_scan_cmake_link_allow_list files allowed rule_id)
 endfunction()
 
 # ------------------------------------------------------------------------------
+# Helper (P1-T006, R25): direct Document mutation. In real code (comments
+# stripped first) none of the five Document mutation entry points -
+# AddLevel, AddStraightWall, UpdateLevelElevation, UpdateStraightWall and
+# DeleteElement - may be reached from the files given. Three shapes are
+# reported: (1) a member call through `.` or `->`; (2) a `Document::<name>`
+# qualification (a call or a pointer-to-member); (3) the four names that are
+# unique to Document (AddLevel, AddStraightWall, UpdateLevelElevation,
+# UpdateStraightWall) as stand-alone identifiers anywhere, which also rejects a
+# using-declaration or an unqualified call. The name DeleteElement alone is NOT
+# rejected as a stand-alone identifier, because bim::commands::DeleteElement is
+# the approved delete command; it is rejected in shapes (1) and (2) only.
+# Whitespace and newlines are allowed around `.`, `->`, `::` and before `(`.
+# ------------------------------------------------------------------------------
+function(bim_scan_files_for_document_mutation_calls files rule_id)
+    foreach(f IN LISTS files)
+        if(NOT EXISTS "${f}")
+            continue()
+        endif()
+        file(READ "${f}" _content)
+        bim_strip_cpp_comments("${_content}" _code)
+        set(_names "AddLevel|AddStraightWall|UpdateLevelElevation|UpdateStraightWall|DeleteElement")
+        string(REGEX MATCH "(\\.|->)[ \t\r\n]*(${_names})[^A-Za-z0-9_]" _member "${_code}")
+        if(NOT _member STREQUAL "")
+            list(APPEND BIM_VIOLATIONS "[${rule_id}] direct Document mutation through a member access (${_member}) in ${f}")
+        endif()
+        string(REGEX MATCH "Document[ \t\r\n]*::[ \t\r\n]*(${_names})[^A-Za-z0-9_]" _qualified "${_code}")
+        if(NOT _qualified STREQUAL "")
+            list(APPEND BIM_VIOLATIONS "[${rule_id}] direct Document mutation through a Document:: qualification (${_qualified}) in ${f}")
+        endif()
+        set(_code_padded " ${_code} ")
+        foreach(_id AddLevel AddStraightWall UpdateLevelElevation UpdateStraightWall)
+            string(REGEX MATCH "[^A-Za-z0-9_]${_id}[^A-Za-z0-9_]" _bare "${_code_padded}")
+            if(NOT _bare STREQUAL "")
+                list(APPEND BIM_VIOLATIONS "[${rule_id}] Document mutation entry point '${_id}' named in ${f}")
+            endif()
+        endforeach()
+    endforeach()
+    set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
+endfunction()
+
+# ------------------------------------------------------------------------------
+# Helper (P1-T006, R26): exact link set of one named target. In the NON-COMMENT
+# text of each CMake file, every target_link_libraries( ... ) call whose first
+# argument equals `target` (case-insensitive) is split into arguments (same
+# parser as bim_scan_cmake_link_allow_list). Every argument that is not a
+# PUBLIC / PRIVATE / INTERFACE keyword must equal one of `allowed`; and every
+# member of `allowed` must appear at least once across the calls for the target.
+# A file that has no such call at all is itself a violation. Calls for other
+# targets (for example the Qt executable) are not inspected.
+# ------------------------------------------------------------------------------
+function(bim_scan_cmake_target_link_exact files target allowed rule_id)
+    foreach(f IN LISTS files)
+        if(NOT EXISTS "${f}")
+            continue()
+        endif()
+        file(READ "${f}" _content)
+        string(REGEX REPLACE "#[^\n]*" "" _rest "${_content}")
+        string(TOLOWER "${target}" _target_lower)
+        set(_seen "")
+        set(_calls 0)
+        set(_more TRUE)
+        while(_more)
+            string(REGEX MATCH "[Tt][Aa][Rr][Gg][Ee][Tt]_[Ll][Ii][Nn][Kk]_[Ll][Ii][Bb][Rr][Aa][Rr][Ii][Ee][Ss][ \t\r\n]*\\(([^)]*)\\)" _call "${_rest}")
+            if(_call STREQUAL "")
+                set(_more FALSE)
+            else()
+                set(_args "${CMAKE_MATCH_1}")
+                string(FIND "${_rest}" "${_call}" _call_pos)
+                string(LENGTH "${_call}" _call_len)
+                math(EXPR _after "${_call_pos} + ${_call_len}")
+                string(SUBSTRING "${_rest}" ${_after} -1 _rest)
+                string(REGEX REPLACE "[ \t\r\n]+" ";" _arg_list "${_args}")
+                set(_first TRUE)
+                set(_is_target FALSE)
+                foreach(_arg IN LISTS _arg_list)
+                    if(_arg STREQUAL "")
+                        continue()
+                    endif()
+                    if(_first)
+                        set(_first FALSE)
+                        string(TOLOWER "${_arg}" _arg_lower)
+                        if(_arg_lower STREQUAL _target_lower)
+                            set(_is_target TRUE)
+                            math(EXPR _calls "${_calls} + 1")
+                        endif()
+                        continue()
+                    endif()
+                    if(NOT _is_target)
+                        continue()
+                    endif()
+                    if(_arg STREQUAL "PUBLIC" OR _arg STREQUAL "PRIVATE" OR _arg STREQUAL "INTERFACE")
+                        continue()
+                    endif()
+                    string(TOLOWER "${_arg}" _arg_lower)
+                    set(_allowed_hit FALSE)
+                    foreach(_a IN LISTS allowed)
+                        string(TOLOWER "${_a}" _a_lower)
+                        if(_arg_lower STREQUAL _a_lower)
+                            set(_allowed_hit TRUE)
+                            list(APPEND _seen "${_a_lower}")
+                        endif()
+                    endforeach()
+                    if(NOT _allowed_hit)
+                        list(APPEND BIM_VIOLATIONS "[${rule_id}] target ${target} links '${_arg}', which is not one of its allowed direct dependencies in ${f}")
+                    endif()
+                endforeach()
+            endif()
+        endwhile()
+        if(_calls EQUAL 0)
+            list(APPEND BIM_VIOLATIONS "[${rule_id}] no target_link_libraries() call for target ${target} in ${f}")
+        else()
+            foreach(_a IN LISTS allowed)
+                string(TOLOWER "${_a}" _a_lower)
+                list(FIND _seen "${_a_lower}" _idx)
+                if(_idx EQUAL -1)
+                    list(APPEND BIM_VIOLATIONS "[${rule_id}] target ${target} does not link its required direct dependency ${_a} in ${f}")
+                endif()
+            endforeach()
+        endif()
+    endforeach()
+    set(BIM_VIOLATIONS "${BIM_VIOLATIONS}" PARENT_SCOPE)
+endfunction()
+
+# ------------------------------------------------------------------------------
 # R23 - bim::presentation is a pure bridge (PRESENTATION_BRIDGE_BOUNDARY,
 # P1-T005). Under <root>/presentation/**: (1) include allow-list, (2) forbidden
 # vocabulary, (3) target_link_libraries() allow-list of bim::geometry_api and
@@ -2114,6 +2309,124 @@ if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "VIEWPORT_
     )
     bim_scan_files_for_tokens_ignoring_comments("${_viewport_upstream_code_files}" "${_r24_tokens}" "R24-viewport-upstream-isolation")
     bim_scan_cmake_files_for_tokens_ignoring_comments("${_viewport_upstream_cmake_files}" "${_r24_tokens}" "R24-viewport-upstream-cmake-coupling")
+endif()
+
+# ------------------------------------------------------------------------------
+# R25 - the desktop mutates the Document only through bim::commands
+# (DESKTOP_VS1_COMMAND_BOUNDARY, P1-T006). Under <root>/desktop/** (headers and
+# sources) no real code reaches Document::AddLevel / AddStraightWall /
+# UpdateLevelElevation / UpdateStraightWall / DeleteElement. See this file's own
+# P1-T006 ADDITION NOTE. Selectable alone via
+# BIM_ARCH_CHECK_RULE=DESKTOP_VS1_COMMAND_BOUNDARY.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "DESKTOP_VS1_COMMAND_BOUNDARY")
+    file(GLOB_RECURSE _desktop_vs1_code_files
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*.h"
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*.hh"
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*.hxx"
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*.cpp"
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*.cc"
+    )
+    bim_scan_files_for_document_mutation_calls("${_desktop_vs1_code_files}" "R25-desktop-vs1-command-boundary")
+endif()
+
+# ------------------------------------------------------------------------------
+# R26 - the Qt-free VS1 workflow keeps a closed dependency set
+# (DESKTOP_VS1_DEPENDENCY_BOUNDARY, P1-T006). (1) In <root>/desktop/CMakeLists.txt
+# the target_link_libraries() calls for bim_desktop_vs1_workflow name exactly
+# bim::commands, bim::query, bim::document and bim::presentation; (2) the
+# workflow's own files (**/vs1_workflow.*) include only standard-library or
+# bim/commands|query|document|presentation|model|geometry_api|viewport|desktop
+# headers; (3) they carry no transactions, persistence, dependency-graph,
+# geometry_occt, viewport_bgfx, OpenCASCADE, Qt, bgfx, Direct3D / Windows,
+# SQLite, ODA or IfcOpenShell vocabulary. Selectable alone via
+# BIM_ARCH_CHECK_RULE=DESKTOP_VS1_DEPENDENCY_BOUNDARY.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "DESKTOP_VS1_DEPENDENCY_BOUNDARY")
+    file(GLOB_RECURSE _desktop_vs1_workflow_files
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*vs1_workflow.h"
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*vs1_workflow.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*vs1_workflow.hh"
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*vs1_workflow.hxx"
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*vs1_workflow.cpp"
+        "${BIM_ARCH_CHECK_ROOT}/desktop/*vs1_workflow.cc"
+    )
+    set(_r26_allowed_links "bim::commands" "bim::query" "bim::document" "bim::presentation")
+    set(_r26_include_prefixes
+        "bim/commands/" "bim/query/" "bim/document/" "bim/presentation/"
+        "bim/model/" "bim/geometry_api/" "bim/viewport/" "bim/desktop/"
+    )
+    set(_r26_tokens
+        "bim/transactions/" "bim::transactions" "bim_transactions"
+        "bim/persistence/" "bim::persistence" "bim_persistence"
+        "dependency_graph"
+        "geometry_occt" "viewport_bgfx"
+        "opencascade" "BRepMesh" "TopoDS" "gp_Pnt" "Standard_"
+        "<Qt" "Qt::" "QObject" "QWidget" "QString" "QApplication" "QGuiApplication"
+        "QCoreApplication" "QWindow" "QMainWindow" "QTimer" "Q_OBJECT"
+        "bgfx" "d3d" "dxgi" "windows.h" "<wrl" "HWND"
+        "sqlite"
+        "OdDb" "OdGe" "OdGi" "OdRx" "OdString" "OdError" "OdAnsiString"
+        "odInitialize" "odUninitialize" "TD_Db" "TD_Ge" "TD_Gi" "TD_Root"
+        "IfcOpenShell" "IfcParse" "IfcUtil" "Ifc4::" "<ifcparse/" "<ifcgeom/"
+        "bim/ifc/" "bim::ifc" "bim_ifc" "bim/dwg/" "bim::dwg" "bim_dwg"
+    )
+    if(EXISTS "${BIM_ARCH_CHECK_ROOT}/desktop/CMakeLists.txt")
+        bim_scan_cmake_target_link_exact("${BIM_ARCH_CHECK_ROOT}/desktop/CMakeLists.txt" "bim_desktop_vs1_workflow" "${_r26_allowed_links}" "R26-desktop-vs1-link-set")
+    endif()
+    bim_scan_files_for_include_allow_list("${_desktop_vs1_workflow_files}" "${_r26_include_prefixes}" "R26-desktop-vs1-include-allow-list")
+    bim_scan_files_for_tokens_ignoring_comments("${_desktop_vs1_workflow_files}" "${_r26_tokens}" "R26-desktop-vs1-dependency-boundary")
+endif()
+
+# ------------------------------------------------------------------------------
+# R27 - the production wall-face resolver is not the P0-T008 spike
+# (PRODUCTION_WALL_FACE_RESOLUTION_BOUNDARY, P1-T006). Under <root>/model/**,
+# the production resolver files (**/wall_face_reference_resolver.*): (1) include
+# only standard-library or bim/geometry_api/ and bim/model/ headers; (2) name no
+# P0-T008 spike identity (FeatureOwnerId, FaceRole, PersistentFaceReference,
+# FeatureFrame, the spike resolver entry points or headers), no kernel node id,
+# and no document, commands, query, transactions, persistence, dependency-graph,
+# geometry_occt, OpenCASCADE, viewport, Qt, bgfx, Direct3D / Windows or SQLite
+# vocabulary. Selectable alone via
+# BIM_ARCH_CHECK_RULE=PRODUCTION_WALL_FACE_RESOLUTION_BOUNDARY.
+# ------------------------------------------------------------------------------
+if(BIM_ARCH_CHECK_RULE STREQUAL "ALL" OR BIM_ARCH_CHECK_RULE STREQUAL "PRODUCTION_WALL_FACE_RESOLUTION_BOUNDARY")
+    file(GLOB_RECURSE _wall_face_resolver_files
+        "${BIM_ARCH_CHECK_ROOT}/model/*wall_face_reference_resolver.h"
+        "${BIM_ARCH_CHECK_ROOT}/model/*wall_face_reference_resolver.hpp"
+        "${BIM_ARCH_CHECK_ROOT}/model/*wall_face_reference_resolver.hh"
+        "${BIM_ARCH_CHECK_ROOT}/model/*wall_face_reference_resolver.hxx"
+        "${BIM_ARCH_CHECK_ROOT}/model/*wall_face_reference_resolver.cpp"
+        "${BIM_ARCH_CHECK_ROOT}/model/*wall_face_reference_resolver.cc"
+    )
+    set(_r27_include_prefixes "bim/geometry_api/" "bim/model/")
+    set(_r27_tokens
+        # P0-T008 spike headers / entry points (the production file name
+        # wall_face_reference_resolver does not contain these paths)
+        "bim/model/persistent_face_reference" "bim/model/face_reference_resolver"
+        "ResolveFaceReference"
+        # kernel node ids
+        "NodeId" "node_id"
+        # first-party layers the resolver must not know
+        "bim/document/" "bim::document" "bim_document"
+        "bim/commands/" "bim::commands" "bim_commands"
+        "bim/query/" "bim::query" "bim_query"
+        "bim/transactions/" "bim::transactions" "bim_transactions"
+        "bim/persistence/" "bim::persistence" "bim_persistence"
+        "bim/viewport" "bim::viewport" "bim_viewport"
+        "dependency_graph" "geometry_occt"
+        "opencascade" "BRepMesh" "TopoDS" "gp_Pnt" "Standard_"
+        "<Qt" "Qt::" "QObject" "QString"
+        "bgfx" "d3d" "dxgi" "windows.h" "HWND"
+        "sqlite"
+    )
+    set(_r27_identifiers
+        "FeatureOwnerId" "FaceRole" "PersistentFaceReference" "FeatureFrame"
+    )
+    bim_scan_files_for_include_allow_list("${_wall_face_resolver_files}" "${_r27_include_prefixes}" "R27-wall-face-resolution-include-allow-list")
+    bim_scan_files_for_tokens_ignoring_comments("${_wall_face_resolver_files}" "${_r27_tokens}" "R27-wall-face-resolution-boundary")
+    bim_scan_files_for_exact_identifiers_ignoring_comments("${_wall_face_resolver_files}" "${_r27_identifiers}" "R27-wall-face-resolution-p0t008-identity")
 endif()
 
 # ------------------------------------------------------------------------------

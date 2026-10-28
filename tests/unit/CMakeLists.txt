@@ -310,3 +310,22 @@ target_link_libraries(unit_p1_t005_wall_mesh
 target_compile_features(unit_p1_t005_wall_mesh PRIVATE cxx_std_20)
 bim_apply_warnings(unit_p1_t005_wall_mesh)
 add_test(NAME unit_p1_t005_wall_mesh COMMAND unit_p1_t005_wall_mesh)
+
+# --- P1-T006 Desktop VS1 End-to-End Acceptance (Implementation Brief
+# P1-T006-IB section 7). Links ONLY bim::model and Catch2 (the neutral
+# bim::geometry_api contract arrives transitively) and deliberately never
+# bim::geometry_occt: every face observation is hand-constructed analytic data,
+# so a successful build of this target is itself mechanical proof that
+# ResolveWallFaceReference() needs no kernel symbol. This is exactly one new
+# CTest registration.
+add_executable(unit_p1_t006_wall_face_reference_resolver
+    unit_p1_t006_wall_face_reference_resolver.cpp
+)
+target_link_libraries(unit_p1_t006_wall_face_reference_resolver
+    PRIVATE
+        bim::model
+        Catch2::Catch2WithMain
+)
+target_compile_features(unit_p1_t006_wall_face_reference_resolver PRIVATE cxx_std_20)
+bim_apply_warnings(unit_p1_t006_wall_face_reference_resolver)
+add_test(NAME unit_p1_t006_wall_face_reference_resolver COMMAND unit_p1_t006_wall_face_reference_resolver)

@@ -24,12 +24,22 @@
 # (include/bim/model/{level,straight_wall,wall_face_reference,validation}.hpp,
 # src/validation.cpp). They are standard-library-only, add no dependency, and
 # leave the P0-T008 spike contracts above untouched.
+#
+# P1-T006 (Desktop VS1 End-to-End Acceptance; Architecture Gate BIM-AG-P1-T006
+# section 4) adds the production WallFaceReference resolver
+# (include/bim/model/wall_face_reference_resolver.hpp,
+# src/wall_face_reference_resolver.cpp): geometric plane matching of the six
+# production semantic wall faces against neutral face observations. It uses only
+# the production identity types and the already-linked bim::geometry_api, adds no
+# dependency, and neither uses nor aliases the P0-T008 spike types (rule R27,
+# PRODUCTION_WALL_FACE_RESOLUTION_BOUNDARY).
 
 add_library(bim_model STATIC
     src/model_anchor.cpp
     src/face_reference_resolver.cpp
     src/element_id.cpp
     src/validation.cpp
+    src/wall_face_reference_resolver.cpp
 )
 add_library(bim::model ALIAS bim_model)
 

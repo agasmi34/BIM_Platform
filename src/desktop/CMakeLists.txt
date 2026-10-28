@@ -15,6 +15,49 @@
 # match, but was not independently confirmed against the actual installed
 # vcpkg qtbase config files in this session - no execution channel).
 
+# ------------------------------------------------------------------------------
+# bim_desktop_vs1_workflow - P1-T006 Desktop VS1 End-to-End Acceptance
+# (Architecture Gate BIM-AG-P1-T006 section 3; Implementation Brief P1-T006-IB
+# section 3). The Qt-free desktop workflow: it owns the live Document and
+# coordinates the VS1 operations (create / change / delete through
+# bim::commands, committed reads through bim::query, Save / Open through
+# bim::document, wall render meshes through bim::presentation).
+#
+# Its direct target dependencies are exactly bim::commands, bim::query,
+# bim::document and bim::presentation. It deliberately does NOT link
+# bim::model (model value types arrive only transitively through the approved
+# public command / query / document contracts), bim::geometry_api,
+# bim::geometry_occt, bim::dependency_graph, bim::transactions,
+# bim::persistence, bim::viewport, bim::viewport_bgfx, Qt, bgfx, SQLite, OCCT,
+# Direct3D, ODA or IfcOpenShell - checked mechanically by
+# tools/architecture_checker.cmake rule R26 (DESKTOP_VS1_DEPENDENCY_BOUNDARY).
+# It is defined before the Qt package lookup on purpose: nothing in it needs Qt.
+# ------------------------------------------------------------------------------
+add_library(bim_desktop_vs1_workflow STATIC
+    src/vs1_workflow.cpp
+)
+add_library(bim::desktop_vs1_workflow ALIAS bim_desktop_vs1_workflow)
+
+target_include_directories(bim_desktop_vs1_workflow
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
+target_link_libraries(bim_desktop_vs1_workflow
+    PUBLIC
+        bim::commands
+        bim::query
+        bim::document
+        bim::presentation
+)
+
+target_compile_features(bim_desktop_vs1_workflow PUBLIC cxx_std_20)
+
+bim_apply_warnings(bim_desktop_vs1_workflow)
+bim_apply_sanitizers(bim_desktop_vs1_workflow)
+
+# --- Qt executable (P0-T003 spike target, preserved) ---------------------------
+
 find_package(Qt6 CONFIG REQUIRED COMPONENTS Widgets)
 
 add_executable(bim_desktop_spike
@@ -30,8 +73,11 @@ set_target_properties(bim_desktop_spike PROPERTIES
     AUTOMOC ON
 )
 
+# P1-T006: the executable keeps its name and its P0-T003 evidence modes, and
+# additionally links the Qt-free VS1 workflow for the normal interactive mode.
 target_link_libraries(bim_desktop_spike
     PRIVATE
+        bim::desktop_vs1_workflow
         bim::viewport
         bim::viewport_bgfx
         Qt6::Widgets

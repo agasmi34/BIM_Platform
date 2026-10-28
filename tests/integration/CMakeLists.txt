@@ -739,3 +739,34 @@ target_link_libraries(integration_p1_t005_geometry_viewport_bridge
 target_compile_features(integration_p1_t005_geometry_viewport_bridge PRIVATE cxx_std_20)
 bim_apply_warnings(integration_p1_t005_geometry_viewport_bridge)
 add_test(NAME integration_p1_t005_geometry_viewport_bridge COMMAND integration_p1_t005_geometry_viewport_bridge)
+
+# --- P1-T006 Desktop VS1 End-to-End Acceptance (Architecture Gate BIM-AG-P1-T006;
+# Implementation Brief P1-T006-IB section 8). The Phase-1 vertical slice through
+# real production boundaries: bim::commands / bim::query / bim::document, the real
+# OCCT-backed bim::geometry_api (MakeLinearExtrusion / ObserveFaces), the
+# production bim::model wall-face resolver, Document Save / Open (schema v2),
+# bim::presentation::BuildWallMesh and the headless bim::viewport_bgfx::Renderer.
+# The Qt-free bim::desktop_vs1_workflow the desktop executable uses is linked as
+# well so the same slice is also driven through it. All of this is TEST
+# COMPOSITION ONLY: it does not widen any production dependency (rules R23-R27).
+# Exactly one new CTest registration.
+add_executable(integration_p1_t006_vs1_e2e
+    integration_p1_t006_vs1_e2e.cpp
+)
+target_link_libraries(integration_p1_t006_vs1_e2e
+    PRIVATE
+        bim::geometry_api
+        bim::geometry_occt
+        bim::model
+        bim::commands
+        bim::query
+        bim::document
+        bim::presentation
+        bim::desktop_vs1_workflow
+        bim::viewport
+        bim::viewport_bgfx
+        Catch2::Catch2WithMain
+)
+target_compile_features(integration_p1_t006_vs1_e2e PRIVATE cxx_std_20)
+bim_apply_warnings(integration_p1_t006_vs1_e2e)
+add_test(NAME integration_p1_t006_vs1_e2e COMMAND integration_p1_t006_vs1_e2e)

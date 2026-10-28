@@ -3,17 +3,30 @@
 #include <QtWidgets/QMainWindow>
 #include <memory>
 
-#include "spike_scene.hpp"
+#include "bim/desktop/vs1_workflow.hpp"
 
 class ViewportWindow;
-class QComboBox;
 class QLabel;
+class QString;
 
-// src/desktop/src/main_window.hpp - top-level Qt Widgets window for the
-// P0-T003 desktop spike (Implementation Brief BIM-TASK-P0-T003-CLAUDE
+// src/desktop/src/main_window.hpp - top-level Qt Widgets window of the desktop
+// executable (P0-T003 spike shell; Implementation Brief BIM-TASK-P0-T003-CLAUDE
 // v1.0, sections 11, 14). Qt Widgets only (Phase A fact). Owns a
-// ViewportWindow as its central widget and a scene selector that switches
-// between the five spike scenes (spike_scene.hpp).
+// ViewportWindow as its central widget.
+//
+// P1-T006 (Architecture Gate BIM-AG-P1-T006): the normal interactive mode is the
+// minimum Vertical Slice 1 authoring workflow. The window owns one
+// bim::desktop::Vs1Workflow (the Qt-free workflow that owns the live Document)
+// and offers the VS1 actions: create Level, create StraightWall, edit wall
+// geometry, change Level elevation, delete an element, Save and Open. Every
+// mutation goes through the workflow, which uses bim::commands only; this class
+// never touches the Document, the geometry kernel or the model layer directly.
+// After a successful operation the window asks the workflow for the complete
+// wall mesh set and hands that set to ViewportWindow::SetActiveSceneMeshes; if
+// the rebuild fails the previous scene stays on screen and the failure is
+// reported in the status bar. The P0-T003 evidence modes (main.cpp /
+// evidence_mode.cpp) construct this window unchanged and drive the embedded
+// ViewportWindow themselves.
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
@@ -51,9 +64,27 @@ public:
 private:
     void BuildMenus();
     void BuildStatusBar();
-    void OnSceneSelected(int index);
 
+    // VS1 actions (toolbar). Each one prompts for its input, runs one workflow
+    // operation and then reports the outcome and refreshes the scene.
+    void OnCreateLevel();
+    void OnCreateWall();
+    void OnEditWallGeometry();
+    void OnChangeLevelElevation();
+    void OnDeleteElement();
+    void OnSave();
+    void OnOpen();
+
+    // Reports `result` in the status bar. Returns result.ok().
+    bool ReportResult(const QString& action, const bim::desktop::WorkflowResult& result);
+
+    // Rebuilds the complete wall mesh set and, only when that succeeded, replaces
+    // the viewport scene with it. On failure the previous scene is preserved.
+    // `frame_camera` re-aims the camera at the new scene.
+    bool RefreshScene(bool frame_camera);
+
+    bim::desktop::Vs1Workflow workflow_;
+    bool scene_has_content_ = false;
     ViewportWindow* viewport_window_ = nullptr;
-    QComboBox* scene_selector_ = nullptr;
     QLabel* status_label_ = nullptr;
 };
